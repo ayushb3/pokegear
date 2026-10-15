@@ -834,3 +834,50 @@ describe('pixel-font glyph guard', () => {
     expect([...bad.entries()], 'uncovered chars').toEqual([]);
   });
 });
+
+/**
+ * Curly quotes only. The pixel font aliases a straight `"` to the CLOSING quote
+ * (ALIASES in scripts/build-font.py), so `"Hi"` would render with a close quote on both
+ * sides. Displayed strings must use the real “ (U+201C) and ” (U+201D), both of which the
+ * font has. Radio content (radio.json / STATIONS) is deliberately NOT scanned: it is frozen
+ * awaiting Ayush's content pass (it currently has no straight double quote anyway).
+ */
+describe('displayed text uses curly double quotes', () => {
+  /** Every string value reachable from `v` (object keys are not displayed, so skipped). */
+  function strings(v: unknown, out: string[] = []): string[] {
+    if (typeof v === 'string') out.push(v);
+    else if (Array.isArray(v)) for (const x of v) strings(x, out);
+    else if (v && typeof v === 'object') for (const x of Object.values(v)) strings(x, out);
+    return out;
+  }
+
+  const texts = (): string[] => [
+    ...Object.values(OBJECT_ACTIONS).flatMap((a) => strings([a.lines, a.whenMuted])),
+    ...strings(Object.values(DECOR_REACTIONS).map((r) => [r.lines, r.again, r.drop])),
+    ...strings(followerContent),
+    ...strings(fridgeContent),
+    ...strings(BATTLE),
+    ...strings(DEX),
+    ...strings(piano),
+    ...strings(card),
+    ...strings(PHOTOS),
+    ...strings(PLACES),
+  ];
+
+  it('collects a meaningful number of strings', () => {
+    expect(texts().length).toBeGreaterThan(300);
+  });
+
+  it('no straight " inside any dialogue / displayed string', () => {
+    const bad = texts().filter((t) => t.includes('"'));
+    expect(bad, 'use “ and ” (U+201C / U+201D), not a straight "').toEqual([]);
+  });
+
+  it('every “ has a matching ” after it', () => {
+    for (const t of texts()) {
+      const open = [...t].filter((c) => c === '“').length;
+      const close = [...t].filter((c) => c === '”').length;
+      expect(open, t).toBe(close);
+    }
+  });
+});

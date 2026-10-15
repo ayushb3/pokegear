@@ -5,14 +5,14 @@ import { isNight } from '../../world/api';
 /** By day, each talk shows the next set (session-local, wraps). */
 export const DAY: string[][] = [
   ['Mom is experimenting with a dish for her next private dinner.'],
-  ['Mom made spaghetti with olive oil and cheese.', '"Your favourite! Eat while it\'s warm."'],
-  ['"Clean your suitcase wheels!"'],
-  ['"Be in the moment. Nothing is worth the stress."'],
-  ['"Miss you! California feels so far away."'],
-  ['"Call me sometime, okay? I miss you."'],
+  ['Mom made spaghetti with olive oil and cheese.', '“Your favourite! Eat while it\'s warm.”'],
+  ['“Clean your suitcase wheels!”'],
+  ['“Be in the moment. Nothing is worth the stress.”'],
+  ['“Miss you! California feels so far away.”'],
+  ['“Call me sometime, okay? I miss you.”'],
 ];
 /** At night she always says this. */
-export const NIGHT: string[] = ['Mom is winding down for the night.', '"Miss you, you know. Don\'t stay up too late."'];
+export const NIGHT: string[] = ['Mom is winding down for the night.', '“Miss you, you know. Don\'t stay up too late.”'];
 
 let next = 0;
 
