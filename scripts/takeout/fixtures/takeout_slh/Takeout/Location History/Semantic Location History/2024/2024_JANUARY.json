@@ -1,0 +1,17 @@
+{
+  "timelineObjects": [
+    {
+      "placeVisit": {
+        "location": {
+          "latitudeE7": 488500000,
+          "longitudeE7": 23500000,
+          "name": "Paris"
+        },
+        "duration": {
+          "startTimestamp": "2024-01-05T10:00:00.000Z",
+          "endTimestamp": "2024-01-05T18:00:00.000Z"
+        }
+      }
+    }
+  ]
+}

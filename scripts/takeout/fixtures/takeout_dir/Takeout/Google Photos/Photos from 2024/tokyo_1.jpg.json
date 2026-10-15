@@ -1,0 +1,21 @@
+{
+  "title": "tokyo_1.jpg",
+  "photoTakenTime": {
+    "timestamp": "1709251200",
+    "formatted": ""
+  },
+  "geoData": {
+    "latitude": 35.68,
+    "longitude": 139.69,
+    "altitude": 0.0,
+    "latitudeSpan": 0.0,
+    "longitudeSpan": 0.0
+  },
+  "geoDataExif": {
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "altitude": 0.0,
+    "latitudeSpan": 0.0,
+    "longitudeSpan": 0.0
+  }
+}

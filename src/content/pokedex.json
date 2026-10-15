@@ -1,0 +1,127 @@
+[
+  {
+    "slug": "how-i-build",
+    "no": 0,
+    "name": "Rotom",
+    "title": "How I build",
+    "summary": "How I build",
+    "category": "The Agent Pokémon",
+    "sprite": "sprite.dex.rotom",
+    "types": ["Spec", "Agent", "Review"],
+    "stats": [
+      { "k": "Loop", "v": "21 runs" },
+      { "k": "Review", "v": "2 layers" }
+    ],
+    "flavour": ["Bzzt! Spec in, reviewed PR out.", "Anything irreversible gets a human."],
+    "ribbon": { "icon": "rotom", "text": "The method behind the projects" },
+    "what": "An agent loop for BubblyChef. One GitHub issue labelled ready-for-agent goes in. A planned, tested, browser-verified and twice-reviewed PR comes out, opened by a separate bot account.",
+    "how": "Control flow lives in code, judgement lives in agents. A script decides every stop, retry and merge permission from facts the agents report. Stages: plan, implement, verify in a real browser, review, ship.",
+    "impact": "It's now a template: the same process runs this portfolio's agent loop, from brief to review to PR.",
+    "builtWith": ["BubblyChef"],
+    "built": [
+      { "title": "Spec", "text": "Write the spec and split it into ready-for-agent GitHub issues." },
+      { "title": "Agent", "text": "Plan, implement, and verify in a real browser. A fresh-context reviewer then checks the diff." },
+      { "title": "Review", "text": "The bot opens the PR. GitHub's own review and CI gates check it, and Ayush reviews anything irreversible." }
+    ],
+    "learned": [
+      { "title": "Pilot failures", "text": "Most of the 21 runs are one pilot failure turned into a rule no agent can skip." },
+      { "title": "Fit", "text": "It earns its keep on from-scratch issues with a clear spec, and is overkill for rebases and fix-ups." }
+    ],
+    "links": [{ "label": "See BubblyChef", "entry": "bubblychef" }],
+    "draft": { "category": false, "stats": false, "flavour": false, "ribbon": false, "what": false, "how": false, "impact": false, "built": false, "learned": false }
+  },
+  {
+    "slug": "bubblychef",
+    "no": 1,
+    "name": "BubblyChef",
+    "title": "BubblyChef",
+    "summary": "AI-first kitchen app",
+    "category": "The Pantry Pokémon",
+    "sprite": "sprite.dex.munchlax",
+    "types": ["Next.js", "LangGraph"],
+    "stats": [
+      { "k": "Status", "v": "Live" },
+      { "k": "Repo", "v": "Public" }
+    ],
+    "flavour": ["Bzzt! Scans receipts, reads the pantry", "and cooks from what is really there."],
+    "ribbon": { "icon": "rotom", "text": "Built with the agent loop · 21 runs" },
+    "what": "An AI-first kitchen app with receipt scanning, pantry-aware recipe generation, grocery list automation and a natural-language chat assistant.",
+    "how": "Recipes are grounded in the real pantry inventory, and recipes import from social media and websites. A Next.js front end talks to a LangGraph AI service.",
+    "impact": "Snap a receipt and the pantry fills itself; dinner ideas start from what's about to expire. Ayush reaches for it when cooking a fuller meal; a mobile app is next, to make it an everyday tool.",
+    "built": [
+      { "title": "Solo", "text": "One developer, with the agent loop's bot account writing about half the commits." },
+      { "title": "Agent loop", "text": "Issues labelled ready-for-agent became reviewed PRs from a bot account, over 21 runs of the loop." },
+      { "title": "Live", "text": "Public on GitHub and live on Vercel." }
+    ],
+    "learned": [
+      { "title": "Issue quality", "text": "A loop is only as good as its issue, and the human ideas and understanding behind it. In one batch of about 10 PRs, 7 issues had a wrong or incomplete premise." },
+      { "title": "Cohesion", "text": "How to turn a pile of features into one cohesive app experience." }
+    ],
+    "links": [
+      { "label": "Open BubblyChef", "url": "https://bubbly-chef.vercel.app" },
+      { "label": "GitHub repo", "url": "https://github.com/ayushb3/BubblyChef" },
+      { "label": "Demo video", "url": "https://youtu.be/0r-LrfWgBrk" }
+    ],
+    "draft": { "category": false, "stats": false, "flavour": false, "ribbon": false, "what": false, "how": false, "impact": false, "built": false, "learned": false }
+  },
+  {
+    "slug": "tradedesk",
+    "no": 2,
+    "name": "TradeDesk",
+    "title": "TradeDesk",
+    "summary": "Trade journal and replay app",
+    "category": "The Ledger Pokémon",
+    "sprite": "sprite.dex.meowth",
+    "types": ["Journal", "Replay"],
+    "stats": [
+      { "k": "Built", "v": "Jul 2026" },
+      { "k": "Status", "v": "Paused" }
+    ],
+    "flavour": ["Bzzt! A trade journal with replay.", "Planned with Fable, built by agents."],
+    "ribbon": { "icon": "lock", "text": "Private — WIP" },
+    "what": "A local-only trade journal with a bar-replay backtester, sharing one database and one analytics engine. Agents built the first version; Ayush hasn't put it to real use yet.",
+    "how": "The journal groups filled orders into round-trip trades, with a P&L calendar and win rate. Replay steps 1-minute candles bar by bar with no lookahead, and simulated trades flow into the same journal.",
+    "impact": "Ayush will journal every real trade and practise setups in replay; both land in one set of stats, so he can see what works before putting money on it.",
+    "built": [
+      { "title": "Idea", "text": "It started as one big, high-level idea. Fable, then in early access, turned it into a detailed, hands-off spec." },
+      { "title": "Autonomous build", "text": "Ayush orchestrated the build with Opus agents, an early version of his agent loop, and it ran almost entirely hands-off." },
+      { "title": "Review", "text": "Understanding of the code slipped, so Ayush paused it to review before building more." }
+    ],
+    "learned": [
+      { "title": "Broker data", "text": "Financial data is messy: fills have to be grouped into round-trip trades before any stat means anything." },
+      { "title": "Keep up", "text": "Autonomous building is fast, but understanding slips. Review before you build more." }
+    ],
+    "links": [],
+    "draft": { "category": false, "stats": false, "flavour": false, "ribbon": false, "what": false, "how": false, "impact": false, "built": false, "learned": false }
+  },
+  {
+    "slug": "stave",
+    "no": 3,
+    "name": "Stave",
+    "title": "Stave",
+    "summary": "Sheet-music reader and arranger",
+    "category": "The Score Pokémon",
+    "sprite": "sprite.dex.jigglypuff",
+    "types": ["FastAPI", "React"],
+    "stats": [
+      {"k": "Status", "v": "Paused"},
+      {"k": "Built", "v": "Oct 2026"}
+    ],
+    "flavour": ["Bzzt! Big pages, one tap to turn,", "and a left hand it can rewrite."],
+    "ribbon": {"icon": "lock", "text": "Local only — no public repo"},
+    "what": "A personal sheet-music reader and arranger for the tablet. Scores are big and reflowed, and pages turn by tap, keys or a Bluetooth pedal.",
+    "how": "Arrange tools rewrite the left hand, roll chords, fix wide stretches, transpose and label chords. An Ask agent plans the edits, and you can pick a range of measures.",
+    "impact": "Ayush practises from it on his tablet. He built it to fix daily practice pain: MuseScore is clunky on a tablet, fingerings can't be edited, and marking up PDFs by hand is slow.",
+    "built": [
+      {"title": "v0", "text": "A tablet score viewer and the first arrange tools, committed on Sep 30, 2026."},
+      {"title": "Background build", "text": "On Oct 1, an agent built the Ask arrange agent, tap-to-select measures, and Find a score (links only)."},
+      {"title": "Local", "text": "It runs on Ayush's PC and is not deployed publicly."}
+    ],
+    "learned": [
+      {"title": "One registry", "text": "The arrange buttons and the Ask agent use the same tool schemas."},
+      {"title": "Validate", "text": "Edits that break measure lengths, overlap, or leave the keyboard are rejected."}
+    ],
+    "links": [],
+    "draft": {"category": false, "stats": false, "flavour": false, "ribbon": false, "what": false, "how": false, "impact": false, "built": false, "learned": false}
+  }
+]

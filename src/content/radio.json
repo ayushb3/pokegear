@@ -1,0 +1,41 @@
+{
+  "stations": [
+    {
+      "id": "now-spinning",
+      "kind": "list",
+      "sample": false,
+      "name": "Now Spinning",
+      "desc": "A curated set of tracks.",
+      "tracks": [
+        {
+          "title": "Touching God",
+          "artist": "Daniel Caesar",
+          "spotifyUrl": "https://open.spotify.com/track/3Ws7pcKeEo6dW2xPUFgmQv"
+        },
+        {
+          "title": "Mystery (quiet)",
+          "artist": "Matt Maltese",
+          "spotifyUrl": "https://open.spotify.com/track/7t5CLgLjFB87TgMTBrVasD"
+        },
+        {
+          "title": "Just A Little Higher",
+          "artist": "James Blake",
+          "spotifyUrl": "https://open.spotify.com/track/5BpZcAKQFRE7ALDNLEprTA"
+        },
+        {
+          "title": "Odysseus",
+          "artist": "Ludwig Göransson",
+          "spotifyUrl": "https://open.spotify.com/track/4cNfcmyCGw53tOSOsRI3z8"
+        }
+      ]
+    },
+    {
+      "id": "ayush-fm",
+      "kind": "playlist",
+      "sample": false,
+      "name": "Ayush FM",
+      "desc": "Ayush's playlist.",
+      "spotifyPlaylistUrl": "https://open.spotify.com/playlist/5GLhJSBebb89FfDPfvY24Z"
+    }
+  ]
+}

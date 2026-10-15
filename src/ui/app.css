@@ -1,0 +1,1052 @@
+.shell {
+  /* --px (CSS px per native pixel) is published by the world layout: integer device pixels, so
+     canvas, bottom screen and pixel font all stay crisp. Fallback before JS runs. */
+  --u: var(--px, 2px);
+  --pt: max(4px, env(safe-area-inset-top, 0px));
+  --pr: max(4px, env(safe-area-inset-right, 0px));
+  --pb: max(4px, env(safe-area-inset-bottom, 0px));
+  --pl: max(4px, env(safe-area-inset-left, 0px));
+  /* the HGSS menu frame (OverlayFrame, the dialogue / idle box, the title Skip): colour tokens, one place */
+  --frame-fill: #fff6dc;
+  --frame-line: #2a2a36;
+  --frame-hi: #fffdf2;
+  --frame-mid: #6b5a8e;
+  --frame-bar: #b8352e;
+  --frame-bar-line: #6e1a16;
+  font-family: var(--ui-font, 'HGSS Pixel'), 'Courier New', monospace;
+  font-weight: 400;
+  font-synthesis: none;
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  /* the DS is ONE unit (top screen, hinge, bottom screen), centred in the viewport */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--pt) + var(--bar-h, 28px)) var(--pr) var(--pb) var(--pl);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+}
+@supports (height: 100dvh) {
+  .shell {
+    height: 100dvh;
+  }
+}
+/* invisible box the world measures to pick the largest integer scale at which both screens fit */
+.fit {
+  position: absolute;
+  inset: calc(var(--pt) + var(--bar-h, 28px)) var(--pr) var(--pb) var(--pl);
+  pointer-events: none;
+  visibility: hidden;
+}
+.quick-links {
+  position: absolute;
+  top: var(--pt);
+  left: var(--pl);
+  right: var(--pr);
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 16px; /* pixel font is built on a 16px em */
+  line-height: 1;
+  color: #8d8da0;
+  white-space: nowrap;
+}
+.quick-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  color: #e9e4cf;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+/* side room: float in the top-right corner, outside the DS unit, using no height (layout.ts sets data-bar) */
+:root[data-bar='side'] .quick-links {
+  left: auto;
+  justify-content: flex-end;
+}
+.quick-links a:hover {
+  color: #fff;
+}
+.quick-links a:focus-visible {
+  outline: 2px solid #f0b030;
+  outline-offset: 2px;
+}
+.screens {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: none;
+  position: relative; /* title-screen positions absolutely inside here */
+}
+/* ─── The DS lid ──────────────────────────────────────────────────────────── */
+/* The top screen sits inside the lid. Hidden tab = lid closed: it folds down around the hinge (transform-origin at its
+ * bottom edge) and lands face-down over the bottom screen, so what you see is its shell with the sleep LED. */
+.screens {
+  perspective: calc(var(--u) * 700);
+}
+.lid {
+  position: relative;
+  flex: none;
+  width: calc(var(--u) * 256);
+  height: calc(var(--u) * 192);
+  z-index: 2;
+  transform-origin: 50% 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.7, 1);
+}
+.lid[data-closed] {
+  transform: rotateX(-180deg);
+}
+.lid > .top-screen {
+  backface-visibility: hidden;
+}
+.lid-shell {
+  position: absolute;
+  inset: 0;
+  transform: rotateX(180deg);
+  backface-visibility: hidden;
+  background: #2f2f3c;
+  box-shadow:
+    0 0 0 calc(var(--u) * 1) #2b2b38,
+    inset 0 0 0 calc(var(--u) * 2) #3c3c4c,
+    inset 0 0 0 calc(var(--u) * 3) #22222c;
+}
+/* the sleep LED: a slow orange blink, bottom-left of the shell (which is the viewer's bottom-right once folded) */
+.lid-led {
+  position: absolute;
+  left: calc(var(--u) * 12);
+  bottom: calc(var(--u) * 10);
+  width: calc(var(--u) * 4);
+  height: calc(var(--u) * 4);
+  background: #f0a030;
+  box-shadow: 0 0 calc(var(--u) * 3) #f0a030;
+  animation: lid-led 2.4s steps(2) infinite;
+}
+@keyframes lid-led {
+  50% {
+    opacity: 0.15;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lid {
+    transition: none;
+  }
+  .lid-led {
+    animation: none;
+  }
+}
+/* ─── End lid ─────────────────────────────────────────────────────────────── */
+
+/* the hinge between the two screens: STACK_GAP (4) native px, a dark bar */
+.hinge {
+  flex: none;
+  width: calc(var(--u) * 256);
+  height: calc(var(--u) * 4);
+  background: linear-gradient(#1c1c26 0 25%, #3a3a4a 0 50%, #1c1c26 0 100%);
+  box-shadow: 0 0 0 calc(var(--u) * 1) #2b2b38;
+  position: relative;
+  z-index: 1;
+}
+
+.top-screen {
+  position: relative;
+  flex: none;
+  width: calc(var(--u) * 256);
+  height: calc(var(--u) * 192);
+  background: #e9e4cf;
+  box-shadow: 0 0 0 calc(var(--u) * 1) #2b2b38;
+}
+.top-screen:focus {
+  outline: none;
+}
+.world-box {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.world-box canvas {
+  display: block;
+  transition: filter 0.2s steps(4);
+}
+/* a full-screen layer (the Pokedex) is open above the world */
+.world-box[data-dim] canvas {
+  filter: brightness(0.45);
+}
+.world-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--u) * 16);
+  color: #52525a;
+  background: #e9e4cf;
+}
+.debug-line {
+  position: fixed;
+  right: 4px;
+  bottom: 2px;
+  font: 10px/1 ui-monospace, monospace;
+  color: #8f8;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 1px 3px;
+  z-index: 10;
+  pointer-events: none;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.bottom-screen {
+  font-size: calc(var(--u) * 16); /* native font size x1 (pixel-exact: the font is built on a 16px em) */
+  line-height: 1;
+  font-kerning: none;
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: none;
+  text-shadow: var(--u) var(--u) 0 #a5a5ad;
+  box-sizing: border-box;
+  flex: none;
+  /* same footprint as the top screen: 256x192 native pixels */
+  width: calc(var(--u) * 256);
+  height: calc(var(--u) * 192);
+  background: #e9e4cf;
+  border: calc(var(--u) * 2) solid #2b2b38;
+  box-shadow: inset 0 0 0 calc(var(--u) * 2) #b9b295;
+  padding: calc(var(--u) * 6);
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: calc(var(--u) * 4);
+  color: #22222c;
+}
+.main {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 4);
+}
+.main > .idle-box {
+  flex: 1;
+  min-height: 0;
+}
+.bottom-screen {
+  --lh: calc(var(--u) * 18); /* one text line */
+  --row: calc(var(--u) * 22); /* one list row */
+}
+.overlay,
+.idle-box,
+.oframe,
+.title-skip {
+  /* THE shared HGSS menu frame (design principle 4): cream fill, 1u dark outline, then the highlight (pale, purple, pale
+   * inner lines), 4u rounded pixel corners; hard edges, no blur. OverlayFrame (.oframe) adds the red title bar. */
+  background: var(--frame-fill);
+  border: calc(var(--u) * 1) solid var(--frame-line);
+  border-radius: calc(var(--u) * 4);
+  box-shadow:
+    inset 0 0 0 calc(var(--u) * 1) var(--frame-hi),
+    inset 0 0 0 calc(var(--u) * 2) var(--frame-mid),
+    inset 0 0 0 calc(var(--u) * 3) var(--frame-hi);
+}
+.overlay,
+.idle-box {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding: calc(var(--u) * 4) calc(var(--u) * 6);
+  line-height: var(--lh);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.overlay h2 {
+  margin: 0 0 calc(var(--u) * 2);
+  font-size: 1em;
+  font-weight: 400;
+  flex: none;
+}
+.overlay p {
+  margin: 0;
+}
+/* OverlayFrame's red title bar: 18u tall INCLUDING its 1u outline (one 16u text line inside), no margin = exactly one
+ * --lh (18u) of the 1x budget for every overlay that uses it */
+.oframe .oframe-bar {
+  flex: none;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 4);
+  height: calc(var(--u) * 18);
+  margin: 0;
+  padding: 0 calc(var(--u) * 3);
+  background: var(--frame-bar);
+  border: calc(var(--u) * 1) solid var(--frame-bar-line);
+  color: var(--frame-fill);
+  text-shadow: calc(var(--u) * 1) calc(var(--u) * 1) 0 var(--frame-bar-line);
+  font-size: calc(var(--u) * 16);
+  font-weight: 400;
+  line-height: calc(var(--u) * 16);
+  white-space: nowrap;
+}
+/* the heading holds only the title (aside is its sibling); it flexes like the bar so a node title (arrows) lays out in a row */
+.oframe .oframe-heading {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: inherit;
+  margin: 0;
+  font: inherit;
+  line-height: inherit;
+}
+.oframe .oframe-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* a frame that fills the top screen (a layer portalled into .top-screen) */
+.oframe-top {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--u) * 4) calc(var(--u) * 6);
+}
+/* TextPages: whole-line pages, never a clipped glyph */
+.tp {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  cursor: pointer;
+}
+.tp-view {
+  overflow: hidden;
+}
+.tp-flow {
+  position: relative;
+  line-height: var(--lh);
+  padding-right: calc(var(--u) * 10); /* room for the down-arrow cue: it never overlaps the last word */
+}
+.tp-label {
+  color: #2f6fa8;
+  line-height: var(--lh);
+}
+.tp-text {
+  display: block;
+  line-height: var(--lh);
+  overflow-wrap: anywhere;
+}
+.tp-link {
+  display: flex;
+  align-items: center;
+}
+.tp-more {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+}
+.tp-more.on {
+  opacity: 1;
+  animation: blink 0.8s steps(2) infinite;
+}
+/* ScrollList: selected row always visible, arrows when rows hidden */
+.sl {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+}
+.sl ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sl-row {
+  display: block;
+  width: 100%;
+  height: var(--row);
+  line-height: var(--row);
+  padding: 0;
+  text-align: left;
+  font: inherit;
+  line-height: var(--row);
+  white-space: nowrap;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+}
+.sl-row.sel {
+  background: #cfe3f7;
+}
+.sl-cue {
+  position: absolute;
+  right: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.sl-cue.on {
+  opacity: 1;
+}
+.sl-up {
+  top: 0;
+}
+.sl-down {
+  bottom: 0;
+}
+.overlay .cur {
+  display: inline-block;
+  width: calc(var(--u) * 8);
+}
+.overlay .note {
+  opacity: 0.7;
+}
+.overlay a {
+  color: #1c4fb0;
+}
+.dialogue-box {
+  cursor: pointer;
+  white-space: pre-wrap;
+}
+.dialogue-box .more {
+  position: absolute;
+  right: calc(var(--u) * 6);
+  bottom: calc(var(--u) * 3);
+  opacity: 0;
+}
+.dialogue-box .more.on {
+  opacity: 1;
+  animation: blink 0.8s steps(2) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0.2;
+  }
+}
+.idle-box {
+  line-height: var(--lh);
+}
+.idle-hint {
+  min-height: 0;
+  margin-top: calc(var(--u) * 4);
+}
+.idle-loc {
+  /* pocket name strip (HGSS bag): warm tinted bar, dark text (about 11:1) */
+  color: #3a1d06;
+  background: #f0b45c;
+  box-shadow: inset 0 0 0 calc(var(--u) * 1) #a8661e;
+  border-radius: calc(var(--u) * 2);
+  padding: 0 calc(var(--u) * 3);
+  white-space: nowrap;
+}
+/* bag: the idle box shows a 4x2 grid of the room's objects (HGSS bag style); never resizes the box */
+.bag {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: calc(var(--u) * 3);
+  margin-top: calc(var(--u) * 2);
+}
+.slot {
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  background: #f7e6b8;
+  border: calc(var(--u) * 2) solid #b88a4e;
+  border-radius: calc(var(--u) * 3);
+  /* subtle inner highlight on the top-left edges, hard-edged */
+  box-shadow: inset calc(var(--u) * 1) calc(var(--u) * 1) 0 #fffbe6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slot:active {
+  background: #e8cf94;
+}
+/* Tap area only (no visual change): the slots are ~23 css px tall on phones, so an invisible ::before grows the hit area
+ * to 44 px. Inner edges stop at half the row gap so neighbours never steal taps; the extra goes outward (top row up,
+ * bottom row down). Positioned from the border box, hence the border-width compensation. */
+.slot {
+  position: relative;
+  --hit-in: calc(var(--u) * 1.5);
+  --hit-out: 22px; /* may overlap the header / description (plain text); the idle box clips it, and no interactive element is nearby */
+  --bw: calc(var(--u) * 2);
+}
+.slot::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--bw) * -1);
+  right: calc(var(--bw) * -1);
+  top: calc(var(--bw) * -1 - var(--hit-out));
+  bottom: calc(var(--bw) * -1 - var(--hit-in));
+}
+.slot:nth-child(n + 5)::before {
+  top: calc(var(--bw) * -1 - var(--hit-in));
+  bottom: calc(var(--bw) * -1 - var(--hit-out));
+}
+.slot:nth-child(-n + 4)::before {
+  bottom: calc(var(--bw) * -1 - var(--hit-in));
+}
+/* selected (hover / focus / just tapped): HGSS red-orange border + warm fill, plus a small bounce on a tap */
+/* HGSS cursor: red frame with an orange inner line, drawn on top of the slot; blinks slowly (static under reduced motion) */
+.slot.sel {
+  background: #ffeec4;
+}
+.slot::after {
+  content: '';
+  position: absolute;
+  left: calc(var(--bw) * -1);
+  right: calc(var(--bw) * -1);
+  top: calc(var(--bw) * -1);
+  bottom: calc(var(--bw) * -1);
+  border-radius: calc(var(--u) * 3);
+  border: calc(var(--u) * 2) solid #d8321a;
+  box-shadow: inset 0 0 0 calc(var(--u) * 1) #f79a2e;
+  pointer-events: none;
+  visibility: hidden;
+}
+.slot.sel::after {
+  visibility: visible;
+  animation: cursor-blink 1.2s steps(1) infinite;
+}
+@keyframes cursor-blink {
+  50% {
+    border-color: #f79a2e;
+    box-shadow: inset 0 0 0 calc(var(--u) * 1) #d8321a;
+  }
+}
+.slot.bump .chip-icon {
+  animation: bump 0.18s steps(2);
+}
+@keyframes bump {
+  50% {
+    transform: translateY(calc(var(--u) * -2));
+  }
+}
+.idle-desc {
+  flex: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+  margin-top: calc(var(--u) * 2);
+}
+.chip-icon {
+  display: block;
+  width: calc(var(--u) * 16);
+  height: calc(var(--u) * 16);
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+/* DS controls: A up-right, B down-left (vertical ranges overlap); START is a small pill nub at the left */
+.pad {
+  --D: max(48px, calc(var(--u) * 32)); /* face button diameter (>= 48px) */
+  position: relative;
+  height: calc(var(--D) * 1.5);
+  /* a row: START / sound | Card (takes the gap, centred in it) | face block */
+  display: flex;
+  align-items: flex-end;
+}
+.pad-left {
+  flex: none;
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+}
+.pad-mid {
+  /* the Trainer Card button: centred in the gap between START / sound (left) and B / A (right) at every scale. Round, 44px+,
+   * caption under it like A / B. At 375x812 (1x) that gap is only 50px (240 - START 44 - sound 44 - face 2D+6), so START is
+   * trimmed to 44px wide and the button is 44px. */
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.btn-card {
+  /* 44px at 1x; grows with the scale so the 16u icon always sits inside the ring (24u: 48px at 2x, 72px at 3x) */
+  width: max(44px, calc(var(--u) * 24));
+  height: max(44px, calc(var(--u) * 24));
+  box-sizing: border-box;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #f7e6b8;
+  border: calc(var(--u) * 2) solid #b88a4e;
+  /* subtle frame: dark outer ring + inner highlight, hard-edged like the slots */
+  box-shadow: 0 0 0 calc(var(--u) * 1) #22222c, inset calc(var(--u) * 1) calc(var(--u) * 1) 0 #fffbe6, 0 calc(var(--u) * 2) 0 #22222c;
+  cursor: pointer;
+}
+.btn-card:active {
+  background: #e8cf94;
+  transform: translateY(calc(var(--u) * 1));
+  box-shadow: 0 0 0 calc(var(--u) * 1) #22222c, inset calc(var(--u) * 1) calc(var(--u) * 1) 0 #fffbe6, 0 calc(var(--u) * 1) 0 #22222c;
+}
+.lbl-card {
+  height: calc(var(--D) / 2);
+  line-height: calc(var(--D) / 2);
+  white-space: nowrap;
+  color: #52525a;
+  pointer-events: none;
+}
+.face {
+  position: relative;
+  flex: none;
+  align-self: stretch;
+  width: calc(var(--D) * 2 + var(--u) * 6);
+  height: 100%;
+}
+.btn {
+  /* A / B: the drawn frame is on the native grid (2u outline, 2u drop); the 44px+ tap target is the button box itself
+   * (--D = max(48px, 32u)), never the frame */
+  position: absolute;
+  width: var(--D);
+  height: var(--D);
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: calc(var(--u) * 2) solid #22222c;
+  padding: 0;
+  font: inherit;
+  font-size: 2em;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 calc(var(--u) * 2) 0 #22222c;
+}
+.btn:active {
+  transform: translateY(calc(var(--u) * 1));
+  box-shadow: 0 calc(var(--u) * 1) 0 #22222c;
+}
+.btn-a {
+  right: 0;
+  top: 0;
+  background: #d9473f;
+}
+.btn-b {
+  left: 0;
+  top: calc(var(--D) / 2);
+  background: #3f6fd9;
+}
+/* tiny contextual label: under A, above B */
+.lbl {
+  position: absolute;
+  width: var(--D);
+  height: calc(var(--D) / 2);
+  line-height: calc(var(--D) / 2);
+  text-align: center;
+  white-space: nowrap;
+  color: #52525a;
+  text-shadow: none;
+  pointer-events: none;
+}
+.lbl-a {
+  right: 0;
+  top: var(--D);
+}
+.lbl-b {
+  left: 0;
+  top: 0;
+}
+.btn-start {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 calc(var(--u) * 3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--u) * 2);
+  font: inherit;
+  color: #52525a;
+  text-shadow: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.btn-sound {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #52525a;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.btn-sound[aria-pressed='true'] {
+  color: #22222c;
+}
+.sound-icon,
+.dlg-icon {
+  display: block;
+  width: calc(var(--u) * 16);
+  height: calc(var(--u) * 16);
+}
+.dlg-icon {
+  display: inline-block;
+  vertical-align: top;
+  margin-right: calc(var(--u) * 3);
+}
+.nub {
+  display: block;
+  width: calc(var(--u) * 20);
+  height: calc(var(--u) * 6);
+  box-sizing: border-box;
+  border-radius: 99px;
+  background: #4a4a58;
+  border: calc(var(--u) * 1) solid #22222c;
+  box-shadow: inset 0 calc(var(--u) * 1) 0 #7a7a8a;
+}
+.btn-start:active .nub {
+  background: #2f2f3a;
+  box-shadow: none;
+}
+
+/* ─── Title screen ────────────────────────────────────────────────────────── */
+/*
+ * The title screen is a full-DS overlay: it covers .screens (top + hinge + bottom)
+ * but NOT the QuickLinks bar, which floats above everything at a higher z-index.
+ *
+ * Sizing mirrors .screens: we use the same --u-based calc()s so it scales correctly.
+ * Both screens are 256 x 192 native px; hinge is 4 native px.
+ * Total native height: 192 + 4 + 192 = 388 native px.
+ *
+ * Phone budget (1x, --u=1px):
+ *   top:   192px (title card)
+ *   hinge:   4px (dark bar)
+ *   bottom: 192px ("PRESS START")
+ */
+
+/* Wrapper: covers .screens exactly (its absolute parent).
+ * .screens is 256 native px wide and (192+4+192)=388 native px tall.
+ * QuickLinks are children of .shell (outside .screens), so they are unaffected. */
+.title-screen {
+  position: absolute;
+  inset: 0; /* cover all of .screens */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 5;
+  touch-action: manipulation;
+}
+/* the dialog itself is focused on mount (tabIndex -1): no ring on load; Tab reveals the Skip's */
+.title-screen:focus {
+  outline: none;
+}
+
+/* TOP SCREEN: deep navy gradient, pixelated star field.
+ *
+ * INTRO "Night walk" (ms from mount; INTRO_MS = 3200 in titleScreenLogic.ts). Every beat is a
+ * CSS animation with an animation-delay, so the sequence is deterministic from mount and needs
+ * no JS per frame. The BASE styles are the settled frame, so `animation: none` (reduced motion)
+ * shows exactly the settled title.
+ *      0–600   stars pop in, 100 ms apart (opacity held at 0, hard step), then twinkle
+ *    300–2000  follower walks in: translateX -144u -> 0, steps(36) = 4u per step, facing right,
+ *              2-frame walk (12 frames, one per 3 steps)
+ *   2000       walk ends: the sprite falls back to the stand pose (down, col 1)
+ *   2300–2800  "!" emote at (120u, 82u): frame 0 + 2u low for 150 ms, then frame 1;
+ *              gone before the name (line box y 60..92) reaches it at 2850
+ *   2600–3000  name drops: top -36u -> 60u in 6 steps of 16u, overshoot 62u at 2900, 60u at 3000
+ *   3200       data-phase="settled": PRESS START shows and blinks, follower bobs
+ * Settled geometry: name top 60u (32u tall, centred), follower (112u, 100u), 32x32 cell.
+ */
+.title-top {
+  flex: none;
+  position: relative;
+  width: 100%;
+  height: calc(var(--u) * 192);
+  background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3a 60%, #2a2040 100%);
+  box-shadow: 0 0 0 calc(var(--u) * 1) #2b2b38;
+  overflow: hidden;
+}
+
+/* Stars: tiny 2x2 native-px dots. Two animations each: the twinkle (starts after every star
+ * has popped), and a hide that holds opacity 0 for --pop ms from mount (the pop-in, a hard step). */
+.title-star {
+  position: absolute;
+  width: calc(var(--u) * 2);
+  height: calc(var(--u) * 2);
+  background: #fff;
+  border-radius: 0; /* hard-pixel, no rounding */
+  animation:
+    title-twinkle 1.6s steps(2) var(--tw) infinite,
+    title-star-hide var(--pop) steps(1, end) 0s 1;
+}
+/* none of these overlap the name (x 40..216, y 60..92) or the follower (x 112..144, y 82..132) */
+.title-star-1 { top: calc(var(--u) * 20);  left: calc(var(--u) * 30);  --pop: 0ms;   --tw: 600ms; }
+.title-star-2 { top: calc(var(--u) * 48);  left: calc(var(--u) * 200); --pop: 100ms; --tw: 1100ms; }
+.title-star-3 { top: calc(var(--u) * 14);  left: calc(var(--u) * 140); --pop: 200ms; --tw: 1700ms; }
+.title-star-4 { top: calc(var(--u) * 24);  left: calc(var(--u) * 230); --pop: 300ms; --tw: 900ms; }
+.title-star-5 { top: calc(var(--u) * 80);  left: calc(var(--u) * 18);  --pop: 400ms; --tw: 1300ms; }
+.title-star-6 { top: calc(var(--u) * 36);  left: calc(var(--u) * 100); --pop: 500ms; --tw: 800ms; }
+.title-star-7 { top: calc(var(--u) * 120); left: calc(var(--u) * 226); --pop: 600ms; --tw: 1500ms; }
+
+@keyframes title-twinkle {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.1; }
+  100% { opacity: 1; }
+}
+@keyframes title-star-hide {
+  from, to { opacity: 0; }
+}
+
+/* Follower: Oshawott. The wrapper walks in (translateX); the sprite swaps frames / bobs.
+ * Spritesheet: 2 cols x 4 rows of 32px native cells, rows down / left / up / right.
+ *   background-size: full sheet = 64x128 native px
+ *   settled: col=1, row=0 (stand, facing down) -> background-position calc(--u * -32) 0
+ * repeat-x lets the walk scroll background-position-x by whole cells and wrap col 0 / col 1. */
+.title-follower {
+  position: absolute;
+  left: calc(var(--u) * 112);
+  top: calc(var(--u) * 100);
+  animation: title-walk-in 1700ms steps(36, end) 300ms both;
+}
+.title-follower-sprite {
+  image-rendering: pixelated;
+  background-repeat: repeat-x;
+  /* one cell: 32 native px -> calc(--u * 32) CSS px */
+  width: calc(var(--u) * 32);
+  height: calc(var(--u) * 32);
+  /* full sheet: 64x128 native px */
+  background-size: calc(var(--u) * 64) calc(var(--u) * 128);
+  /* col=1, row=0: x = -32 native, y = 0 -> calc(--u * -32) 0 */
+  background-position: calc(var(--u) * -32) 0;
+  /* backwards only: after 2000 ms the base (stand, facing down) takes over = the turn */
+  animation: title-walk-frames 1700ms steps(12, end) 300ms backwards;
+}
+.title-screen[data-phase='settled'] .title-follower-sprite {
+  animation: title-bob 0.9s steps(2) infinite;
+}
+
+@keyframes title-walk-in {
+  from { transform: translateX(calc(var(--u) * -144)); }
+  to   { transform: translateX(0); }
+}
+/* row 3 (facing right) = y -96; 12 cells of x travel = 6 two-frame cycles (~283 ms each) */
+@keyframes title-walk-frames {
+  from { background-position: 0 calc(var(--u) * -96); }
+  to   { background-position: calc(var(--u) * -384) calc(var(--u) * -96); }
+}
+@keyframes title-bob {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(calc(var(--u) * -2)); }
+  100% { transform: translateY(0); }
+}
+
+/* "!" emote (emote.exclaim, 30x16 strip of 15x16 frames): 2 px above the follower's head.
+ * Hidden at rest (the settled title has no emote); visible only while its animation runs. */
+.title-emote {
+  position: absolute;
+  left: calc(var(--u) * 120);
+  top: calc(var(--u) * 82);
+  width: calc(var(--u) * 15);
+  height: calc(var(--u) * 16);
+  image-rendering: pixelated;
+  background-repeat: no-repeat;
+  background-size: calc(var(--u) * 30) calc(var(--u) * 16);
+  background-position: calc(var(--u) * -15) 0;
+  visibility: hidden;
+  animation: title-emote 500ms steps(1, end) 2300ms;
+}
+@keyframes title-emote {
+  0%     { visibility: visible; top: calc(var(--u) * 84); background-position: 0 0; }
+  30%    { visibility: visible; top: calc(var(--u) * 82); background-position: calc(var(--u) * -15) 0; }
+  100%   { visibility: visible; top: calc(var(--u) * 82); background-position: calc(var(--u) * -15) 0; }
+}
+
+/* Wordmark: name only (no subtitle). Centred by text-align (same x as the old flex centring). */
+.title-name {
+  position: absolute;
+  top: calc(var(--u) * 60);
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font-size: calc(var(--u) * 32);
+  line-height: 1;
+  color: #f0e878; /* warm yellow, HGSS title palette */
+  letter-spacing: calc(var(--u) * 2);
+  white-space: nowrap;
+  text-shadow: calc(var(--u) * 1) calc(var(--u) * 1) 0 #000;
+  animation: title-name-drop 400ms 2600ms both;
+}
+/* 2600-2850: 6 hard steps of 16u (-36 is fully above the screen); 2900: 62u; 3000: 60u */
+@keyframes title-name-drop {
+  0%    { top: calc(var(--u) * -36); animation-timing-function: steps(6, end); }
+  62.5% { top: calc(var(--u) * 60);  animation-timing-function: steps(1, end); }
+  75%   { top: calc(var(--u) * 62);  animation-timing-function: steps(1, end); }
+  100%  { top: calc(var(--u) * 60); }
+}
+
+/* BOTTOM SCREEN: cream background matching .bottom-screen (same 256x192 border box: the 2u
+ * border is INSIDE the box, or the frame overhangs the real screen by 2u a side / 4u below) */
+.title-bottom {
+  flex: none;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(var(--u) * 192);
+  background: #e9e4cf;
+  border: calc(var(--u) * 2) solid #2b2b38;
+  box-shadow: inset 0 0 0 calc(var(--u) * 2) #b9b295;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* "PRESS START" blinking text */
+.title-press-start {
+  margin: 0;
+  font-size: calc(var(--u) * 16);
+  line-height: 1;
+  color: #22222c;
+  text-shadow: calc(var(--u) * 1) calc(var(--u) * 1) 0 #a5a5ad;
+  animation: blink 0.8s steps(2) infinite;
+  white-space: nowrap;
+  pointer-events: none;
+}
+/* During the intro PRESS START stays in the DOM but unseen; it appears (and blinks) once settled */
+.title-screen[data-phase='intro'] .title-press-start {
+  visibility: hidden;
+  animation: none;
+}
+
+/* placeholder block when the follower sprite art is not yet sliced (LOW 10) */
+.title-follower-placeholder {
+  width: calc(var(--u) * 32);
+  height: calc(var(--u) * 32);
+}
+
+/* Visible Skip button: rendered when showSkip=true (SHOW_SKIP_BUTTON).
+ * An HGSS menu button: the same cream body and double pixel border as the overlay frame
+ * (dark line, pale gap, purple line), 16u text, bottom-right of the bottom screen.
+ * Tap target: at 1x the 44px minimum wins (44 = 44u, still on the grid); from 2x the --u
+ * multiples do (48u x 24u), so the frame is integer native px at every scale. */
+.title-skip {
+  position: absolute;
+  bottom: calc(var(--u) * 8);
+  right: calc(var(--u) * 8);
+  box-sizing: border-box;
+  min-width: max(44px, calc(var(--u) * 48));
+  min-height: max(44px, calc(var(--u) * 24));
+  padding: 0 calc(var(--u) * 6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
+  font-size: calc(var(--u) * 16);
+  line-height: 1;
+  color: #22222c;
+  text-shadow: calc(var(--u) * 1) calc(var(--u) * 1) 0 #a5a5ad;
+  /* fill, outline, highlight and radius: the shared HGSS frame (.oframe rule, the --frame-* tokens); a button has no title bar */
+  cursor: pointer;
+}
+.title-skip:active {
+  background: #e8cf94;
+}
+
+/* sr-only Skip intro button: visually hidden (uses .sr-only), but the focus ring
+ * IS shown when focused via keyboard so sighted keyboard users see it.
+ * With the visible Skip rendered (--proxy), the sr-only button stays hidden and its focus
+ * ring is drawn on the visible "Skip" instead, so the screen shows ONE skip control.
+ * Only ever reached by Tab (the dialog, not the button, is focused on mount), so the ring
+ * never shows on load. Site focus colour, on the native grid (2u, 1u off the frame). */
+.title-skip-sr--proxy:focus-visible ~ .title-skip {
+  outline: calc(var(--u) * 2) solid #1c4fb0;
+  outline-offset: calc(var(--u) * 1);
+}
+/* fallback for showSkip={false}: the sr-only button shows itself when focused */
+.title-skip-sr:not(.title-skip-sr--proxy):focus-visible {
+  /* Override the sr-only clip/size to show the focus ring in-place on the bottom screen */
+  position: absolute;
+  /* centre of the bottom screen, near the top edge */
+  top: calc(var(--u) * 8);
+  right: calc(var(--u) * 8);
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0 calc(var(--u) * 6);
+  /* ensure at least 44px tap target (keyboard users still need a visible target) */
+  min-width: max(44px, calc(var(--u) * 48));
+  min-height: max(44px, calc(var(--u) * 24));
+  overflow: visible;
+  clip: auto;
+  white-space: nowrap;
+  border: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font: inherit;
+  font-size: calc(var(--u) * 16);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: 3px solid #1c4fb0;
+  outline-offset: 2px;
+  cursor: pointer;
+}
+
+/* Reduced motion never shows the title (App.tsx); belt and braces: the settled frame, still. */
+@media (prefers-reduced-motion: reduce) {
+  .title-screen .title-star,
+  .title-screen .title-follower,
+  .title-screen .title-follower-sprite,
+  .title-screen .title-emote,
+  .title-screen .title-name,
+  .title-screen .title-press-start {
+    animation: none;
+  }
+  .title-screen[data-phase] .title-press-start {
+    visibility: visible;
+  }
+}
+
+/* ─── End title screen ────────────────────────────────────────────────────── */
+
+/* visible keyboard focus on every real button */
+.slot:focus-visible,
+.btn-sound:focus-visible,
+.btn:focus-visible,
+.btn-card:focus-visible,
+.btn-start:focus-visible {
+  outline: 3px solid #1c4fb0;
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .slot.bump .chip-icon,
+  .slot.sel::after {
+    animation: none;
+  }
+  .tp-more.on,
+  .dialogue-box .more.on {
+    animation: none;
+  }
+  .world-box canvas {
+    transition: none;
+  }
+}

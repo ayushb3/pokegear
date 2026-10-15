@@ -1,0 +1,105 @@
+---
+import { DEX, dexNo } from '../../content/pokedex';
+import assets from '../../assets/assets.json';
+
+export function getStaticPaths() {
+  return DEX.map((p) => ({ params: { slug: p.slug }, props: { project: p } }));
+}
+const { project } = Astro.props;
+const tagline = `${project.category}. ${project.flavour.join(' ')}`;
+const external = project.links.filter((l) => l.url);
+const related = project.links.filter((l) => l.entry).map((l) => ({ label: l.label, href: `/projects/${l.entry}` }));
+const font = assets['font.ui'];
+const fontCss = `@font-face{font-family:"${font.family}";src:url(${font.path}) format("truetype");font-display:swap}`;
+const room = `/?open=projects/${project.slug}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{project.title}: Ayush Basu</title>
+    <meta name="description" content={tagline} />
+    <meta property="og:title" content={`${project.title}: Ayush Basu`} />
+    <meta property="og:description" content={tagline} />
+    <meta property="og:type" content="website" />
+    <style is:inline set:html={fontCss}></style>
+    <style>
+      :root { color-scheme: light; }
+      html { background: #16161d; }
+      body {
+        margin: 0;
+        padding: 16px;
+        min-height: 100vh;
+        box-sizing: border-box;
+        font-family: "HGSS Pixel", "Courier New", monospace;
+        font-size: 24px;
+        line-height: 1.5;
+        -webkit-font-smoothing: none;
+        font-kerning: none;
+        color: #22222c;
+      }
+      main {
+        max-width: 40rem;
+        margin: 0 auto;
+        padding: 24px;
+        background: #e9e4cf;
+        border: 4px solid #2b2b38;
+        box-shadow: inset 0 0 0 4px #b9b295;
+      }
+      h1 { font-size: 32px; font-weight: 400; line-height: 1.25; margin: 0 0 4px; }
+      .tag { margin: 0 0 16px; color: #52525a; }
+      dl { margin: 0; padding: 16px; background: #fff; border: 2px solid #22222c; }
+      dt { color: #2f6fa8; margin-top: 12px; }
+      dt:first-child { margin-top: 0; }
+      dd { margin: 0; }
+      ol { margin: 0; padding-left: 1.5em; }
+      a { color: #1c4fb0; }
+      .extra { margin: 16px 0 0; }
+      .extra a { display: inline-block; padding: 10px 0; overflow-wrap: anywhere; }
+      .walk {
+        display: inline-flex;
+        align-items: center;
+        min-height: 56px;
+        margin-top: 24px;
+        padding: 0 24px;
+        background: #d9473f;
+        color: #fff;
+        text-decoration: none;
+        border: 3px solid #22222c;
+        border-radius: 8px;
+        box-shadow: 0 3px 0 #22222c;
+      }
+      .walk:hover { background: #e2574f; }
+      :focus-visible { outline: 3px solid #1c4fb0; outline-offset: 3px; }
+      @media (max-width: 480px) {
+        body { padding: 8px; font-size: 20px; }
+        main { padding: 16px; }
+        h1 { font-size: 28px; }
+        .walk { width: 100%; box-sizing: border-box; justify-content: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>{project.title}</h1>
+      <p class="tag">{dexNo(project)} {project.name}, {project.category}</p>
+      <dl>
+        <dt>What got built</dt><dd>{project.what}</dd>
+        <dt>How</dt><dd>{project.how}</dd>
+        <dt>Result</dt><dd>{project.impact}</dd>
+        {project.builtWith && <><dt>Built this way</dt><dd>{project.builtWith.join(', ')}</dd></>}
+        <dt>How it was built</dt>
+        <dd><ol>{project.built.map((b) => <li>{b.text}</li>)}</ol></dd>
+        <dt>What I learned</dt>
+        <dd><ol>{project.learned.map((b) => <li>{b.text}</li>)}</ol></dd>
+        {project.stats.map((s) => <><dt>{s.k}</dt><dd>{s.v}</dd></>)}
+      </dl>
+      {external.map((l) => <p class="extra"><a href={l.url}>{(l.url as string).replace('https://', '')}</a></p>)}
+      {related.map((l) => <p class="extra"><a href={l.href}>{l.label}</a></p>)}
+      {project.slug === 'tradedesk' && <p class="extra">Repo is private.</p>}
+      <a class="walk" href={room}>Walk into the room &raquo;</a>
+    </main>
+  </body>
+</html>

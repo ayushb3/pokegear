@@ -1,0 +1,149 @@
+---
+import { card, hrefOf, labelOf, roleEmployerLine } from '../content/trainer-card';
+import { DEX, dexNo } from '../content/pokedex';
+import { EMPLOYER, ROLES, bulletText, readResumeTypst, skillsFromTypst } from '../content/about';
+import assets from '../assets/assets.json';
+
+const skills = skillsFromTypst(readResumeTypst());
+// projects first, then the method (Rotom, No. 000)
+const entries = [...DEX].sort((a, b) => (a.no === 0 ? 1 : b.no === 0 ? -1 : a.no - b.no));
+const font = assets['font.ui'];
+const fontCss = `@font-face{font-family:"${font.family}";src:url(${font.path}) format("truetype");font-display:swap}`;
+const email = card.links.find((l) => l.id === 'email');
+const emailHref = email ? hrefOf(email) : null;
+const description = `${card.name}, ${card.role.text} at ${EMPLOYER}. ${card.pitch.lines.join(' ')}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{card.name} — About</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={`${card.name} — About`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="profile" />
+    <meta property="og:image" content="/card.png" />
+    <meta property="og:image:width" content="480" />
+    <meta property="og:image:height" content="248" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="/card.png" />
+    <style is:inline set:html={fontCss}></style>
+    <style>
+      :root { color-scheme: light; }
+      html { background: #16161d; }
+      body {
+        margin: 0;
+        padding: 16px;
+        box-sizing: border-box;
+        /* body copy is readable system type; the pixel font is for the name, headings, labels and buttons */
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        color: #22222c;
+      }
+      h1, h2, h3, dt, .btn, .walk {
+        font-family: "HGSS Pixel", "Courier New", monospace;
+        font-size: 16px;
+        line-height: 1.5;
+        -webkit-font-smoothing: none;
+        font-kerning: none;
+      }
+      main { max-width: 70ch; margin: 0 auto; padding: 24px; background: #e9e4cf; border: 4px solid #2b2b38; box-shadow: inset 0 0 0 4px #b9b295; }
+      h1 { font-size: 32px; font-weight: 400; line-height: 1.25; margin: 0; }
+      h2 { font-size: 28px; font-weight: 400; margin: 32px 0 8px; padding-bottom: 4px; border-bottom: 3px solid #2f6fa8; color: #2f6fa8; }
+      h3 { font-weight: 400; margin: 0; }
+      p { margin: 8px 0; }
+      .role { color: #52525a; margin: 0; }
+      .pitch { margin-top: 16px; }
+      ul { margin: 8px 0; padding-left: 1.25em; }
+      li { margin: 6px 0; }
+      a { color: #1c4fb0; }
+      .btns, .contact { list-style: none; padding: 0; margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
+      .btns li, .contact li { margin: 0; }
+      .btn { display: inline-flex; align-items: center; min-height: 48px; box-sizing: border-box; padding: 0 16px; color: #22222c; text-decoration: none; background: #fff; border: 3px solid #22222c; border-radius: 8px; }
+      .btn[data-disabled] { color: #52525a; border-style: dashed; }
+      .walk { display: inline-flex; align-items: center; min-height: 56px; padding: 0 24px; background: #d9473f; color: #fff; text-decoration: none; border: 3px solid #22222c; border-radius: 8px; box-shadow: 0 3px 0 #22222c; }
+      .walk:hover { background: #e2574f; }
+      .job { margin-top: 16px; }
+      .dates { color: #52525a; margin: 0; }
+      .card { margin: 16px 0; padding: 16px; background: #fff; border: 2px solid #22222c; }
+      .card .tag { color: #52525a; margin: 0; }
+      .card dl { margin: 8px 0 0; }
+      .card dt { color: #2f6fa8; margin-top: 8px; }
+      .card dd { margin: 0; }
+      .card .more { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 12px; }
+      .card .more a { display: inline-block; padding: 8px 0; overflow-wrap: anywhere; }
+      .skills { margin: 8px 0; }
+      .skills dt { color: #2f6fa8; margin-top: 8px; }
+      .skills dd { margin: 0; }
+      :focus-visible { outline: 3px solid #1c4fb0; outline-offset: 3px; }
+      @media (max-width: 480px) {
+        body { padding: 8px; }
+        main { padding: 16px; }
+        h1 { font-size: 28px; }
+        h2, h3, dt, .btn, .walk { font-size: 16px; }
+        .walk { width: 100%; box-sizing: border-box; justify-content: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>{card.name}</h1>
+      <p class="role">{card.role.text}</p>
+      <p class="role">{roleEmployerLine(card.role)}</p>
+      <p class="pitch">{card.pitch.lines.join(' ')}</p>
+      <ul class="btns">
+        <li><a class="btn" href="/resume.pdf">Résumé (PDF)</a></li>
+        <li><a class="btn" href="/photos">Photos</a></li>
+        {emailHref && <li><a class="btn" href={emailHref}>Email</a></li>}
+        <li><a class="btn" href="/food">Fridge (food log)</a></li>
+        <li><a class="btn" href="/places">Places</a></li>
+        <li><a class="btn" href="/log">Commit log</a></li>
+        <li><a class="btn" href="/music">Music</a></li>
+      </ul>
+      <p><a class="walk" href="/?open=card">Walk into the room »</a></p>
+
+      <h2>Experience</h2>
+      {ROLES.map((r) => (
+        <section class="job">
+          <h3>{r.title}</h3>
+          <p class="dates">{EMPLOYER} · {r.dates}</p>
+          <ul>{r.bullets.map((b) => <li>{bulletText(b)}</li>)}</ul>
+        </section>
+      ))}
+
+      <h2>Projects</h2>
+      {entries.map((p) => (
+        <article class="card">
+          <h3><a href={`/projects/${p.slug}`}>{p.title}</a></h3>
+          <p class="tag">{dexNo(p)}</p>
+          <dl>
+            <dt>What</dt><dd>{p.what}</dd>
+            <dt>How</dt><dd>{p.how}</dd>
+            <dt>Result</dt><dd>{p.impact}</dd>
+          </dl>
+          <div class="more">
+            <a href={`/projects/${p.slug}`}>Read more</a>
+            {p.links.filter((l) => l.url).map((l) => <a href={l.url}>{l.label}</a>)}
+          </div>
+        </article>
+      ))}
+
+      <h2>Skills</h2>
+      <dl class="skills">
+        {skills.map((g) => <><dt>{g.label}</dt><dd>{g.items}</dd></>)}
+      </dl>
+
+      <h2>Contact</h2>
+      <ul class="contact">
+        {card.links.map((l) => {
+          const href = hrefOf(l);
+          return <li>{href ? <a class="btn" href={href}>{labelOf(l)}</a> : <span class="btn" data-disabled aria-disabled="true">{labelOf(l)}</span>}</li>;
+        })}
+      </ul>
+      <p><a class="walk" href="/?open=card">Walk into the room »</a></p>
+    </main>
+  </body>
+</html>

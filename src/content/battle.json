@@ -1,0 +1,51 @@
+{
+  "enemy": {
+    "name": "RECRUITER",
+    "hp": 100,
+    "damage": 12,
+    "moves": [
+      {
+        "name": "TELL ME ABOUT YOURSELF",
+        "text": "Oshawott waves its scalchop."
+      },
+      {
+        "name": "WHITEBOARD",
+        "text": "Oshawott draws a box and some arrows."
+      },
+      {
+        "name": "CULTURE FIT",
+        "text": "Oshawott is unfazed."
+      }
+    ]
+  },
+  "player": {
+    "name": "OSHAWOTT",
+    "hp": 100
+  },
+  "moves": [
+    {
+      "name": "GOLDEN JUDGE",
+      "type": "Evals",
+      "power": 25,
+      "text": "Scheduled LLM-as-judge runs hit a golden dataset! It's super effective!"
+    },
+    {
+      "name": "SWARM MIND",
+      "type": "Agents",
+      "power": 25,
+      "text": "A multi-agent research team, reasoning UI and all, joins the fight!"
+    },
+    {
+      "name": "SELF-BUILD",
+      "type": "Agents",
+      "power": 25,
+      "text": "BubblyChef turns an issue into a reviewed PR by itself! 20 merged!"
+    },
+    {
+      "name": "LOOK FIRST",
+      "type": "Design",
+      "power": 25,
+      "text": "Ayush's agents pause and show their plan. Humans approve before anything runs!"
+    }
+  ]
+}

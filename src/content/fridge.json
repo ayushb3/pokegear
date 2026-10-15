@@ -1,0 +1,321 @@
+{
+  "entries": [
+    {
+      "date": "2026-10-02",
+      "section": "hallOfFame",
+      "title": "Hot Cheeto Quesabirria",
+      "place": "Birria El Vaquerito, San Jose",
+      "note": "Red, cheese-crusted birria tacos with a cup of consommé for dipping.",
+      "noteDraft": true,
+      "photo": "fridge.photo.22"
+    },
+    {
+      "date": "2026-09-24",
+      "section": "hallOfFame",
+      "title": "Croissant Flight: Matcha, Cheese & Toasted Meringue",
+      "place": "Croissanté, Santa Clara",
+      "note": "Flaky croissants topped with matcha cream, cheese or toasted meringue.",
+      "noteDraft": true,
+      "photo": "fridge.photo.23"
+    },
+    {
+      "date": "2026-09-18",
+      "section": "hallOfFame",
+      "title": "Suruki Sashimi & Sapporo Picnic",
+      "place": "Suruki Supermarket, San Mateo",
+      "note": "Packs of supermarket sashimi and a can of Sapporo, picnic-style on the grass.",
+      "noteDraft": true,
+      "photo": "fridge.photo.29"
+    },
+    {
+      "date": "2026-09-15",
+      "section": "cooking",
+      "title": "Fish & Chips, Sparco's Sauce",
+      "note": "Battered fish on a bed of thin fries, swooshed with a creamy orange sauce.",
+      "noteDraft": true,
+      "photo": "fridge.photo.2"
+    },
+    {
+      "date": "2026-09-14",
+      "section": "cooking",
+      "title": "Spicy Soft Tofu Stew",
+      "note": "A spicy red broth packed with silken tofu cubes and a sprinkle of herbs.",
+      "noteDraft": true,
+      "photo": "fridge.photo.1"
+    },
+    {
+      "date": "2026-08-24",
+      "section": "hallOfFame",
+      "title": "Tonkotsu Udon, Shrimp Tempura",
+      "place": "Udon Mugizo, San Jose",
+      "note": "Thick udon in a creamy pork-bone broth, topped with a shrimp tempura.",
+      "noteDraft": true,
+      "photo": "fridge.photo.21"
+    },
+    {
+      "date": "2026-08-21",
+      "section": "hallOfFame",
+      "title": "Wagyu Tasting Box",
+      "place": "Olhso House, San Mateo",
+      "note": "A wooden grid of labelled raw wagyu cuts, ready for the tabletop grill.",
+      "noteDraft": true,
+      "photo": "fridge.photo.19"
+    },
+    {
+      "date": "2026-08-20",
+      "section": "cooking",
+      "title": "Baby Pork Chop, Asparagus & French Onion Soup",
+      "note": "A seared pork chop with charred asparagus and a bowl of onion soup.",
+      "noteDraft": true,
+      "photo": "fridge.photo.3"
+    },
+    {
+      "date": "2026-08-01",
+      "section": "hallOfFame",
+      "title": "Torched Sushi Roll",
+      "place": "Willoughby & Co, Cape Town",
+      "note": "Seared salmon and tuna sushi with sesame, pickled ginger and wasabi.",
+      "noteDraft": true,
+      "photo": "fridge.photo.26"
+    },
+    {
+      "date": "2026-07-31",
+      "section": "hallOfFame",
+      "title": "Chicken Espetada, Hung on the Stand",
+      "place": "Jonny's Mozambican, Stellenbosch",
+      "note": "Spiced chicken on a hanging skewer, with sides and a lemon wedge below.",
+      "noteDraft": true,
+      "photo": "fridge.photo.27"
+    },
+    {
+      "date": "2026-06-26",
+      "section": "cooking",
+      "title": "Sea Bass over Roasted Beets",
+      "note": "Pan-fried sea bass on slices of roasted beet, topped with a chunky relish.",
+      "noteDraft": true,
+      "photo": "fridge.photo.7"
+    },
+    {
+      "date": "2026-06-26",
+      "section": "cooking",
+      "title": "Sausages, Hash Brown & Soft Scramble",
+      "note": "Two plump sausages, a golden hash brown and soft, creamy scrambled eggs.",
+      "noteDraft": true,
+      "photo": "fridge.photo.11"
+    },
+    {
+      "date": "2026-06-09",
+      "section": "cooking",
+      "title": "Gochujang Pasta with Sweet Peas",
+      "note": "Long pasta in a red gochujang sauce, topped with a heap of sweet peas.",
+      "noteDraft": true,
+      "photo": "fridge.photo.5"
+    },
+    {
+      "date": "2026-06-01",
+      "section": "cooking",
+      "title": "Mortadella, Burrata & Basil Pressed Sandwich",
+      "note": "A pressed sandwich of mortadella, burrata and basil, wrapped in foil.",
+      "noteDraft": true,
+      "photo": "fridge.photo.10"
+    },
+    {
+      "date": "2026-05-23",
+      "section": "hallOfFame",
+      "title": "Stone-Pot Braised Short Ribs",
+      "place": "Daeho Kalbijjim & Beef Soup, San Mateo",
+      "note": "Braised short ribs in a sizzling stone pot, with banchan on the side.",
+      "noteDraft": true,
+      "photo": "fridge.photo.20"
+    },
+    {
+      "date": "2026-05-11",
+      "section": "cooking",
+      "title": "Smiling Potato Pancake, Salmon & Garlic-Lemon Spinach",
+      "note": "A potato pancake with a ketchup smile, beside salmon and wilted spinach.",
+      "noteDraft": true,
+      "photo": "fridge.photo.9"
+    },
+    {
+      "date": "2026-05-01",
+      "section": "cooking",
+      "title": "Herby Scramble on Toast, Avocado",
+      "note": "Herby scrambled eggs piled on toast, with avocado halves on the side.",
+      "noteDraft": true,
+      "photo": "fridge.photo.12"
+    },
+    {
+      "date": "2026-04-22",
+      "section": "hallOfFame",
+      "title": "Glazed-Donut Burger",
+      "place": "Smith Burger Co., Champaign",
+      "note": "A beef patty and melted cheese sandwiched in a glazed donut bun.",
+      "noteDraft": true,
+      "photo": "fridge.photo.33"
+    },
+    {
+      "date": "2026-04-02",
+      "section": "cooking",
+      "title": "Spaghetti Carbonara",
+      "note": "Spaghetti in a silky egg and cheese sauce, studded with crispy pork.",
+      "noteDraft": true,
+      "photo": "fridge.photo.4"
+    },
+    {
+      "date": "2026-01-22",
+      "section": "cooking",
+      "title": "Glazed Salmon on Scallion Pancakes",
+      "note": "A glazed salmon fillet set on top of two golden scallion pancakes.",
+      "noteDraft": true,
+      "photo": "fridge.photo.8"
+    },
+    {
+      "date": "2026-01-19",
+      "section": "cooking",
+      "title": "Glazed Chop, Mash & Crispy Sprouts",
+      "note": "A glazed chop on mashed potatoes, with crispy roasted Brussels sprouts.",
+      "noteDraft": true,
+      "photo": "fridge.photo.6"
+    },
+    {
+      "date": "2026-01-02",
+      "section": "hallOfFame",
+      "title": "Cinnamon-Swirl Pancakes, Eggs & Sausage",
+      "place": "Cinnamon Pancake House, Naperville",
+      "note": "A cinnamon-swirl pancake stack with two sunny eggs and a sausage patty.",
+      "noteDraft": true,
+      "photo": "fridge.photo.30"
+    },
+    {
+      "date": "2026-01-02",
+      "section": "hallOfFame",
+      "title": "Bone-In Steak, Sliced",
+      "place": "Deliz Italian Steakhouse, Chicago",
+      "note": "A bone-in steak, sliced off the bone on a wooden board with rosemary.",
+      "noteDraft": true,
+      "photo": "fridge.photo.31"
+    },
+    {
+      "date": "2025-06-19",
+      "section": "hallOfFame",
+      "title": "Flaming Sushi Roll",
+      "place": "Yamado, Naperville",
+      "note": "A sauce-drizzled sushi roll served with real flames dancing on top.",
+      "noteDraft": true,
+      "photo": "fridge.photo.32"
+    },
+    {
+      "date": "2025-06-08",
+      "section": "hallOfFame",
+      "title": "Pikachu Curry Plate",
+      "place": "Pokémon Café, Tokyo",
+      "note": "Rice shaped like Pikachu, sitting in a pool of curry with themed garnishes.",
+      "noteDraft": true,
+      "photo": "fridge.photo.13"
+    },
+    {
+      "date": "2025-06-08",
+      "section": "hallOfFame",
+      "title": "Duck Shoyu Ramen",
+      "place": "Ramen Matsui, Tokyo",
+      "note": "Thin noodles in a clear soy broth, topped with slices of pink duck.",
+      "noteDraft": true,
+      "photo": "fridge.photo.14"
+    },
+    {
+      "date": "2025-06-05",
+      "section": "hallOfFame",
+      "title": "Tonkatsu Set with Miso & Rice",
+      "place": "Katsukura, Kyoto Station",
+      "note": "A breaded pork cutlet with shredded cabbage, rice and miso soup.",
+      "noteDraft": true,
+      "photo": "fridge.photo.16"
+    },
+    {
+      "date": "2025-06-05",
+      "section": "hallOfFame",
+      "title": "Ryokan Kaiseki Spread with Wagyu",
+      "place": "Ichinoyu ryokan, Hakone",
+      "note": "A spread of small seasonal dishes, with sliced wagyu for a tabletop burner.",
+      "noteDraft": true,
+      "photo": "fridge.photo.17"
+    },
+    {
+      "date": "2025-05-30",
+      "section": "hallOfFame",
+      "title": "Thick-Cut Tonkatsu, Cabbage Mountain",
+      "place": "Tonkatsu Yamabe, Tokyo",
+      "note": "A thick breaded pork cutlet beside a tall heap of shredded cabbage.",
+      "noteDraft": true,
+      "photo": "fridge.photo.15"
+    },
+    {
+      "date": "2025-02-14",
+      "section": "hallOfFame",
+      "title": "Sushi Sunburst Platter",
+      "place": "312 Fish Market, Chicago",
+      "note": "Nigiri and maki fanned out in a ring around a salmon rose.",
+      "noteDraft": true,
+      "photo": "fridge.photo.34"
+    },
+    {
+      "date": "2023-12-22",
+      "section": "hallOfFame",
+      "title": "Tuna Tiradito",
+      "place": "La Mar Cebichería, Lima",
+      "note": "Thin slices of raw tuna in a citrusy sauce, with avocado and chili.",
+      "noteDraft": true,
+      "photo": "fridge.photo.24"
+    },
+    {
+      "date": "2023-12-01",
+      "section": "hallOfFame",
+      "title": "Sashimi Plate Crowned with Uni",
+      "place": "ISHI, Champaign",
+      "note": "Assorted sashimi topped with golden uni, with wasabi on the side.",
+      "noteDraft": true,
+      "photo": "fridge.photo.18"
+    },
+    {
+      "date": "2022-08-02",
+      "section": "hallOfFame",
+      "title": "Hand-Sliced Jamón",
+      "place": "El Nacional, Barcelona",
+      "note": "Thin, hand-carved slices of cured ham laid across a wooden board.",
+      "noteDraft": true,
+      "photo": "fridge.photo.25"
+    },
+    {
+      "date": "2022-06-20",
+      "section": "hallOfFame",
+      "title": "Greek Lamb Chops",
+      "place": "Summer 2022 trip",
+      "note": "Tender lamb on the bone with rice, lemon and a small bowl of green sauce.",
+      "noteDraft": true,
+      "photo": "fridge.photo.28"
+    },
+    {
+      "date": null,
+      "section": "wantToTry",
+      "title": "Sample: a restaurant to visit",
+      "place": "Sample: neighbourhood or city",
+      "note": "Sample: why it is on the list.",
+      "sample": true
+    },
+    {
+      "date": null,
+      "section": "wantToTry",
+      "title": "Sample: a dish to try making",
+      "note": "Sample: where the idea came from.",
+      "sample": true
+    },
+    {
+      "date": null,
+      "section": "wantToTry",
+      "title": "Sample: another place on the radar",
+      "place": "Sample: location details",
+      "note": "Sample: what to order when there.",
+      "sample": true
+    }
+  ]
+}

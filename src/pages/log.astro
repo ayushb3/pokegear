@@ -1,0 +1,77 @@
+---
+import { card } from '../content/trainer-card';
+import assets from '../assets/assets.json';
+import { latestEntries } from '../ui/overlay/overlays/journal/parse';
+
+// Same loader and ordering as the Commit log overlay: newest first, sample (placeholder) entries never listed.
+const files = import.meta.glob('../content/journal/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const entries = latestEntries(files, 200);
+const LABELS: Record<string, string> = { bubblychef: 'BubblyChef', portfolio: 'Portfolio', tradedesk: 'TradeDesk' };
+const labelOf = (p: string) => LABELS[p] ?? (p ? p.charAt(0).toUpperCase() + p.slice(1) : '');
+const font = assets['font.ui'];
+const fontCss = `@font-face{font-family:"${font.family}";src:url(${font.path}) format("truetype");font-display:swap}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{card.name} — Commit log</title>
+    <meta name="description" content="Ayush's Commit log: short notes on what he built, newest first." />
+    <style is:inline set:html={fontCss}></style>
+    <style>
+      :root { color-scheme: light; }
+      html { background: #16161d; }
+      body { margin: 0; padding: 16px; box-sizing: border-box; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.5; color: #22222c; }
+      h1, h2, h3, .walk, .btn, .tag { font-family: "HGSS Pixel", "Courier New", monospace; font-size: 16px; line-height: 1.5; -webkit-font-smoothing: none; font-kerning: none; }
+      main { max-width: 70ch; margin: 0 auto; padding: 24px; background: #e9e4cf; border: 4px solid #2b2b38; box-shadow: inset 0 0 0 4px #b9b295; }
+      h1 { font-size: 32px; font-weight: 400; line-height: 1.25; margin: 0; }
+      h2 { font-size: 28px; font-weight: 400; margin: 32px 0 8px; padding-bottom: 4px; border-bottom: 3px solid #2f6fa8; color: #2f6fa8; }
+      h3 { font-weight: 400; margin: 0; }
+      p { margin: 8px 0; }
+      ul { margin: 8px 0; padding-left: 1.25em; }
+      li { margin: 6px 0; overflow-wrap: anywhere; }
+      a { color: #1c4fb0; overflow-wrap: anywhere; }
+      .muted { color: #52525a; margin: 0; }
+      .tag { display: inline-block; padding: 0 8px; background: #fff; border: 2px solid #22222c; }
+      .card { margin: 16px 0; padding: 16px; background: #fff; border: 2px solid #22222c; }
+      .btn { display: inline-flex; align-items: center; min-height: 48px; box-sizing: border-box; padding: 0 16px; color: #22222c; text-decoration: none; background: #fff; border: 3px solid #22222c; border-radius: 8px; }
+      .walk { display: inline-flex; align-items: center; min-height: 56px; padding: 0 24px; background: #d9473f; color: #fff; text-decoration: none; border: 3px solid #22222c; border-radius: 8px; box-shadow: 0 3px 0 #22222c; }
+      .walk:hover { background: #e2574f; }
+      .nav { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin: 16px 0 0; }
+      .nav li { margin: 0; }
+      :focus-visible { outline: 3px solid #1c4fb0; outline-offset: 3px; }
+      @media (max-width: 480px) {
+        body { padding: 8px; }
+        main { padding: 16px; }
+        h1 { font-size: 28px; }
+        h2 { font-size: 16px; }
+        .nav { flex-direction: column; align-items: stretch; }
+        .walk { width: 100%; box-sizing: border-box; justify-content: center; }
+        .btn { justify-content: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Commit log</h1>
+      <p class="muted">Notes on what got built, newest first.</p>
+      <ul class="nav">
+        <li><a class="walk" href="/">Walk around the house »</a></li>
+        <li><a class="btn" href="/about">About Ayush</a></li>
+      </ul>
+      {entries.map((e) => (
+        <article class="card">
+          <h3>{e.title}</h3>
+          <p class="muted"><time datetime={e.date}>{e.date}</time>{labelOf(e.project) && <> · {labelOf(e.project)}</>}</p>
+          {e.paragraphs.map((t) => <p>{t}</p>)}
+        </article>
+      ))}
+      <ul class="nav">
+        <li><a class="walk" href="/">Walk around the house »</a></li>
+        <li><a class="btn" href="/about">About Ayush</a></li>
+      </ul>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,146 @@
+{
+  "sample": false,
+  "regions": [
+    {
+      "id": "mediterranean",
+      "name": "Mediterranean",
+      "bbox": [-15, 25, 30, 72],
+      "map": "townmap.mediterranean"
+    }
+  ],
+  "places": [
+    {
+      "id": "france",
+      "name": "France",
+      "line": "Visited",
+      "lat": 46.6,
+      "lon": 2.2,
+      "iso": "FRA",
+      "region": "mediterranean"
+    },
+    {
+      "id": "spain",
+      "name": "Spain",
+      "line": "Visited",
+      "lat": 40.3,
+      "lon": -3.7,
+      "iso": "ESP",
+      "region": "mediterranean"
+    },
+    {
+      "id": "portugal",
+      "name": "Portugal",
+      "line": "Visited",
+      "lat": 39.6,
+      "lon": -8.0,
+      "iso": "PRT",
+      "region": "mediterranean"
+    },
+    {
+      "id": "italy",
+      "name": "Italy",
+      "line": "Visited",
+      "lat": 42.5,
+      "lon": 12.5,
+      "iso": "ITA",
+      "region": "mediterranean"
+    },
+    {
+      "id": "japan",
+      "name": "Japan",
+      "line": "Visited",
+      "lat": 36.2,
+      "lon": 138.25,
+      "iso": "JPN"
+    },
+    {
+      "id": "morocco",
+      "name": "Morocco",
+      "line": "Visited",
+      "lat": 31.8,
+      "lon": -7.1,
+      "iso": "MAR",
+      "region": "mediterranean"
+    },
+    {
+      "id": "tunisia",
+      "name": "Tunisia",
+      "line": "Visited",
+      "lat": 34.0,
+      "lon": 9.0,
+      "iso": "TUN",
+      "region": "mediterranean"
+    },
+    {
+      "id": "greece",
+      "name": "Greece",
+      "line": "Visited",
+      "lat": 39.1,
+      "lon": 21.8,
+      "iso": "GRC",
+      "region": "mediterranean"
+    },
+    {
+      "id": "south-africa",
+      "name": "South Africa",
+      "line": "Visited",
+      "lat": -30.6,
+      "lon": 22.9,
+      "iso": "ZAF"
+    },
+    {
+      "id": "canada",
+      "name": "Canada",
+      "line": "Visited",
+      "lat": 56.1,
+      "lon": -106.3,
+      "iso": "CAN"
+    },
+    {
+      "id": "mexico",
+      "name": "Mexico",
+      "line": "Visited",
+      "lat": 23.6,
+      "lon": -102.5,
+      "iso": "MEX"
+    },
+    {
+      "id": "hawaii",
+      "name": "Hawaii",
+      "line": "Visited",
+      "lat": 20.8,
+      "lon": -156.3
+    },
+    {
+      "id": "alaska",
+      "name": "Alaska",
+      "line": "Visited",
+      "lat": 64.2,
+      "lon": -149.5
+    },
+    {
+      "id": "india",
+      "name": "India",
+      "line": "Visited",
+      "lat": 21.0,
+      "lon": 78.0,
+      "iso": "IND"
+    },
+    {
+      "id": "peru",
+      "name": "Peru",
+      "line": "Visited",
+      "lat": -9.2,
+      "lon": -75.0,
+      "iso": "PER"
+    },
+    {
+      "id": "united-states",
+      "name": "United States",
+      "line": "Visited",
+      "lat": 39.8,
+      "lon": -98.6,
+      "iso": "USA"
+    }
+  ]
+}

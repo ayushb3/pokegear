@@ -1,0 +1,40 @@
+{
+  "semanticSegments": [
+    {
+      "startTime": "2024-01-01T10:00:00Z",
+      "endTime": "2024-01-01T12:00:00Z",
+      "visit": {
+        "topCandidate": {
+          "placeLocation": {
+            "latE7": 488500000,
+            "lngE7": 23500000
+          }
+        }
+      }
+    },
+    {
+      "startTime": "2024-02-01T10:00:00Z",
+      "endTime": "2024-02-01T14:00:00Z",
+      "visit": {
+        "topCandidate": {
+          "placeLocation": {
+            "latE7": 413800000,
+            "lngE7": 21700000
+          }
+        }
+      }
+    },
+    {
+      "startTime": "2024-03-01T10:00:00Z",
+      "endTime": "2024-03-01T16:00:00Z",
+      "visit": {
+        "topCandidate": {
+          "placeLocation": {
+            "latE7": 356800000,
+            "lngE7": 1396900000
+          }
+        }
+      }
+    }
+  ]
+}

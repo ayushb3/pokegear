@@ -1,0 +1,1458 @@
+{
+  "sprite.player": {
+    "kind": "spritesheet",
+    "path": "/assets/sprites/ethan.png",
+    "cell": 32,
+    "cols": 3,
+    "rows": 4,
+    "rowOrder": [
+      "down",
+      "left",
+      "up",
+      "right"
+    ],
+    "colOrder": [
+      "stepA",
+      "stand",
+      "stepB"
+    ]
+  },
+  "sprite.follower": {
+    "kind": "spritesheet",
+    "path": "/assets/sprites/oshawott.png",
+    "cell": 32,
+    "cols": 2,
+    "rows": 4,
+    "rowOrder": [
+      "down",
+      "left",
+      "up",
+      "right"
+    ],
+    "colOrder": [
+      "frame0",
+      "frame1"
+    ]
+  },
+  "font.ui": {
+    "kind": "font",
+    "path": "/assets/fonts/hgss.ttf",
+    "family": "HGSS Pixel",
+    "nativePx": 16
+  },
+  "object.bed": {
+    "kind": "object",
+    "path": "/assets/objects/bed.png",
+    "w": 31,
+    "h": 41,
+    "color": "#4f86d9"
+  },
+  "object.pc": {
+    "kind": "object",
+    "path": "/assets/objects/pc-desk.png",
+    "w": 32,
+    "h": 30,
+    "frames": 2,
+    "frameMs": 1200,
+    "nightOnly": true,
+    "dayFrame": 0,
+    "color": "#8b5a2b"
+  },
+  "object.piano": {
+    "kind": "object",
+    "path": "/assets/objects/piano.png",
+    "w": 32,
+    "h": 32,
+    "color": "#5c301c"
+  },
+  "object.journal": {
+    "kind": "object",
+    "path": "/assets/objects/journal.png",
+    "w": 16,
+    "h": 22,
+    "color": "#2f6f8f"
+  },
+  "object.monitor": {
+    "kind": "object",
+    "path": "/assets/objects/monitor.png",
+    "w": 32,
+    "h": 24,
+    "frames": 8,
+    "frameMs": 1500,
+    "color": "#2f9e8f"
+  },
+  "object.townmap": {
+    "kind": "object",
+    "path": "/assets/objects/townmap.png",
+    "w": 32,
+    "h": 16,
+    "color": "#d9774f"
+  },
+  "object.gym": {
+    "kind": "object",
+    "path": "/assets/objects/gym.png",
+    "frames": 3,
+    "w": 48,
+    "h": 32,
+    "color": "#8e5bb5",
+    "pose": {
+      "path": "/assets/sprites/ethan-bench.png",
+      "frames": 3,
+      "w": 48,
+      "h": 32,
+      "foot": {
+        "x": 16,
+        "y": 22
+      }
+    }
+  },
+  "sprite.dex.rotom": {
+    "kind": "sprite",
+    "path": "/assets/dex/rotom.gif",
+    "still": "/assets/dex/rotom-still.png",
+    "w": 89,
+    "h": 60
+  },
+  "sprite.dex.munchlax": {
+    "kind": "sprite",
+    "path": "/assets/dex/munchlax.gif",
+    "still": "/assets/dex/munchlax-still.png",
+    "w": 46,
+    "h": 48
+  },
+  "sprite.dex.meowth": {
+    "kind": "sprite",
+    "path": "/assets/dex/meowth.gif",
+    "still": "/assets/dex/meowth-still.png",
+    "w": 48,
+    "h": 65
+  },
+  "sprite.dex.jigglypuff": {
+    "kind": "sprite",
+    "path": "/assets/dex/jigglypuff.gif",
+    "still": "/assets/dex/jigglypuff-still.png",
+    "w": 47,
+    "h": 46
+  },
+  "icon.journal.bubblychef": {
+    "kind": "icon",
+    "path": "/assets/journal/icon-bubblychef.png",
+    "w": 12,
+    "h": 12
+  },
+  "icon.journal.portfolio": {
+    "kind": "icon",
+    "path": "/assets/journal/icon-portfolio.png",
+    "w": 12,
+    "h": 12
+  },
+  "icon.journal.tradedesk": {
+    "kind": "icon",
+    "path": "/assets/journal/icon-tradedesk.png",
+    "w": 12,
+    "h": 12
+  },
+  "icon.journal.default": {
+    "kind": "icon",
+    "path": "/assets/journal/icon-default.png",
+    "w": 12,
+    "h": 12
+  },
+  "journal.arrow": {
+    "kind": "icon",
+    "path": "/assets/journal/arrow.png",
+    "w": 5,
+    "h": 9
+  },
+  "icon.bed": {
+    "kind": "icon",
+    "path": "/assets/icons/bed.png",
+    "w": 16,
+    "h": 16
+  },
+  "icon.pc": {
+    "kind": "icon",
+    "path": "/assets/icons/pc.png",
+    "w": 16,
+    "h": 16
+  },
+  "icon.piano": {
+    "kind": "icon",
+    "path": "/assets/icons/piano.png",
+    "w": 16,
+    "h": 16
+  },
+  "icon.journal": {
+    "kind": "icon",
+    "path": "/assets/icons/journal.png",
+    "w": 16,
+    "h": 16
+  },
+  "icon.monitor": {
+    "kind": "icon",
+    "path": "/assets/icons/monitor.png",
+    "w": 16,
+    "h": 16
+  },
+  "icon.townmap": {
+    "kind": "icon",
+    "path": "/assets/icons/townmap.png",
+    "w": 16,
+    "h": 16
+  },
+  "icon.gym": {
+    "kind": "icon",
+    "path": "/assets/icons/gym.png",
+    "w": 16,
+    "h": 16
+  },
+  "icon.card": {
+    "kind": "icon",
+    "path": "/assets/icons/card.png",
+    "w": 16,
+    "h": 16
+  },
+  "decor.rug": {
+    "kind": "object",
+    "path": "/assets/objects/rug.png",
+    "w": 64,
+    "h": 38,
+    "color": "#6f8fb4"
+  },
+  "decor.window": {
+    "kind": "object",
+    "path": "/assets/decor/window.png",
+    "w": 40,
+    "h": 18,
+    "color": "#8fb4d9"
+  },
+  "decor.bookshelf": {
+    "kind": "object",
+    "path": "/assets/decor/bookshelf.png",
+    "w": 32,
+    "h": 32,
+    "color": "#8a7a3a"
+  },
+  "decor.plant": {
+    "kind": "object",
+    "path": "/assets/decor/plant.png",
+    "w": 16,
+    "h": 34,
+    "frames": 4,
+    "frameMs": 2400,
+    "color": "#3f8f3f"
+  },
+  "music.piece": {
+    "kind": "music",
+    "path": "/assets/music/in-the-pool.mid"
+  },
+  "decor.door-mat": {
+    "kind": "object",
+    "path": "/assets/decor/door-mat.png",
+    "w": 16,
+    "h": 23,
+    "color": "#e8603c"
+  },
+  "object.fridge": {
+    "kind": "object",
+    "path": "/assets/objects/fridge.png",
+    "w": 16,
+    "h": 32,
+    "color": "#dfe6ee"
+  },
+  "object.tv": {
+    "kind": "object",
+    "path": "/assets/objects/tv.png",
+    "w": 32,
+    "h": 30,
+    "frames": 4,
+    "frameMs": 800,
+    "nightOnly": true,
+    "dayFrame": 3,
+    "color": "#202060"
+  },
+  "object.corkboard": {
+    "kind": "object",
+    "path": "/assets/objects/corkboard.png",
+    "w": 48,
+    "h": 24,
+    "color": "#c89a5e"
+  },
+  "object.mom": {
+    "kind": "object",
+    "path": "/assets/objects/mom.png",
+    "w": 23,
+    "h": 27,
+    "color": "#e07890"
+  },
+  "decor.table": {
+    "kind": "object",
+    "path": "/assets/decor/table.png",
+    "w": 48,
+    "h": 36,
+    "color": "#8a6038"
+  },
+  "decor.stairs-down": {
+    "kind": "object",
+    "path": "/assets/decor/stairs-down.png",
+    "w": 36,
+    "h": 40,
+    "color": "#6b5a48"
+  },
+  "decor.stairs-up": {
+    "kind": "object",
+    "path": "/assets/decor/stairs-up.png",
+    "w": 32,
+    "h": 40,
+    "color": "#7d6a56"
+  },
+  "icon.fridge": {
+    "kind": "icon",
+    "path": "/assets/icons/fridge.png",
+    "w": 16,
+    "h": 16
+  },
+  "icon.tv": {
+    "kind": "icon",
+    "path": "/assets/icons/tv.png",
+    "w": 16,
+    "h": 16
+  },
+  "icon.corkboard": {
+    "kind": "icon",
+    "path": "/assets/icons/corkboard.png",
+    "w": 16,
+    "h": 16
+  },
+  "icon.mom": {
+    "kind": "icon",
+    "path": "/assets/icons/mom.png",
+    "w": 16,
+    "h": 16
+  },
+  "townmap.world": {
+    "kind": "object",
+    "path": "/assets/townmap/world.png",
+    "w": 256,
+    "h": 192,
+    "color": "#5b8fd6"
+  },
+  "townmap.mediterranean": {
+    "kind": "object",
+    "path": "/assets/townmap/mediterranean.png",
+    "w": 256,
+    "h": 192,
+    "color": "#5b8fd6"
+  },
+  "townmap.mediterranean-inset": {
+    "kind": "object",
+    "path": "/assets/townmap/mediterranean-inset.png",
+    "w": 72,
+    "h": 54,
+    "color": "#5b8fd6"
+  },
+  "townmap.mediterranean-inset.hl.france": {
+    "kind": "object",
+    "path": "/assets/townmap/mediterranean-inset.hl.france.png",
+    "w": 72,
+    "h": 54
+  },
+  "townmap.mediterranean-inset.hl.spain": {
+    "kind": "object",
+    "path": "/assets/townmap/mediterranean-inset.hl.spain.png",
+    "w": 72,
+    "h": 54
+  },
+  "townmap.mediterranean-inset.hl.portugal": {
+    "kind": "object",
+    "path": "/assets/townmap/mediterranean-inset.hl.portugal.png",
+    "w": 72,
+    "h": 54
+  },
+  "townmap.mediterranean-inset.hl.italy": {
+    "kind": "object",
+    "path": "/assets/townmap/mediterranean-inset.hl.italy.png",
+    "w": 72,
+    "h": 54
+  },
+  "townmap.mediterranean-inset.hl.morocco": {
+    "kind": "object",
+    "path": "/assets/townmap/mediterranean-inset.hl.morocco.png",
+    "w": 72,
+    "h": 54
+  },
+  "townmap.mediterranean.hl.france": {
+    "kind": "object",
+    "path": "/assets/townmap/mediterranean.hl.france.png",
+    "w": 256,
+    "h": 192
+  },
+  "townmap.mediterranean.hl.spain": {
+    "kind": "object",
+    "path": "/assets/townmap/mediterranean.hl.spain.png",
+    "w": 256,
+    "h": 192
+  },
+  "townmap.mediterranean.hl.portugal": {
+    "kind": "object",
+    "path": "/assets/townmap/mediterranean.hl.portugal.png",
+    "w": 256,
+    "h": 192
+  },
+  "townmap.mediterranean.hl.italy": {
+    "kind": "object",
+    "path": "/assets/townmap/mediterranean.hl.italy.png",
+    "w": 256,
+    "h": 192
+  },
+  "townmap.mediterranean.hl.morocco": {
+    "kind": "object",
+    "path": "/assets/townmap/mediterranean.hl.morocco.png",
+    "w": 256,
+    "h": 192
+  },
+  "decor.stove": {
+    "kind": "object",
+    "path": "/assets/decor/stove.png",
+    "w": 32,
+    "h": 32,
+    "color": "#707870"
+  },
+  "decor.sink": {
+    "kind": "object",
+    "path": "/assets/decor/sink.png",
+    "w": 32,
+    "h": 32,
+    "color": "#8aa8a8"
+  },
+  "fridge.photo.1": {
+    "kind": "object",
+    "path": "/assets/fridge/1.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.2": {
+    "kind": "object",
+    "path": "/assets/fridge/2.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.3": {
+    "kind": "object",
+    "path": "/assets/fridge/3.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "emote.exclaim": {
+    "kind": "emote",
+    "path": "/assets/emotes/exclaim.png",
+    "w": 15,
+    "h": 16,
+    "frames": 2
+  },
+  "emote.note": {
+    "kind": "emote",
+    "path": "/assets/emotes/note.png",
+    "w": 15,
+    "h": 16,
+    "frames": 2
+  },
+  "emote.ellipsis": {
+    "kind": "emote",
+    "path": "/assets/emotes/ellipsis.png",
+    "w": 15,
+    "h": 16,
+    "frames": 2
+  },
+  "emote.heart": {
+    "kind": "emote",
+    "path": "/assets/emotes/heart.png",
+    "w": 15,
+    "h": 16,
+    "frames": 2
+  },
+  "emote.question": {
+    "kind": "emote",
+    "path": "/assets/emotes/question.png",
+    "w": 15,
+    "h": 16,
+    "frames": 2
+  },
+  "photo.japan-1": {
+    "kind": "object",
+    "path": "/assets/photos/japan-1.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.japan-2": {
+    "kind": "object",
+    "path": "/assets/photos/japan-2.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.japan-3": {
+    "kind": "object",
+    "path": "/assets/photos/japan-3.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.japan-4": {
+    "kind": "object",
+    "path": "/assets/photos/japan-4.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.japan-5": {
+    "kind": "object",
+    "path": "/assets/photos/japan-5.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.japan-6": {
+    "kind": "object",
+    "path": "/assets/photos/japan-6.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.japan-7": {
+    "kind": "object",
+    "path": "/assets/photos/japan-7.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.japan-8": {
+    "kind": "object",
+    "path": "/assets/photos/japan-8.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.peru-1": {
+    "kind": "object",
+    "path": "/assets/photos/peru-1.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.peru-2": {
+    "kind": "object",
+    "path": "/assets/photos/peru-2.jpg",
+    "w": 512,
+    "h": 384,
+    "color": "#9a9aaa"
+  },
+  "photo.peru-3": {
+    "kind": "object",
+    "path": "/assets/photos/peru-3.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.peru-4": {
+    "kind": "object",
+    "path": "/assets/photos/peru-4.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.peru-5": {
+    "kind": "object",
+    "path": "/assets/photos/peru-5.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.peru-6": {
+    "kind": "object",
+    "path": "/assets/photos/peru-6.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.greece-1": {
+    "kind": "object",
+    "path": "/assets/photos/greece-1.jpg",
+    "w": 288,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.france-1": {
+    "kind": "object",
+    "path": "/assets/photos/france-1.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.italy-1": {
+    "kind": "object",
+    "path": "/assets/photos/italy-1.jpg",
+    "w": 512,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.italy-2": {
+    "kind": "object",
+    "path": "/assets/photos/italy-2.jpg",
+    "w": 512,
+    "h": 288,
+    "color": "#9a9aaa"
+  },
+  "photo.spain-1": {
+    "kind": "object",
+    "path": "/assets/photos/spain-1.jpg",
+    "w": 384,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.spain-2": {
+    "kind": "object",
+    "path": "/assets/photos/spain-2.jpg",
+    "w": 512,
+    "h": 384,
+    "color": "#9a9aaa"
+  },
+  "photo.spain-3": {
+    "kind": "object",
+    "path": "/assets/photos/spain-3.jpg",
+    "w": 512,
+    "h": 384,
+    "color": "#9a9aaa"
+  },
+  "photo.portugal-1": {
+    "kind": "object",
+    "path": "/assets/photos/portugal-1.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.portugal-2": {
+    "kind": "object",
+    "path": "/assets/photos/portugal-2.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.portugal-3": {
+    "kind": "object",
+    "path": "/assets/photos/portugal-3.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.tunisia-1": {
+    "kind": "object",
+    "path": "/assets/photos/tunisia-1.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.tunisia-2": {
+    "kind": "object",
+    "path": "/assets/photos/tunisia-2.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.tunisia-3": {
+    "kind": "object",
+    "path": "/assets/photos/tunisia-3.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.tunisia-4": {
+    "kind": "object",
+    "path": "/assets/photos/tunisia-4.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-1": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-1.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-2": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-2.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-3": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-3.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-4": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-4.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-5": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-5.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-6": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-6.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-7": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-7.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-8": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-8.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-9": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-9.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-10": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-10.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-11": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-11.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-12": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-12.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-13": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-13.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-14": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-14.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-15": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-15.jpg",
+    "w": 512,
+    "h": 384,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-16": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-16.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-17": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-17.jpg",
+    "w": 230,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-18": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-18.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.south-africa-19": {
+    "kind": "object",
+    "path": "/assets/photos/south-africa-19.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.canada-1": {
+    "kind": "object",
+    "path": "/assets/photos/canada-1.jpg",
+    "w": 512,
+    "h": 384,
+    "color": "#9a9aaa"
+  },
+  "photo.canada-2": {
+    "kind": "object",
+    "path": "/assets/photos/canada-2.jpg",
+    "w": 384,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.canada-3": {
+    "kind": "object",
+    "path": "/assets/photos/canada-3.jpg",
+    "w": 512,
+    "h": 384,
+    "color": "#9a9aaa"
+  },
+  "photo.canada-4": {
+    "kind": "object",
+    "path": "/assets/photos/canada-4.jpg",
+    "w": 512,
+    "h": 384,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-1": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-1.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-2": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-2.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-3": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-3.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-4": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-4.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-5": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-5.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-6": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-6.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-7": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-7.jpg",
+    "w": 512,
+    "h": 288,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-8": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-8.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-9": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-9.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-10": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-10.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-11": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-11.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-12": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-12.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-13": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-13.jpg",
+    "w": 512,
+    "h": 288,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-14": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-14.jpg",
+    "w": 512,
+    "h": 288,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-15": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-15.jpg",
+    "w": 384,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-16": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-16.jpg",
+    "w": 512,
+    "h": 288,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-17": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-17.jpg",
+    "w": 512,
+    "h": 288,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-18": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-18.jpg",
+    "w": 512,
+    "h": 288,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-19": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-19.jpg",
+    "w": 384,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-20": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-20.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.alaska-1": {
+    "kind": "object",
+    "path": "/assets/photos/alaska-1.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "townmap.mediterranean-inset.hl.tunisia": {
+    "kind": "object",
+    "path": "/assets/townmap/mediterranean-inset.hl.tunisia.png",
+    "w": 72,
+    "h": 54
+  },
+  "townmap.mediterranean.hl.tunisia": {
+    "kind": "object",
+    "path": "/assets/townmap/mediterranean.hl.tunisia.png",
+    "w": 256,
+    "h": 192
+  },
+  "townmap.mediterranean-inset.hl.greece": {
+    "kind": "object",
+    "path": "/assets/townmap/mediterranean-inset.hl.greece.png",
+    "w": 72,
+    "h": 54
+  },
+  "townmap.mediterranean.hl.greece": {
+    "kind": "object",
+    "path": "/assets/townmap/mediterranean.hl.greece.png",
+    "w": 256,
+    "h": 192
+  },
+  "photo.italy-3": {
+    "kind": "object",
+    "path": "/assets/photos/italy-3.jpg",
+    "w": 512,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.italy-4": {
+    "kind": "object",
+    "path": "/assets/photos/italy-4.jpg",
+    "w": 512,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.italy-5": {
+    "kind": "object",
+    "path": "/assets/photos/italy-5.jpg",
+    "w": 512,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.tunisia-5": {
+    "kind": "object",
+    "path": "/assets/photos/tunisia-5.jpg",
+    "w": 512,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.tunisia-6": {
+    "kind": "object",
+    "path": "/assets/photos/tunisia-6.jpg",
+    "w": 512,
+    "h": 384,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-21": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-21.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-22": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-22.jpg",
+    "w": 341,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-23": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-23.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-24": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-24.jpg",
+    "w": 341,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-25": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-25.jpg",
+    "w": 341,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "photo.united-states-26": {
+    "kind": "object",
+    "path": "/assets/photos/united-states-26.jpg",
+    "w": 512,
+    "h": 341,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.4": {
+    "kind": "object",
+    "path": "/assets/fridge/4.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.5": {
+    "kind": "object",
+    "path": "/assets/fridge/5.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.6": {
+    "kind": "object",
+    "path": "/assets/fridge/6.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.7": {
+    "kind": "object",
+    "path": "/assets/fridge/7.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.8": {
+    "kind": "object",
+    "path": "/assets/fridge/8.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.9": {
+    "kind": "object",
+    "path": "/assets/fridge/9.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.10": {
+    "kind": "object",
+    "path": "/assets/fridge/10.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.11": {
+    "kind": "object",
+    "path": "/assets/fridge/11.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.12": {
+    "kind": "object",
+    "path": "/assets/fridge/12.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.13": {
+    "kind": "object",
+    "path": "/assets/fridge/13.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.14": {
+    "kind": "object",
+    "path": "/assets/fridge/14.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.15": {
+    "kind": "object",
+    "path": "/assets/fridge/15.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.16": {
+    "kind": "object",
+    "path": "/assets/fridge/16.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.17": {
+    "kind": "object",
+    "path": "/assets/fridge/17.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.18": {
+    "kind": "object",
+    "path": "/assets/fridge/18.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.19": {
+    "kind": "object",
+    "path": "/assets/fridge/19.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.20": {
+    "kind": "object",
+    "path": "/assets/fridge/20.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.21": {
+    "kind": "object",
+    "path": "/assets/fridge/21.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.22": {
+    "kind": "object",
+    "path": "/assets/fridge/22.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.23": {
+    "kind": "object",
+    "path": "/assets/fridge/23.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.24": {
+    "kind": "object",
+    "path": "/assets/fridge/24.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.25": {
+    "kind": "object",
+    "path": "/assets/fridge/25.jpg",
+    "w": 512,
+    "h": 384,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.26": {
+    "kind": "object",
+    "path": "/assets/fridge/26.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.27": {
+    "kind": "object",
+    "path": "/assets/fridge/27.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.28": {
+    "kind": "object",
+    "path": "/assets/fridge/28.jpg",
+    "w": 512,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.29": {
+    "kind": "object",
+    "path": "/assets/fridge/29.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.30": {
+    "kind": "object",
+    "path": "/assets/fridge/30.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.31": {
+    "kind": "object",
+    "path": "/assets/fridge/31.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.32": {
+    "kind": "object",
+    "path": "/assets/fridge/32.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.33": {
+    "kind": "object",
+    "path": "/assets/fridge/33.jpg",
+    "w": 386,
+    "h": 512,
+    "color": "#9a9aaa"
+  },
+  "fridge.photo.34": {
+    "kind": "object",
+    "path": "/assets/fridge/34.jpg",
+    "w": 512,
+    "h": 386,
+    "color": "#9a9aaa"
+  },
+  "item.oran-berry": {
+    "kind": "object",
+    "path": "/assets/items/oran-berry.png",
+    "w": 16,
+    "h": 16,
+    "color": "#4f7fd8"
+  },
+  "item.pecha-berry": {
+    "kind": "object",
+    "path": "/assets/items/pecha-berry.png",
+    "w": 16,
+    "h": 16,
+    "color": "#f8a8b8"
+  },
+  "item.cheri-berry": {
+    "kind": "object",
+    "path": "/assets/items/cheri-berry.png",
+    "w": 16,
+    "h": 16,
+    "color": "#d83a3a"
+  },
+  "item.medal": {
+    "kind": "object",
+    "path": "/assets/items/medal.png",
+    "w": 16,
+    "h": 16,
+    "color": "#f0c030"
+  },
+  "item.labubu": {
+    "kind": "object",
+    "path": "/assets/items/labubu.png",
+    "w": 16,
+    "h": 20,
+    "color": "#c8a070"
+  },
+  "item.jellycat": {
+    "kind": "object",
+    "path": "/assets/items/jellycat.png",
+    "w": 16,
+    "h": 20,
+    "color": "#f4e4d0"
+  },
+  "object.mailbox": {
+    "kind": "object",
+    "path": "/assets/objects/mailbox.png",
+    "w": 16,
+    "h": 24,
+    "color": "#98a0b0"
+  },
+  "object.sign": {
+    "kind": "object",
+    "path": "/assets/objects/sign.png",
+    "w": 16,
+    "h": 20,
+    "color": "#b88050"
+  },
+  "icon.mailbox": {
+    "kind": "icon",
+    "path": "/assets/icons/mailbox.png",
+    "w": 16,
+    "h": 16
+  },
+  "icon.sign": {
+    "kind": "icon",
+    "path": "/assets/icons/sign.png",
+    "w": 16,
+    "h": 16
+  },
+  "decor.grass": {
+    "kind": "object",
+    "path": "/assets/decor/grass.png",
+    "w": 80,
+    "h": 96,
+    "color": "#4ab663",
+    "field": {
+      "rustle": {
+        "path": "/assets/decor/grass-rustle.png",
+        "frames": 3,
+        "frameMs": 100,
+        "head": 4
+      },
+      "tips": {
+        "path": "/assets/decor/grass-tips.png"
+      }
+    }
+  },
+  "decor.path": {
+    "kind": "object",
+    "path": "/assets/decor/path.png",
+    "w": 16,
+    "h": 112,
+    "color": "#c8a870"
+  },
+  "decor.tree": {
+    "kind": "object",
+    "path": "/assets/decor/tree.png",
+    "w": 16,
+    "h": 32,
+    "color": "#3c8c38"
+  },
+  "decor.door": {
+    "kind": "object",
+    "path": "/assets/decor/door.png",
+    "w": 16,
+    "h": 32,
+    "color": "#b88050"
+  },
+  "sprite.follower-shiny": {
+    "kind": "spritesheet",
+    "path": "/assets/sprites/oshawott-shiny.png",
+    "cell": 32,
+    "cols": 2,
+    "rows": 4,
+    "rowOrder": [
+      "down",
+      "left",
+      "up",
+      "right"
+    ],
+    "colOrder": [
+      "frame0",
+      "frame1"
+    ]
+  },
+  "battle.recruiter": {
+    "kind": "object",
+    "path": "/assets/battle/recruiter.png",
+    "w": 32,
+    "h": 40,
+    "color": "#343c58"
+  },
+  "battle.platform": {
+    "kind": "object",
+    "path": "/assets/battle/platform.png",
+    "w": 96,
+    "h": 24,
+    "color": "#3c8434"
+  },
+  "decor.lawn": {
+    "kind": "object",
+    "path": "/assets/decor/lawn.png",
+    "w": 224,
+    "h": 128,
+    "color": "#8fe58a"
+  },
+  "decor.rug-beige": {
+    "kind": "object",
+    "path": "/assets/decor/rug-beige.png",
+    "w": 64,
+    "h": 38,
+    "color": "#d9cfb4"
+  }
+}

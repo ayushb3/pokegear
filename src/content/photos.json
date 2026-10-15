@@ -1,0 +1,505 @@
+{
+  "photos": [
+    {
+      "id": "united-states-13",
+      "place": "united-states",
+      "where": "Grand Canyon",
+      "slot": "photo.united-states-13"
+    },
+    {
+      "id": "united-states-15",
+      "place": "united-states",
+      "where": "Horseshoe Bend",
+      "slot": "photo.united-states-15"
+    },
+    {
+      "id": "united-states-16",
+      "place": "united-states",
+      "where": "Arches",
+      "slot": "photo.united-states-16"
+    },
+    {
+      "id": "united-states-17",
+      "place": "united-states",
+      "where": "Colorado",
+      "slot": "photo.united-states-17"
+    },
+    {
+      "id": "united-states-18",
+      "place": "united-states",
+      "where": "Colorado",
+      "slot": "photo.united-states-18"
+    },
+    {
+      "id": "united-states-26",
+      "place": "united-states",
+      "where": "Urbana-Champaign",
+      "slot": "photo.united-states-26"
+    },
+    {
+      "id": "united-states-22",
+      "place": "united-states",
+      "where": "Urbana-Champaign",
+      "slot": "photo.united-states-22"
+    },
+    {
+      "id": "united-states-24",
+      "place": "united-states",
+      "where": "Urbana-Champaign",
+      "slot": "photo.united-states-24"
+    },
+    {
+      "id": "united-states-25",
+      "place": "united-states",
+      "where": "Urbana-Champaign",
+      "slot": "photo.united-states-25"
+    },
+    {
+      "id": "united-states-23",
+      "place": "united-states",
+      "where": "Urbana-Champaign",
+      "slot": "photo.united-states-23"
+    },
+    {
+      "id": "united-states-7",
+      "place": "united-states",
+      "where": "Mount Hamilton",
+      "slot": "photo.united-states-7"
+    },
+    {
+      "id": "united-states-4",
+      "place": "united-states",
+      "where": "San Francisco",
+      "slot": "photo.united-states-4"
+    },
+    {
+      "id": "united-states-5",
+      "place": "united-states",
+      "where": "Santa Cruz",
+      "slot": "photo.united-states-5"
+    },
+    {
+      "id": "united-states-19",
+      "place": "united-states",
+      "where": "Nashville",
+      "slot": "photo.united-states-19"
+    },
+    {
+      "id": "united-states-20",
+      "place": "united-states",
+      "where": "Nashville",
+      "slot": "photo.united-states-20"
+    },
+    {
+      "id": "united-states-12",
+      "place": "united-states",
+      "where": "Mammoth Lakes",
+      "slot": "photo.united-states-12"
+    },
+    {
+      "id": "united-states-10",
+      "place": "united-states",
+      "where": "Mammoth Lakes",
+      "slot": "photo.united-states-10"
+    },
+    {
+      "id": "united-states-11",
+      "place": "united-states",
+      "where": "Mammoth Lakes",
+      "slot": "photo.united-states-11"
+    },
+    {
+      "id": "united-states-8",
+      "place": "united-states",
+      "where": "Mammoth Lakes",
+      "slot": "photo.united-states-8"
+    },
+    {
+      "id": "united-states-9",
+      "place": "united-states",
+      "where": "Mammoth Lakes",
+      "slot": "photo.united-states-9"
+    },
+    {
+      "id": "united-states-6",
+      "place": "united-states",
+      "where": "Santa Cruz",
+      "slot": "photo.united-states-6"
+    },
+    {
+      "id": "united-states-1",
+      "place": "united-states",
+      "where": "Seattle",
+      "slot": "photo.united-states-1"
+    },
+    {
+      "id": "united-states-2",
+      "place": "united-states",
+      "where": "Seattle",
+      "slot": "photo.united-states-2"
+    },
+    {
+      "id": "united-states-3",
+      "place": "united-states",
+      "where": "Seattle",
+      "slot": "photo.united-states-3"
+    },
+    {
+      "id": "united-states-14",
+      "place": "united-states",
+      "where": "Grand Canyon",
+      "slot": "photo.united-states-14"
+    },
+    {
+      "id": "united-states-21",
+      "place": "united-states",
+      "where": "Napa",
+      "slot": "photo.united-states-21"
+    },
+    {
+      "id": "south-africa-19",
+      "place": "south-africa",
+      "where": "KwaZulu-Natal",
+      "slot": "photo.south-africa-19"
+    },
+    {
+      "id": "south-africa-9",
+      "place": "south-africa",
+      "where": "Kruger",
+      "slot": "photo.south-africa-9"
+    },
+    {
+      "id": "south-africa-10",
+      "place": "south-africa",
+      "where": "Kruger",
+      "slot": "photo.south-africa-10"
+    },
+    {
+      "id": "south-africa-11",
+      "place": "south-africa",
+      "where": "Kruger",
+      "slot": "photo.south-africa-11"
+    },
+    {
+      "id": "south-africa-12",
+      "place": "south-africa",
+      "where": "Kruger",
+      "slot": "photo.south-africa-12"
+    },
+    {
+      "id": "south-africa-13",
+      "place": "south-africa",
+      "where": "Kruger",
+      "slot": "photo.south-africa-13"
+    },
+    {
+      "id": "south-africa-18",
+      "place": "south-africa",
+      "where": "Knysna",
+      "slot": "photo.south-africa-18"
+    },
+    {
+      "id": "south-africa-14",
+      "place": "south-africa",
+      "where": "Stellenbosch",
+      "slot": "photo.south-africa-14"
+    },
+    {
+      "id": "south-africa-16",
+      "place": "south-africa",
+      "where": "Stellenbosch",
+      "slot": "photo.south-africa-16"
+    },
+    {
+      "id": "south-africa-17",
+      "place": "south-africa",
+      "where": "Stellenbosch",
+      "slot": "photo.south-africa-17"
+    },
+    {
+      "id": "south-africa-15",
+      "place": "south-africa",
+      "where": "Stellenbosch",
+      "slot": "photo.south-africa-15"
+    },
+    {
+      "id": "south-africa-8",
+      "place": "south-africa",
+      "where": "Cape Town",
+      "slot": "photo.south-africa-8"
+    },
+    {
+      "id": "south-africa-2",
+      "place": "south-africa",
+      "where": "Cape Town",
+      "slot": "photo.south-africa-2"
+    },
+    {
+      "id": "south-africa-3",
+      "place": "south-africa",
+      "where": "Cape Town",
+      "slot": "photo.south-africa-3"
+    },
+    {
+      "id": "south-africa-4",
+      "place": "south-africa",
+      "where": "Cape Town",
+      "slot": "photo.south-africa-4"
+    },
+    {
+      "id": "south-africa-5",
+      "place": "south-africa",
+      "where": "Cape Town",
+      "slot": "photo.south-africa-5"
+    },
+    {
+      "id": "south-africa-7",
+      "place": "south-africa",
+      "where": "Cape Town",
+      "slot": "photo.south-africa-7"
+    },
+    {
+      "id": "south-africa-1",
+      "place": "south-africa",
+      "where": "Cape Town",
+      "slot": "photo.south-africa-1"
+    },
+    {
+      "id": "south-africa-6",
+      "place": "south-africa",
+      "where": "Cape Town",
+      "slot": "photo.south-africa-6"
+    },
+    {
+      "id": "alaska-1",
+      "place": "alaska",
+      "where": "Seward",
+      "slot": "photo.alaska-1"
+    },
+    {
+      "id": "japan-8",
+      "place": "japan",
+      "where": "Osaka",
+      "slot": "photo.japan-8"
+    },
+    {
+      "id": "japan-3",
+      "place": "japan",
+      "where": "Hiroshima",
+      "slot": "photo.japan-3"
+    },
+    {
+      "id": "japan-1",
+      "place": "japan",
+      "where": "Kyoto",
+      "slot": "photo.japan-1",
+      "wall": true
+    },
+    {
+      "id": "japan-2",
+      "place": "japan",
+      "where": "Kyoto",
+      "slot": "photo.japan-2"
+    },
+    {
+      "id": "japan-6",
+      "place": "japan",
+      "where": "Tokyo",
+      "slot": "photo.japan-6"
+    },
+    {
+      "id": "japan-7",
+      "place": "japan",
+      "where": "Tokyo",
+      "slot": "photo.japan-7"
+    },
+    {
+      "id": "japan-4",
+      "place": "japan",
+      "where": "Tokyo",
+      "slot": "photo.japan-4"
+    },
+    {
+      "id": "japan-5",
+      "place": "japan",
+      "where": "Tokyo",
+      "slot": "photo.japan-5"
+    },
+    {
+      "id": "portugal-1",
+      "place": "portugal",
+      "where": "Braga",
+      "slot": "photo.portugal-1"
+    },
+    {
+      "id": "portugal-2",
+      "place": "portugal",
+      "where": "Porto",
+      "slot": "photo.portugal-2"
+    },
+    {
+      "id": "portugal-3",
+      "place": "portugal",
+      "where": "Leiria",
+      "slot": "photo.portugal-3"
+    },
+    {
+      "id": "tunisia-6",
+      "place": "tunisia",
+      "where": "Tunisia",
+      "slot": "photo.tunisia-6"
+    },
+    {
+      "id": "tunisia-3",
+      "place": "tunisia",
+      "where": "Gabès",
+      "slot": "photo.tunisia-3"
+    },
+    {
+      "id": "tunisia-4",
+      "place": "tunisia",
+      "where": "Kebili",
+      "slot": "photo.tunisia-4"
+    },
+    {
+      "id": "tunisia-1",
+      "place": "tunisia",
+      "where": "Tunis",
+      "slot": "photo.tunisia-1"
+    },
+    {
+      "id": "tunisia-2",
+      "place": "tunisia",
+      "where": "Nabeul",
+      "slot": "photo.tunisia-2"
+    },
+    {
+      "id": "tunisia-5",
+      "place": "tunisia",
+      "where": "Tunisia",
+      "slot": "photo.tunisia-5"
+    },
+    {
+      "id": "peru-1",
+      "place": "peru",
+      "where": "Machu Picchu",
+      "slot": "photo.peru-1",
+      "wall": true
+    },
+    {
+      "id": "peru-2",
+      "place": "peru",
+      "where": "Urubamba",
+      "slot": "photo.peru-2"
+    },
+    {
+      "id": "peru-3",
+      "place": "peru",
+      "where": "Urubamba",
+      "slot": "photo.peru-3"
+    },
+    {
+      "id": "peru-4",
+      "place": "peru",
+      "where": "Urubamba",
+      "slot": "photo.peru-4"
+    },
+    {
+      "id": "peru-5",
+      "place": "peru",
+      "where": "Rainbow Mountain",
+      "slot": "photo.peru-5"
+    },
+    {
+      "id": "peru-6",
+      "place": "peru",
+      "where": "Rainbow Mountain",
+      "slot": "photo.peru-6"
+    },
+    {
+      "id": "canada-3",
+      "place": "canada",
+      "where": "Ontario",
+      "slot": "photo.canada-3"
+    },
+    {
+      "id": "canada-4",
+      "place": "canada",
+      "where": "Ontario",
+      "slot": "photo.canada-4"
+    },
+    {
+      "id": "canada-2",
+      "place": "canada",
+      "where": "Montréal",
+      "slot": "photo.canada-2"
+    },
+    {
+      "id": "canada-1",
+      "place": "canada",
+      "where": "Montréal",
+      "slot": "photo.canada-1"
+    },
+    {
+      "id": "spain-3",
+      "place": "spain",
+      "where": "Barcelona",
+      "slot": "photo.spain-3"
+    },
+    {
+      "id": "spain-1",
+      "place": "spain",
+      "where": "Barcelona",
+      "slot": "photo.spain-1"
+    },
+    {
+      "id": "spain-2",
+      "place": "spain",
+      "where": "Barcelona",
+      "slot": "photo.spain-2"
+    },
+    {
+      "id": "italy-2",
+      "place": "italy",
+      "where": "Rome",
+      "slot": "photo.italy-2"
+    },
+    {
+      "id": "italy-1",
+      "place": "italy",
+      "where": "Florence",
+      "slot": "photo.italy-1"
+    },
+    {
+      "id": "italy-3",
+      "place": "italy",
+      "where": "Venice",
+      "slot": "photo.italy-3"
+    },
+    {
+      "id": "italy-4",
+      "place": "italy",
+      "where": "Amalfi Coast",
+      "slot": "photo.italy-4"
+    },
+    {
+      "id": "italy-5",
+      "place": "italy",
+      "where": "Amalfi Coast",
+      "slot": "photo.italy-5"
+    },
+    {
+      "id": "greece-1",
+      "place": "greece",
+      "where": "Santorini",
+      "slot": "photo.greece-1",
+      "wall": true
+    },
+    {
+      "id": "france-1",
+      "place": "france",
+      "where": "Paris",
+      "slot": "photo.france-1"
+    }
+  ]
+}

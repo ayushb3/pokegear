@@ -1,0 +1,73 @@
+---
+import App from '../ui/App';
+import { DEX } from '../content/pokedex';
+import resumeMeta from '../content/resume.json';
+
+const title = 'Ayush Basu: portfolio';
+const description = `${resumeMeta.name}, ${resumeMeta.title}. Walk around a tiny Pokemon-style bedroom to see projects.`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#101018" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="/og.png" />
+    <style is:global>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #16161d;
+        overscroll-behavior: none;
+        touch-action: manipulation;
+      }
+      body {
+        overflow: hidden;
+      }
+    </style>
+    <noscript>
+      <style>
+        /* JS off: the inert room markup is no use, so drop it and let the plain list scroll */
+        html body { overflow: auto !important; }
+        astro-island { display: none !important; }
+      </style>
+    </noscript>
+  </head>
+  <body>
+    <App client:load />
+    <noscript>
+      <main style="font:18px/1.5 system-ui,sans-serif;max-width:38rem;margin:2rem auto;padding:0 1rem;color:#eee">
+        <h1>Ayush Basu &mdash; portfolio</h1>
+        <p>This site is a small interactive room that needs JavaScript. <a href="/about" style="color:#9cf">Plain site (about Ayush)</a>. The things in it:</p>
+        <ul>
+          <li>PC &mdash; projects:
+            <ul>
+              {DEX.map((p) => <li><a href={`/projects/${p.slug}`} style="color:#9cf">{p.title}</a>: {p.category}</li>)}
+            </ul>
+          </li>
+          <li>Piano &mdash; Ayush plays a little tune: <a href="/music" style="color:#9cf">music</a>.</li>
+          <li>Bed &mdash; Ayush takes a rest.</li>
+          <li>Journal &mdash; <a href="/log" style="color:#9cf">the commit log</a>.</li>
+          <li>Town map &mdash; <a href="/places" style="color:#9cf">places Ayush has been</a>.</li>
+          <li>Corkboard &mdash; <a href="/photos" style="color:#9cf">photos</a>.</li>
+          <li>Fridge &mdash; <a href="/food" style="color:#9cf">what Ayush has been cooking and eating</a>.</li>
+          <li>Mailbox (front yard) &mdash; <a href={`mailto:${resumeMeta.email}`} style="color:#9cf">email</a>, <a href={resumeMeta.linkedin} style="color:#9cf">LinkedIn</a>, <a href={resumeMeta.github} style="color:#9cf">GitHub</a>.</li>
+          <li>Tall grass &mdash; a wild recruiter; the moves are the <a href="/resume" style="color:#9cf">résumé</a>.</li>
+        </ul>
+      </main>
+    </noscript>
+  </body>
+</html>

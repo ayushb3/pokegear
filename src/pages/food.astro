@@ -1,0 +1,87 @@
+---
+// Plain, zero-JS twin of the fridge overlay: every entry by section, newest first.
+import data from '../content/fridge.json';
+import assets from '../assets/assets.json';
+import { FILTERS, SECTION_LABEL, filterEntries, longDate } from '../ui/overlay/overlays/fridge/helpers';
+import type { FridgeData } from '../ui/overlay/overlays/fridge/types';
+
+const fridge = data as unknown as FridgeData;
+const sections = FILTERS.filter((f) => f.key !== null).map((f) => ({
+  key: f.key!,
+  entries: filterEntries(fridge.entries.filter((e) => !e.sample), f.key),
+}));
+const photo = (slot?: string) => (slot ? ((assets as Record<string, { path?: string; w?: number; h?: number }>)[slot] ?? null) : null);
+const font = assets['font.ui'];
+const fontCss = `@font-face{font-family:"${font.family}";src:url(${font.path}) format("truetype");font-display:swap}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ayush Basu: Fridge</title>
+    <meta name="description" content="What Ayush has been cooking, eating and wants to try." />
+    <style is:inline set:html={fontCss}></style>
+    <style>
+      :root { color-scheme: light; }
+      html { background: #16161d; }
+      body {
+        margin: 0;
+        padding: 16px;
+        box-sizing: border-box;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        color: #22222c;
+      }
+      h1, h2, .walk { font-family: "HGSS Pixel", "Courier New", monospace; font-weight: 400; }
+      main {
+        max-width: 48rem;
+        margin: 0 auto;
+        padding: 24px;
+        background: #e9e4cf;
+        border: 4px solid #2b2b38;
+        box-shadow: inset 0 0 0 4px #b9b295;
+      }
+      h1 { font-size: 32px; line-height: 1.25; margin: 0 0 16px; }
+      h2 { font-size: 24px; margin: 32px 0 8px; color: #7a0f0c; }
+      ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+      li { background: #fffdf2; border: 2px solid #22222c; padding: 8px; }
+      li img { display: block; width: 100%; height: auto; margin-bottom: 8px; background: #2a2a36; }
+      .t { margin: 0; font-weight: 600; }
+      .m { margin: 0; color: #52525a; }
+      .walk {
+        display: inline-flex; align-items: center; min-height: 56px; margin-top: 32px; padding: 0 24px;
+        background: #d9473f; color: #fff; text-decoration: none; border: 3px solid #22222c; border-radius: 8px;
+        box-shadow: 0 3px 0 #22222c; font-size: 24px;
+      }
+      :focus-visible { outline: 3px solid #1c4fb0; outline-offset: 3px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Fridge</h1>
+      {sections.map((s) => (
+        <section id={s.key}>
+          <h2>{SECTION_LABEL[s.key]}</h2>
+          <ul>
+            {s.entries.map((e) => {
+              const p = photo(e.photo);
+              const meta = [e.place, longDate(e.date)].filter(Boolean).join(' · ');
+              return (
+                <li>
+                  {p?.path && <img src={p.path} width={p.w} height={p.h} alt={e.title} loading="lazy" decoding="async" />}
+                  <p class="t">{e.title}</p>
+                  {meta && <p class="m">{meta}</p>}
+                  {e.note && <p>{e.note}</p>}
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ))}
+      <a class="walk" href="/">Walk into the room &raquo;</a>
+    </main>
+  </body>
+</html>

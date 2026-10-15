@@ -1,0 +1,15 @@
+node_modules
+dist
+.astro
+test-results
+playwright-report
+
+# Takeout pipeline: never commit credentials, token cache, or photo manifests
+scripts/takeout/**/*.token.json
+scripts/takeout/**/*.secret.json
+# Photos-dir manifest (tracks published hashes; lives alongside the photos)
+**/.portfolio-applied.json
+# Python bytecode
+scripts/takeout/**/__pycache__/
+__pycache__/
+*.pyc

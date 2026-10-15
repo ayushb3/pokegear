@@ -1,0 +1,71 @@
+{
+  "name": "Ayush Basu",
+  "pitch": {
+    "lines": [
+      "I build AI agents and the evals that keep them honest.",
+      "At work: multi-agent research. At home: a pantry app, a trading journal, a sheet-music tool."
+    ],
+    "placeholder": false
+  },
+  "stack": [
+    "Python",
+    "LangGraph",
+    "Langfuse",
+    "TypeScript"
+  ],
+  "role": {
+    "employer": "SAP",
+    "since": 2025,
+    "placeholder": false
+  },
+  "projects": [
+    {
+      "slug": "bubblychef",
+      "title": "BubblyChef",
+      "summary": "Pantry + recipe app",
+      "url": "https://bubbly-chef.vercel.app"
+    },
+    {
+      "slug": "tradedesk",
+      "title": "TradeDesk",
+      "summary": "Trade journal + replay app (private repo)",
+      "url": null
+    },
+    {
+      "slug": "how-i-build",
+      "title": "How I build",
+      "summary": "One ready-for-agent issue to a reviewed PR by a bot",
+      "url": null
+    }
+  ],
+  "links": [
+    {
+      "id": "github",
+      "label": "GitHub",
+      "kind": "url",
+      "url": "https://github.com/ayushb3",
+      "placeholder": false
+    },
+    {
+      "id": "linkedin",
+      "label": "LinkedIn",
+      "kind": "url",
+      "url": "https://www.linkedin.com/in/ayush-basu-cs",
+      "placeholder": false
+    },
+    {
+      "id": "email",
+      "label": "Email",
+      "kind": "mailto",
+      "url": "ayushbas0717@gmail.com",
+      "placeholder": false
+    },
+    {
+      "id": "resume",
+      "label": "Résumé",
+      "kind": "url",
+      "url": "/resume.pdf",
+      "placeholder": false
+    }
+  ]
+}
