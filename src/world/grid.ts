@@ -78,7 +78,8 @@ export interface Furniture {
 /**
  * THE bedroom object table (all 7 bedroom objects are laid out; follow-up PRs do NOT edit it). Room is 14 x 10 tiles, back wall = rows 0-1.
  * Grouped by Common Region: tech at the desk (PC, monitor: x8-11 back wall), commit log (next to bookshelf, x2 back wall),
- * town map on the back wall (x5-6), rest (bed, left wall), music (piano, back-right corner), gym (bottom-right corner).
+ * town map on the back wall (x5-6), rest (bed, left wall), music (piano, back-right corner), radio (bottom-right corner).
+ * The gym bench lives downstairs.
  * Per-object content lives in src/content/objects/<id>.ts. Pure decoration is NOT here: see DECOR.
  */
 const BEDROOM_FURNITURE: readonly Furniture[] = [
@@ -90,11 +91,9 @@ const BEDROOM_FURNITURE: readonly Furniture[] = [
   { id: 'monitor', label: 'Monitor', slot: 'object.monitor', x: 10, y: 2, w: 2, h: 1, solid: true },
   // wall object: its tiles are in the wall rows; interact from the tile below, facing up
   { id: 'townmap', label: 'Map', slot: 'object.townmap', x: 5, y: 1, w: 2, h: 1, solid: false },
-  // Gym bench: footprint is only the visible bottom row (y:9, h:1) so the player stands at y:8 adjacent
-  // to the bench art, not a full tile above it. Art is 48x32 and bottom-centre-anchored; the top 16px
-  // overhang above the footprint and go to the foreground layer (player walks behind them), so y:8 at
-  // x:11-13 is walkable behind the bench's upper half.
-  { id: 'gym', label: 'Gym', slot: 'object.gym', x: 11, y: 9, w: 3, h: 1, solid: true },
+  // Radio: the bottom-right corner the gym bench left (the gym is downstairs now). Nothing stands in front of it, so the
+  // 16x20 art (antenna overhangs 4px) is never hidden; next to the plant at (13,5) it would sit behind the plant's leaves.
+  { id: 'radio', label: 'Radio', slot: 'object.radio', x: 13, y: 9, w: 1, h: 1, solid: true },
 ];
 
 /** A non-interactive room decoration. No id, no sparkle cue, never opens anything. */
@@ -196,7 +195,7 @@ export interface Room {
 }
 
 /**
- * Downstairs (14 x 10, back wall = rows 0-1): kitchen and living room. Objects: fridge, TV, corkboard (back wall), Mom.
+ * Downstairs (14 x 10, back wall = rows 0-1): kitchen and living room. Objects: fridge, TV, corkboard (back wall), Mom, gym bench.
  * Stairs up at (12,2) lead to the bedroom's (2,8). The door mat lies at the front door (bottom wall).
  */
 const DOWNSTAIRS_FURNITURE: readonly Furniture[] = [
@@ -205,6 +204,10 @@ const DOWNSTAIRS_FURNITURE: readonly Furniture[] = [
   // wall object: its tiles are in the wall rows; interact from the tile below, facing up
   { id: 'corkboard', label: 'Photos', slot: 'object.corkboard', x: 6, y: 1, w: 3, h: 1, solid: false },
   { id: 'mom', label: 'Mom', slot: 'object.mom', x: 5, y: 5, w: 1, h: 1, solid: true },
+  // Gym bench (living room, bottom-right, beside the plant at (13,9)): footprint is only the visible bottom row (y:9, h:1)
+  // so the player stands at y:8 adjacent to the bench art. Art is 48x32 and bottom-centre-anchored; the top 16px overhang
+  // above the footprint and go to the foreground layer (player walks behind them), so y:8 at x:10-12 is walkable.
+  { id: 'gym', label: 'Gym', slot: 'object.gym', x: 10, y: 9, w: 3, h: 1, solid: true },
 ];
 
 const DOWNSTAIRS_DECOR: readonly Decor[] = [

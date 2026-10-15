@@ -1,33 +1,12 @@
 {
   "stations": [
     {
-      "id": "now-spinning",
-      "kind": "list",
+      "id": "on-repeat",
+      "kind": "playlist",
       "sample": false,
-      "name": "Now Spinning",
-      "desc": "A curated set of tracks.",
-      "tracks": [
-        {
-          "title": "Touching God",
-          "artist": "Daniel Caesar",
-          "spotifyUrl": "https://open.spotify.com/track/3Ws7pcKeEo6dW2xPUFgmQv"
-        },
-        {
-          "title": "Mystery (quiet)",
-          "artist": "Matt Maltese",
-          "spotifyUrl": "https://open.spotify.com/track/7t5CLgLjFB87TgMTBrVasD"
-        },
-        {
-          "title": "Just A Little Higher",
-          "artist": "James Blake",
-          "spotifyUrl": "https://open.spotify.com/track/5BpZcAKQFRE7ALDNLEprTA"
-        },
-        {
-          "title": "Odysseus",
-          "artist": "Ludwig Göransson",
-          "spotifyUrl": "https://open.spotify.com/track/4cNfcmyCGw53tOSOsRI3z8"
-        }
-      ]
+      "name": "On Repeat",
+      "desc": "What Ayush has on repeat lately.",
+      "spotifyPlaylistUrl": "https://open.spotify.com/playlist/37i9dQZF1EpwgrMGIwAmjz"
     },
     {
       "id": "ayush-fm",
@@ -36,6 +15,45 @@
       "name": "Ayush FM",
       "desc": "Ayush's playlist.",
       "spotifyPlaylistUrl": "https://open.spotify.com/playlist/5GLhJSBebb89FfDPfvY24Z"
+    },
+    {
+      "id": "all-time",
+      "kind": "list",
+      "sample": false,
+      "name": "All-time",
+      "desc": "A few tracks from years of listening.",
+      "tracks": [
+        {
+          "title": "Nausicaä (Symphonic Poem)",
+          "artist": "Joe Hisaishi",
+          "spotifyUrl": "https://open.spotify.com/track/7Gci2t6aZIuyklsDTkAsnA"
+        },
+        {
+          "title": "Nocturne Op. 48 No. 1",
+          "artist": "Frédéric Chopin",
+          "spotifyUrl": "https://open.spotify.com/track/0kKOKDLP7mM8qttB5VPfHr"
+        },
+        {
+          "title": "SLOW DANCING IN THE DARK",
+          "artist": "Joji",
+          "spotifyUrl": "https://open.spotify.com/track/0rKtyWc8bvkriBthvHKY8d"
+        },
+        {
+          "title": "Nikes",
+          "artist": "Frank Ocean",
+          "spotifyUrl": "https://open.spotify.com/track/19YKaevk2bce4odJkP5L22"
+        },
+        {
+          "title": "Moon (feat. Bon Iver)",
+          "artist": "Daniel Caesar",
+          "spotifyUrl": "https://open.spotify.com/track/1lh5stJGmaVucEdExCqEVm"
+        },
+        {
+          "title": "Odysseus",
+          "artist": "Ludwig Göransson",
+          "spotifyUrl": "https://open.spotify.com/track/4cNfcmyCGw53tOSOsRI3z8"
+        }
+      ]
     }
   ]
 }

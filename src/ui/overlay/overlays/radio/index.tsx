@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { dim, goTo } from '../../../../world/api';
 import { useOverlay, useOverlayInput, type OverlayComponentProps } from '../../context';
 import ScrollList from '../../ScrollList';
-import { STATIONS, tune, needlePct, markerPcts, playlistId, trackUrl, type ListStation, type PlaylistStation } from './stations';
+import { STATIONS, tune, needlePct, markerPcts, playlistId, trackId, type ListStation, type PlaylistStation } from './stations';
 import { RADIO_CSS } from './styles';
 
 /** Inline tuning dial track with station marker lines and a sliding needle. */
@@ -21,50 +21,51 @@ function Dial({ idx }: { idx: number }) {
 }
 
 /**
- * Top-screen portal while Ayush FM is active: a static station card first, the
- * Spotify iframe only after A (`loaded`), so no third-party frame loads until asked.
+ * Top-screen portal for a Spotify embed (a playlist station or one track of a list station).
  *
- * The playlist URL is validated by playlistId(); anything not a valid
- * open.spotify.com playlist URL shows the placeholder frame instead of an iframe.
+ * Playlist: a static station card first, the Spotify iframe only after A (`loaded`), so no third-party frame
+ * loads until asked. Track: the visitor already asked by pressing A on the row, so `loaded` is true at once.
+ *
+ * `id` must come from playlistId() / trackId(): the embed src and the "Open in Spotify" href are built from the
+ * validated ID only. A null id shows the placeholder frame instead of an iframe.
  */
-function FmTop({ station, loaded }: { station: PlaylistStation; loaded: boolean }) {
+function SpotifyTop({ kind, id, name, title, loaded }: { kind: 'playlist' | 'track'; id: string | null; name: string; title: string; loaded: boolean }) {
   const topEl = typeof document !== 'undefined' ? document.querySelector('.top-screen') : null;
-  const pid = playlistId(station.spotifyPlaylistUrl);
-  const spotifyHref = pid ? `https://open.spotify.com/playlist/${pid}` : null;
+  const spotifyHref = id ? `https://open.spotify.com/${kind}/${id}` : null;
 
-  // Dim the world while FM is shown
+  // Dim the world while the layer is shown
   useEffect(() => {
     dim(true);
     return () => dim(false);
   }, []);
 
   const content = (
-    <div className="radio-fm" data-testid="radio-fm-top">
+    <div className="radio-fm" data-testid="radio-fm-top" data-kind={kind}>
       <div className="radio-fm-frame">
-        {pid && !loaded ? (
+        {id && !loaded ? (
           <div className="radio-fm-card" data-testid="radio-fm-card">
-            <div className="radio-fm-card-name">{station.name}</div>
+            <div className="radio-fm-card-name">{name}</div>
             <div className="radio-fm-card-sub">Playlist on Spotify</div>
             <div className="radio-fm-card-hint">A: load player</div>
           </div>
-        ) : pid ? (
+        ) : id ? (
           <iframe
-            src={`https://open.spotify.com/embed/playlist/${pid}`}
+            src={`https://open.spotify.com/embed/${kind}/${id}`}
             width="100%"
             height="100%"
             allow="encrypted-media; clipboard-write"
             sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
             loading="lazy"
-            title="Ayush FM playlist on Spotify"
+            title={title}
             style={{ border: 0, display: 'block', width: '100%', height: '100%' }}
           />
         ) : (
           <div className="radio-fm-placeholder" data-testid="radio-fm-placeholder">
-            <span>Playlist coming</span>
+            <span>{kind === 'playlist' ? 'Playlist coming' : 'Track unavailable'}</span>
           </div>
         )}
       </div>
-      {/* Attribution row: always present (20px reserved), shows link when playlist is valid */}
+      {/* Attribution row: always present (20px reserved), shows link when the ID is valid */}
       <div className="radio-fm-attr">
         {spotifyHref ? (
           <a href={spotifyHref} target="_blank" rel="noopener noreferrer" data-testid="radio-fm-open">
@@ -80,15 +81,16 @@ function FmTop({ station, loaded }: { station: PlaylistStation; loaded: boolean 
   return topEl ? createPortal(content, topEl) : null;
 }
 
-type View = 'dial' | 'list' | 'fm';
+type View = 'dial' | 'list' | 'fm' | 'track';
 
 /**
  * Radio overlay — HGSS Pokégear style.
  *
  * Views:
  *   dial  → tuning panel; ◀/▶ tune stations, A opens the station, B closes the radio
- *   list  → ScrollList of tracks (for "Now spinning"); A opens Spotify (valid URL), B returns to dial
- *   fm    → Ayush FM top-screen card; A loads the embed, A again opens Spotify; B returns to dial
+ *   list  → ScrollList of tracks (a list station); A plays the track on the top screen (view 'track'), B returns to dial
+ *   track → that track's Spotify embed on the top screen; A opens it in Spotify, B returns to the list
+ *   fm    → playlist station top-screen card; A loads the embed, A again opens Spotify; B returns to dial
  */
 export default function Radio({ ctx }: OverlayComponentProps) {
   const { announce } = useOverlay();
@@ -113,12 +115,12 @@ export default function Radio({ ctx }: OverlayComponentProps) {
     if (station.kind === 'list') {
       setTrackIdx(0);
       setView('list');
-      announce(`Now Spinning. ${(station as ListStation).tracks.length} tracks. Use up and down to browse, A to open in Spotify.`);
+      announce(`${station.name}. ${(station as ListStation).tracks.length} tracks. Use up and down to browse, A to play.`);
     } else if (station.kind === 'playlist') {
       setFmLoaded(false);
       setView('fm');
       const pid = playlistId((station as PlaylistStation).spotifyPlaylistUrl);
-      announce(pid ? 'Ayush FM. A to load the player. B to go back.' : 'Ayush FM. Playlist coming. B to close.');
+      announce(pid ? `${station.name}. A to load the player. B to go back.` : `${station.name}. Playlist coming. B to go back.`);
     } else if (station.kind === 'object') {
       // Next tick: this key press must not reach the unfrozen world.
       // close() unfreezes, so goTo can path-find immediately after.
@@ -130,15 +132,24 @@ export default function Radio({ ctx }: OverlayComponentProps) {
     }
   };
 
-  const openTrack = (i: number) => {
-    const ls = station as ListStation;
-    const track = ls.tracks[i];
-    if (!track) return;
-    const url = trackUrl(track.spotifyUrl);
-    if (!url) return; // skip invalid URLs silently
-    window.open(url, '_blank', 'noopener,noreferrer');
-    const note = track.note ? ` ${track.note}` : '';
-    announce(`Opened ${track.title} by ${track.artist}${note} in a new tab.`);
+  const tracks = station.kind === 'list' ? (station as ListStation).tracks : [];
+  const track = view === 'track' ? tracks[trackIdx] : undefined;
+  const tid = track ? trackId(track.spotifyUrl) : null;
+
+  /** A on a row: play the track in place (top-screen embed), never a new tab. Invalid URLs are skipped. */
+  const playTrack = (i: number) => {
+    const t = tracks[i];
+    if (!t || !trackId(t.spotifyUrl)) return;
+    setTrackIdx(i);
+    setView('track');
+    const note = t.note ? ` ${t.note}` : '';
+    announce(`${t.title} by ${t.artist}${note}. Player loaded. A to open in Spotify, B to go back.`);
+  };
+
+  const openTrackSpotify = () => {
+    if (!tid) return;
+    window.open(`https://open.spotify.com/track/${tid}`, '_blank', 'noopener,noreferrer');
+    announce('Opened the track in a new tab.');
   };
 
   const openFmSpotify = () => {
@@ -159,7 +170,10 @@ export default function Radio({ ctx }: OverlayComponentProps) {
   };
 
   const goBack = () => {
-    if (view !== 'dial') {
+    if (view === 'track') {
+      setView('list');
+      announce(`${station.name}. ${tracks.length} tracks.`);
+    } else if (view !== 'dial') {
       setFmLoaded(false);
       setView('dial');
       announce(`${station.name}. ${station.desc}`);
@@ -169,7 +183,8 @@ export default function Radio({ ctx }: OverlayComponentProps) {
   };
 
   // Input: dial view — left/right to tune, A to open station, B to close
-  // list view — up/down navigate, A to open track in Spotify, B back to dial
+  // list view — up/down navigate, A to play the track on the top screen, B back to dial
+  // track view — A opens the track in Spotify, B back to the list
   // fm view — A loads the player, then opens Spotify (if valid playlist), B back to dial
   const fmHasValidPlaylist = station.kind === 'playlist' && !!playlistId((station as PlaylistStation).spotifyPlaylistUrl);
 
@@ -195,11 +210,17 @@ export default function Radio({ ctx }: OverlayComponentProps) {
               const ls = station as ListStation;
               setTrackIdx((i) => (i + 1) % ls.tracks.length);
             },
-            a: () => openTrack(trackIdx),
+            a: () => playTrack(trackIdx),
             b: goBack,
-            labels: { a: 'Open', b: 'Back' },
+            labels: { a: 'Play', b: 'Back' },
           }
-        : /* fm */ {
+        : view === 'track'
+          ? {
+              a: tid ? openTrackSpotify : undefined,
+              b: goBack,
+              labels: tid ? { a: 'Open', b: 'Back' } : { b: 'Back' },
+            }
+          : /* fm */ {
             a: fmHasValidPlaylist ? fmA : undefined,
             b: goBack,
             labels: fmHasValidPlaylist ? { a: fmLoaded ? 'Open' : 'Load', b: 'Back' } : { b: 'Back' },
@@ -210,9 +231,18 @@ export default function Radio({ ctx }: OverlayComponentProps) {
     <>
       <style>{RADIO_CSS}</style>
 
-      {/* FM top-screen portal (only while view === 'fm' and station is a playlist) */}
+      {/* Top-screen Spotify layer: a playlist station (view 'fm') or one track of a list station (view 'track') */}
       {view === 'fm' && station.kind === 'playlist' && (
-        <FmTop station={station as PlaylistStation} loaded={fmLoaded} />
+        <SpotifyTop
+          kind="playlist"
+          id={playlistId((station as PlaylistStation).spotifyPlaylistUrl)}
+          name={station.name}
+          title={`${station.name} playlist on Spotify`}
+          loaded={fmLoaded}
+        />
+      )}
+      {view === 'track' && track && (
+        <SpotifyTop key={trackIdx} kind="track" id={tid} name={track.title} title={`${track.title} by ${track.artist} on Spotify`} loaded />
       )}
 
       <div className="overlay radio" data-testid="radio" data-view={view}>
@@ -274,9 +304,17 @@ export default function Radio({ ctx }: OverlayComponentProps) {
               selected={trackIdx}
               onActivate={(i) => {
                 setTrackIdx(i);
-                openTrack(i);
+                playTrack(i);
               }}
             />
+          </div>
+        )}
+
+        {view === 'track' && track && (
+          /* Bottom screen minimal while the track plays on the top screen */
+          <div className="radio-panel">
+            <div className="radio-station-name" data-testid="radio-track-title" title={track.title}>{track.title}</div>
+            <div className="radio-station-desc" title={track.artist}>{track.artist}</div>
           </div>
         )}
 

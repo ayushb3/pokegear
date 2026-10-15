@@ -1,7 +1,7 @@
 import { mkdir } from 'node:fs/promises';
 import * as path from 'node:path';
 import { expect, test } from '@playwright/test';
-import { load, tile } from '../helpers';
+import { advanceDialogue, load, tile } from '../helpers';
 import { STATIONS } from '../../src/ui/overlay/overlays/radio/stations';
 
 // Review screenshots go under Playwright's output dir (gitignored), never an absolute machine path: CI cannot mkdir one.
@@ -71,27 +71,71 @@ test.describe('Radio overlay', () => {
     expect(await page.locator('[data-testid=radio-station-name]').textContent()).toBe(STATIONS[STATIONS.length - 1]!.name);
   });
 
-  test('Now Spinning: A opens the track list with "title · artist" rows', async ({ page }) => {
-    await openRadio(page);
-    // Now Spinning is the first station (index 0)
-    expect(await page.locator('[data-testid=radio-station-name]').textContent()).toContain('Now Spinning');
+  test('the bedroom radio object opens the same overlay', async ({ page }) => {
+    await load(page);
+    await page.evaluate(() => window.__game!.goTo('radio'));
+    await expect(page.locator('[data-testid=dialogue]')).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator('[data-testid=dialogue]')).toContainText("Ayush's radio hums.");
+    const at = await tile(page);
+    expect(at.r).toBe('bedroom');
+    await advanceDialogue(page);
+    await expect(page.locator('[data-testid=radio]')).toBeVisible({ timeout: 5000 });
+    await expect(page.locator('[data-testid=radio-station-name]')).toHaveText('On Repeat');
+    await page.keyboard.press('Escape');
+    await expect(page.locator('.bottom-screen .overlay')).toHaveCount(0, { timeout: 3000 });
+    expect(await tile(page)).toEqual(at);
+  });
 
-    // A opens the list
+  test('On Repeat: station card, then the playlist embed built from the validated ID', async ({ page }) => {
+    await openRadio(page);
+    await expect(page.locator('[data-testid=radio-station-name]')).toHaveText('On Repeat');
+    await page.keyboard.press('Space');
+    await expect(page.locator('[data-testid=radio]')).toHaveAttribute('data-view', 'fm');
+    await expect(page.locator('[data-testid=radio-fm-card]')).toContainText('On Repeat');
+    await expect(page.locator('.radio-fm-frame iframe')).toHaveCount(0);
+    await expect(page.locator('[data-testid=radio-fm-open]')).toHaveAttribute('href', 'https://open.spotify.com/playlist/37i9dQZF1EpwgrMGIwAmjz');
+    await page.keyboard.press('Space');
+    await expect(page.locator('.radio-fm-frame iframe')).toHaveAttribute('src', 'https://open.spotify.com/embed/playlist/37i9dQZF1EpwgrMGIwAmjz');
+    await page.keyboard.press('Escape');
+    await expect(page.locator('[data-testid=radio]')).toHaveAttribute('data-view', 'dial');
+    await expect(page.locator('[data-testid=radio-fm-top]')).toHaveCount(0);
+  });
+
+  test('All-time: A plays the track on the top screen (no new tab), B returns to the list', async ({ page }) => {
+    await openRadio(page);
+    await page.evaluate(() => {
+      (window as unknown as { __opened: string[] }).__opened = [];
+      window.open = ((u: string) => {
+        (window as unknown as { __opened: string[] }).__opened.push(String(u));
+        return null;
+      }) as typeof window.open;
+    });
+    await page.keyboard.press('ArrowLeft'); // All-time is the last station
+    await expect(page.locator('[data-testid=radio-station-name]')).toHaveText('All-time');
     await page.keyboard.press('Space');
     await expect(page.locator('[data-testid=radio]')).toHaveAttribute('data-view', 'list');
-    await expect(page.locator('[data-testid=scroll-list]')).toBeVisible();
-
-    // Rows show "title · artist" format; first row is "Touching God · Daniel Caesar"
-    const firstRow = await page.locator('.sl-row').first().textContent();
-    expect(firstRow).toContain('·');
-    expect(firstRow).toContain('Touching God');
-    expect(firstRow).toContain('Daniel Caesar');
-
-    // Screenshot: track list on phone
+    const first = await page.locator('.sl-row').first().textContent();
+    expect(first).toContain('Joe Hisaishi');
+    expect(first).toContain('·');
     await mkdir(SHOTS_DIR, { recursive: true });
-    await page.screenshot({ path: path.join(SHOTS_DIR, 'radio-list-phone.png') });
+    await page.screenshot({ path: path.join(SHOTS_DIR, 'radio-alltime-list.png') });
 
-    // B goes back to dial
+    await page.keyboard.press('ArrowDown'); // Nocturne
+    await page.keyboard.press('Space');
+    await expect(page.locator('[data-testid=radio]')).toHaveAttribute('data-view', 'track');
+    await expect(page.locator('[data-testid=radio-fm-top]')).toHaveAttribute('data-kind', 'track');
+    await expect(page.locator('.radio-fm-frame iframe')).toHaveAttribute('src', 'https://open.spotify.com/embed/track/0kKOKDLP7mM8qttB5VPfHr');
+    await expect(page.locator('[data-testid=radio-fm-open]')).toHaveAttribute('href', 'https://open.spotify.com/track/0kKOKDLP7mM8qttB5VPfHr');
+    await expect(page.locator('[data-testid=radio-track-title]')).toHaveText('Nocturne Op. 48 No. 1');
+    expect(await page.evaluate(() => (window as unknown as { __opened: string[] }).__opened)).toEqual([]);
+    await page.screenshot({ path: path.join(SHOTS_DIR, 'radio-track-embed.png') });
+
+    // B: back to the list on the same row, the top-screen layer is gone
+    await page.keyboard.press('Escape');
+    await expect(page.locator('[data-testid=radio]')).toHaveAttribute('data-view', 'list');
+    await expect(page.locator('[data-testid=radio-fm-top]')).toHaveCount(0);
+    await expect(page.locator('.sl-row.sel, .sl-row[aria-selected=true]').first()).toContainText('Nocturne');
+    // B again: the dial
     await page.keyboard.press('Escape');
     await expect(page.locator('[data-testid=radio]')).toHaveAttribute('data-view', 'dial');
   });

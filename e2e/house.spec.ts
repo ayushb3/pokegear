@@ -19,10 +19,10 @@ test('stairs: down with the keyboard, the location and bag follow, back up lands
   await expect.poll(() => tile(page)).toMatchObject({ x: 12, y: 3, f: 'down', m: false, r: 'downstairs' });
 
   await expect(page.locator('[data-testid=idle-loc]')).toHaveText('Downstairs');
-  await expect(page.locator('.idle-box .slot')).toHaveCount(4); // fridge, tv, corkboard, mom (the Card is a pad button)
-  await expect(page.locator('.idle-box .slot')).toHaveText(['', '', '', '']); // icons, not text
-  expect(await page.locator('.idle-box .slot').evaluateAll((els) => els.map((e) => (e as HTMLElement).dataset.slot))).toEqual(['fridge', 'tv', 'corkboard', 'mom']);
-  await expect(page.locator('.top-screen [role=img]')).toHaveAttribute('aria-label', /kitchen.*fridge.*tv.*photos.*mom/i);
+  await expect(page.locator('.idle-box .slot')).toHaveCount(5); // fridge, tv, corkboard, mom, gym (the Card is a pad button)
+  await expect(page.locator('.idle-box .slot')).toHaveText(['', '', '', '', '']); // icons, not text
+  expect(await page.locator('.idle-box .slot').evaluateAll((els) => els.map((e) => (e as HTMLElement).dataset.slot))).toEqual(['fridge', 'tv', 'corkboard', 'mom', 'gym']);
+  await expect(page.locator('.top-screen [role=img]')).toHaveAttribute('aria-label', /kitchen.*fridge.*tv.*photos.*mom.*gym/i);
 
   await page.keyboard.down('ArrowUp'); // (12,2) is the stairs up
   await waitRoom(page, 'bedroom');
@@ -40,7 +40,7 @@ test('a bag slot downstairs walks to its object; from the bedroom the bag has no
   await waitRoom(page, 'downstairs');
   await expect(page.locator('[data-testid=dialogue]')).toBeVisible({ timeout: 20_000 });
   await dismissAll(page);
-  await expect(page.locator('.idle-box .slot')).toHaveCount(4);
+  await expect(page.locator('.idle-box .slot')).toHaveCount(5);
   await page.locator('[data-slot=fridge]').focus();
   await expect(page.locator('[data-testid=idle-desc]')).toHaveText('Fridge: food and ideas (sample)');
   await page.locator('[data-slot=fridge]').dispatchEvent('pointerdown');

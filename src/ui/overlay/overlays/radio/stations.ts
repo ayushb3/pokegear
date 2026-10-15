@@ -85,15 +85,8 @@ export function playlistId(url: string): string | null {
   return m[1]!;
 }
 
-/**
- * Validate a Spotify track or album URL and return it unchanged, or null.
- *
- * Accepts only:
- *   - protocol: https:
- *   - host: open.spotify.com
- *   - pathname: /track/<22 chars> or /album/<22 chars>
- */
-export function trackUrl(url: string): string | null {
+/** Parse an https://open.spotify.com/<kind>/<22-char id> URL (query string ignored) and return the ID, or null. */
+function spotifyId(url: string, kinds: readonly string[]): string | null {
   if (!url) return null;
   let parsed: URL;
   try {
@@ -103,6 +96,28 @@ export function trackUrl(url: string): string | null {
   }
   if (parsed.protocol !== 'https:') return null;
   if (parsed.hostname !== 'open.spotify.com') return null;
-  if (!/^\/(track|album)\/[A-Za-z0-9]{22}$/.test(parsed.pathname)) return null;
-  return url;
+  const m = /^\/([a-z]+)\/([A-Za-z0-9]{22})$/.exec(parsed.pathname);
+  if (!m || !kinds.includes(m[1]!)) return null;
+  return m[2]!;
+}
+
+/**
+ * Validate a Spotify track URL and return the 22-character track ID, or null.
+ * Same rules as playlistId(): https:, host exactly open.spotify.com, pathname exactly /track/<22 alphanum chars>.
+ * The top-screen embed src and the "Open in Spotify" href are built from this ID only, never from the raw URL.
+ */
+export function trackId(url: string): string | null {
+  return spotifyId(url, ['track']);
+}
+
+/**
+ * Validate a Spotify track or album URL and return it unchanged, or null.
+ *
+ * Accepts only:
+ *   - protocol: https:
+ *   - host: open.spotify.com
+ *   - pathname: /track/<22 chars> or /album/<22 chars>
+ */
+export function trackUrl(url: string): string | null {
+  return spotifyId(url, ['track', 'album']) ? url : null;
 }
