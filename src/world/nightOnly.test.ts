@@ -27,8 +27,10 @@ describe('layer order contract', () => {
   it('spriteLayer is below fgLayer', () => {
     expect(LAYER_ORDER.spriteLayer).toBeLessThan(LAYER_ORDER.fgLayer);
   });
-  it('fgLayer is below litLayer', () => {
-    expect(LAYER_ORDER.fgLayer).toBeLessThan(LAYER_ORDER.litLayer);
+  it('litLayer (moonlit windows) is above the tint but below actors and the foreground (trees cover the house windows)', () => {
+    expect(LAYER_ORDER.litLayer).toBeGreaterThan(LAYER_ORDER.tintLayer);
+    expect(LAYER_ORDER.litLayer).toBeLessThan(LAYER_ORDER.spriteLayer);
+    expect(LAYER_ORDER.litLayer).toBeLessThan(LAYER_ORDER.fgLayer);
   });
   it('all layer indices are unique', () => {
     const indices = Object.values(LAYER_ORDER);
