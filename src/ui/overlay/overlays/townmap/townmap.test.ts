@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { badgeSize } from './MapTop';
 import { PLACES, PLACES_DATA, REGIONS } from '../../../../content/places';
 import assets from '../../../../assets/assets.json';
 import {
@@ -934,5 +935,17 @@ describe('return trip: navPath / restoreNav / photoPlace', () => {
     expect(photoPlace(s, has)).toBeNull();
     s = navReducer(s, { type: 'zoom' }); // city level: A stays Next
     expect(photoPlace(s, has)).toBeNull();
+  });
+});
+
+describe('cluster badge', () => {
+  it('is a 1-native-px-per-dot chip: 5x7 for one digit, smaller than the 8x8 pin it labels', () => {
+    for (let n = 1; n <= 9; n++) expect(badgeSize(n)).toEqual({ w: 5, h: 7 });
+    const PIN = 8; // outline box: (S + 1) * 2 with S = 3
+    expect(badgeSize(7).w).toBeLessThan(PIN);
+    expect(badgeSize(7).h).toBeLessThan(PIN);
+  });
+  it('two digits add one 3-dot glyph and a 1-dot gap', () => {
+    expect(badgeSize(12)).toEqual({ w: 9, h: 7 });
   });
 });
