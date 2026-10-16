@@ -272,17 +272,7 @@ def decor():
     tw.crop((32, 1906, 64, 1938)).save(OUT / "decor" / "bookshelf.png")
     # Downstairs (all ThatsSoWitty, native 16 px tiles, same style as the bedroom pieces)
     tw.crop((81, 2401, 97, 2433)).save(OUT / "objects" / "fridge.png")  # white-blue fridge, exactly 1 x 2 tiles
-    # Stairs: ThatsSoWitty interior sheet is native 16 px tiles — no scaling.
-    # stairs-down (bedroom, player descends): enclosed red-brick box stairway, 36x40 px native incl. padding.
-    # The component is 34 px wide (2 px of drop shadow on the right): pad 2 px on the LEFT (36 wide, even) so the 32 px
-    # body stays centred on the warp tile under the bottom-centre anchor and the shadow hangs to the right.
-    sd = Image.new("RGBA", (36, 40), (0, 0, 0, 0))
-    sd.paste(tw.crop((32, 1200, 66, 1240)), (2, 0))
-    sd.save(OUT / "decor" / "stairs-down.png")
-    # stairs-up (downstairs, player ascends): mirrored enclosed stairway (the glued 16 px arrival mat is dropped), 32x40 px native.
-    # Cropped from x=80 (not 78): the 2 left columns are shadow that would hang up-left; without them the body is exactly
-    # 32 px wide, even and centred, and the drop shadow only falls down-right (art rule 5).
-    tw.crop((80, 1264, 112, 1304)).save(OUT / "decor" / "stairs-up.png")
+    # Stairs (decor.stairs-down / stairs-up) are drawn by stairs(): HGSS-style wooden steps, no brick frame.
     # Kitchen appliances: separate stove and sink (replacing the old combined counter composite).
     # Stove: standalone stove+oven, 32x32 native px (even width = clean half-pixel-free anchor).
     tw.crop((96, 2400, 128, 2432)).save(OUT / "decor" / "stove.png")
@@ -384,93 +374,115 @@ def oshawott():
     sheet.save(OUT / "sprites" / "oshawott.png")
 
 
-def journal_stand():
-    """Draw a 16x22 commit-log stand: a small side table (palette from the in-room pc-desk)
-    with a flat open book lying on its surface, seen from the HGSS top-down angle.
+def stairs():
+    """Draw the two indoor stairs, 16x16 native px (exactly the 1x1 warp tile, no dy, no padding).
 
-    Art layout (bottom-centre anchored on 1x1 footprint = 16px):
-      y  0-5   book lying flat on table (6px, drawn top-down: spine=1px top, pages=4px, edge=1px)
-      y  6-9   table top surface (#e8d8a0 / #c0b068 highlight, matching pc-desk surface rows 10-17)
-      y 10-13  table front face (#808860 / #000000, matching pc-desk rows 18-23)
-      y 14-21  table legs (grey #cccccc/#b2b2b2, 8px, matching pc-desk dark leg area)
-
-    Overhang: 22-16=6px → top 6 rows (book) go to foreground layer.  The bottom 16px (table
-    surface + face + legs) sit in the background.  The book is thus visible resting on the
-    table surface edge, not floating mid-air.
-
-    Colors taken directly from pc-desk.png (the existing room desk), keeping the same palette.
-    No raw-pack source needed — drawn from palette only (native 1x).
+    HGSS-style wooden steps set INTO the floor (no brick frame): the tile is covered by the steps only, so the room's
+    own floor shows right up to the edge. Palette = the room's warm wood (piano / pc-desk browns, as in
+    draw-objects.py), so it blends with both floors (tan bedroom, cream kitchen).
+    down (bedroom): a wooden-rimmed hole, 4 treads darkening into a black well.
+    up (downstairs): 4 treads rising toward the back wall, the lighter the higher; stringers on both sides.
     """
     from PIL import ImageDraw
 
-    W, H = 16, 22
-    canvas = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    d = ImageDraw.Draw(canvas)
+    O = (0x3c, 0x1e, 0x12, 255)      # darkest wood (outline)
+    HI = (0xd8, 0xa8, 0x70, 255)     # lit tread edge
+    L = (0xb8, 0x80, 0x50, 255)      # tread
+    M = (0x80, 0x48, 0x28, 255)      # riser
+    D = (0x5c, 0x30, 0x1c, 255)      # deep riser / wall
+    WELL = (0x1c, 0x12, 0x14, 255)   # the black well
 
-    # Palette from pc-desk (ultimatetraveler interior sheet, checker-keyed, 1x native)
-    OUTLINE    = (0x40, 0x40, 0x40, 255)
-    TBL_HI     = (0xc0, 0xb0, 0x68, 255)   # golden highlight edge (#c0b068)
-    TBL_SURF   = (0xe8, 0xd8, 0xa0, 255)   # main tan surface (#e8d8a0)
-    TBL_FRONT  = (0x80, 0x88, 0x60, 255)   # lower front face (#808860)
-    TBL_DARK   = (0x00, 0x00, 0x00, 255)   # deep shadow / outline (#000000)
-    LEG_WOOD   = (0xc0, 0xb0, 0x68, 255)   # wood legs: the table's own highlight tan
-    LEG_WOOD_D = (0x80, 0x88, 0x60, 255)   # wood leg shadow: the table's front-face olive
-    DROP       = (0x00, 0x00, 0x00, 70)    # drop shadow (alpha 70 like every pack shadow and the piano)
+    # --- down: a wooden-rimmed hole in the floor; the steps narrow and darken as they sink
+    d_im = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+    d = ImageDraw.Draw(d_im)
+    d.rectangle([0, 0, 15, 15], fill=O)
+    d.rectangle([1, 1, 14, 1], fill=HI)                  # rim plank at floor level (lit)
+    d.rectangle([1, 2, 14, 2], fill=L)
+    d.rectangle([1, 3, 14, 14], fill=D)                  # side walls of the well
+    d.rectangle([1, 3, 14, 3], fill=O)                   # rim shadow
+    steps = [(2, 13, L, M), (3, 12, M, D), (4, 11, D, O), (5, 10, O, WELL)]
+    for k, (x0, x1, tread, riser) in enumerate(steps):
+        y = 4 + k * 3
+        d.rectangle([x0, y, x1, y + 1], fill=tread)      # tread
+        d.rectangle([x0, y + 2, x1, y + 2], fill=riser)  # riser, deeper each step
+    d.rectangle([5, 13, 10, 14], fill=WELL)              # bottom of the well
+    d_im.save(OUT / "decor" / "stairs-down.png")
 
-    # --- y=0-5: open book lying flat, seen from above/slightly front ---
-    # The book is 14px wide (1px margin each side), 6px tall.
-    # Row 0: outline top edge (spine visible as dark line at back)
-    d.rectangle([1, 0, 14, 0], fill=OUTLINE)
-    # Row 1: spine color (teal #2f6f8f matching the book frame color from the original art)
-    SPINE = (0x2f, 0x6f, 0x8f, 255)
-    d.rectangle([1, 1, 14, 1], fill=SPINE)
-    # Rows 2-4: open pages (cream #f0e8d0, with a centre crease line and text lines)
-    PAGE   = (0xf0, 0xe8, 0xd0, 255)
-    INK    = (0x60, 0x60, 0x70, 255)
-    d.rectangle([1, 2, 14, 4], fill=PAGE)
-    # centre crease (gutter between left and right pages)
-    d.rectangle([7, 2, 8, 4], fill=SPINE)
-    # tiny ink lines on left page
-    d.rectangle([2, 2, 5, 2], fill=INK)
-    d.rectangle([2, 4, 5, 4], fill=INK)
-    # tiny ink lines on right page
-    d.rectangle([9, 2, 12, 2], fill=INK)
-    d.rectangle([9, 4, 12, 4], fill=INK)
-    # Row 5: outline bottom edge of book (where it meets the table surface)
-    d.rectangle([1, 5, 14, 5], fill=OUTLINE)
+    # --- up: steps rising toward the back wall (the higher, the lighter), wooden stringers each side
+    u_im = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+    u = ImageDraw.Draw(u_im)
+    u.rectangle([0, 0, 15, 15], fill=O)
+    u.rectangle([1, 1, 14, 14], fill=D)
+    for k in range(4):                                   # k = 0 top step (highest) .. 3 = first step off the floor
+        y = 1 + k * 4
+        u.rectangle([2, y, 13, y], fill=HI)              # lit nose of the tread
+        u.rectangle([2, y + 1, 13, y + 1], fill=L)       # tread
+        u.rectangle([2, y + 2, 13, y + 3], fill=M)  # riser facing the viewer
+        u.rectangle([2, y + 3, 13, y + 3], fill=D)       # shadow under the nose
+    u.rectangle([1, 1, 1, 14], fill=L)                   # left stringer (lit)
+    u.rectangle([14, 1, 14, 14], fill=M)                 # right stringer
+    u_im.save(OUT / "decor" / "stairs-up.png")
 
-    # --- y=6-7: table top surface highlight band ---
-    d.rectangle([0, 6, 15, 6], fill=OUTLINE)   # top border of table
-    d.rectangle([0, 7, 15, 7], fill=TBL_HI)
 
-    # --- y=8-9: main table surface (tan) ---
-    d.rectangle([0, 8, 15, 9], fill=TBL_SURF)
+def journal_stand():
+    """Draw the 16x22 commit-log stand: a wooden lectern holding a big OPEN BOOK (cream pages, a dark spine line,
+    ink lines), so it reads as a journal at 1x (the old teal spine read as a blue blob).
 
-    # --- y=10-11: lower surface edge ---
-    d.rectangle([0, 10, 15, 10], fill=TBL_HI)
-    d.rectangle([0, 11, 15, 11], fill=TBL_FRONT)
-
-    # --- y=12-13: table front face ---
-    d.rectangle([0, 12, 15, 12], fill=TBL_FRONT)
-    d.rectangle([0, 13, 15, 13], fill=TBL_DARK)
-
-    # --- y=14-21: table legs (2 legs, grey, with drop shadow) ---
-    # leg positions: left leg x=1-3, right leg x=12-14
-    for lx in (1, 12):
-        d.rectangle([lx,     14, lx + 2, 21], fill=LEG_WOOD)
-        d.rectangle([lx + 2, 14, lx + 2, 21], fill=LEG_WOOD_D)
-        d.rectangle([lx,     21, lx + 2, 21], fill=OUTLINE)
-    # drop shadow under the legs
-    # (row 21 holds the legs' bottom outline at x 1-3 and 12-14; draw the shadow only between/after them)
-    for x in range(0, 16):
-        if not (1 <= x <= 3 or 12 <= x <= 14):
-            d.point((x, 21), fill=DROP)
-
+    Art layout (bottom-centre anchored on the 1x1 footprint = 16 px; the top 6 rows overhang into the foreground):
+      y 0-9    open book: dark cover edge, two cream pages, 2px dark spine, ink lines, page-edge shade
+      y 10-12  slanted lectern top (wood, taper)
+      y 13-18  post
+      y 19-20  base
+      y 21     drop shadow
+    Wood = the piano / pc-desk palette (draw-objects.py), pages = PAPER (240,232,208).
+    """
+    ART = [
+        "................",
+        ".OOOOOOOOOOOOOO.",
+        ".OPPPPPSSPPPPPO.",
+        ".OPPPPPSSPPPPPO.",
+        ".OPTTTPSSPTTTPO.",
+        ".OPPPPPSSPPPPPO.",
+        ".OPTTTTSSTTTTPO.",
+        ".OPPPPPSSPPPPPO.",
+        ".OPTTTPSSPTTTPO.",
+        ".OpppppSSpppppO.",
+        ".CCCCCCCCCCCCCC.",
+        "OHHHHHHHHHHHHHHO",
+        ".OWWWWWWWWWWWWO.",
+        "..OwwwwwwwwwwO..",
+        ".....OWWwO......",
+        ".....OWWwO......",
+        ".....OWWwO......",
+        ".....OWWwO......",
+        ".....OWWwO......",
+        "....OWWWwwO.....",
+        "...OWWWWWwwwO...",
+        "...ssssssssss...",
+    ]
+    pal = {
+        ".": (0, 0, 0, 0),
+        "O": (0x3c, 0x1e, 0x12, 255),
+        "P": (0xf0, 0xe8, 0xd0, 255),
+        "p": (0xd2, 0xc6, 0xa4, 255),
+        "S": (0x3c, 0x1e, 0x12, 255),
+        "T": (0x8c, 0x7c, 0x78, 255),
+        "C": (0x80, 0x48, 0x28, 255),
+        "H": (0xd8, 0xa8, 0x70, 255),
+        "W": (0xb8, 0x80, 0x50, 255),
+        "w": (0x80, 0x48, 0x28, 255),
+        "s": (0, 0, 0, 70),
+    }
+    assert len(ART) == 22 and all(len(r) == 16 for r in ART)
+    canvas = Image.new("RGBA", (16, 22), (0, 0, 0, 0))
+    for y, row in enumerate(ART):
+        for x, ch in enumerate(row):
+            canvas.putpixel((x, y), pal[ch])
     canvas.save(OUT / "objects" / "journal.png")
 
 
 if __name__ == "__main__":
     (OUT / "sprites").mkdir(parents=True, exist_ok=True)
     (OUT / "fonts").mkdir(parents=True, exist_ok=True)
-    ethan(); lyra(); oshawott(); interior(); decor(); journal_stand(); emotes()  # fonts: build-font.py
+    ethan(); lyra(); oshawott(); interior(); decor(); stairs(); journal_stand(); emotes()  # fonts: build-font.py
     print("ok")

@@ -28,7 +28,7 @@ test('Card button opens by tap in both rooms; on-screen B closes it', async ({ p
       await waitRoom(page, 'downstairs');
       await expect(page.locator('[data-testid=dialogue]')).toBeVisible({ timeout: 20_000 });
       await dismissAll(page);
-      await expect(page.locator('.idle-box .slot')).toHaveCount(4);
+      await expect(page.locator('.idle-box .slot')).toHaveCount(5);
     }
     await page.locator(BTN).dispatchEvent('pointerdown');
     await expect(page.locator('[data-testid=trainer-card]')).toBeVisible();

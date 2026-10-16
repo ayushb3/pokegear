@@ -7,6 +7,7 @@ export const DESC: Record<string, string> = {
   townmap: "Map: places I've been",
   bed: 'Bed: take a rest',
   gym: 'Gym: the bench',
+  radio: 'Radio: tune in',
   fridge: 'Fridge: food and ideas (sample)',
   tv: 'TV: a show is on',
   corkboard: 'Photos: photo board',

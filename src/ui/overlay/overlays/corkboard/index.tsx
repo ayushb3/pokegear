@@ -1,9 +1,11 @@
-import { useEffect, useState, type CSSProperties, type PointerEvent } from 'react';
+import { useEffect, useMemo, useState, type CSSProperties, type PointerEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { dim } from '../../../../world/api';
 import { closeOrReturn, returnToOf, useOverlay, useOverlayInput, type OverlayComponentProps } from '../../context';
 import { PHOTOS, captionOf, photoPath } from '../../../../content/photos';
-import { PLACES } from '../../../../content/places';
+import { PLACES, REGIONS } from '../../../../content/places';
+import MapTop from '../townmap/MapTop';
+import { initWorld, restoreNav } from '../townmap/nav';
 import {
   applyFilter,
   cellOf,
@@ -193,15 +195,27 @@ export default function Corkboard({ ctx, props }: OverlayComponentProps) {
   const pages = pageCount(N);
   const [sel, setSel] = useState(0);
   const [enlarged, setEnlarged] = useState(false);
-  const fromOverlay = returnToOf(props) !== null;
+  const returnTo = returnToOf(props);
+  const fromOverlay = returnTo !== null;
+  // Opened FROM the Town Map: its map stays on the top screen (the nav state it left, so the same pin / region is selected)
+  // until a photo is enlarged. Opened from the room (object / ?open=photos): the room stays on top, as before.
+  const mapNav = useMemo(
+    () =>
+      returnTo?.id === 'townmap'
+        ? restoreNav(initWorld(PLACES, REGIONS), (returnTo.props as { nav?: unknown[] } | undefined)?.nav)
+        : null,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
 
-  // dim the world while a photo is enlarged
+  // dim the world while a photo is enlarged, or the whole time the map is on top (so there is no un-dim between overlays)
+  const dimmed = enlarged || mapNav !== null;
   useEffect(() => {
-    if (enlarged) {
+    if (dimmed) {
       dim(true);
       return () => dim(false);
     }
-  }, [enlarged]);
+  }, [dimmed]);
 
   const say = (i: number, prefix = '') => {
     const p = shown[i];
@@ -265,6 +279,7 @@ export default function Corkboard({ ctx, props }: OverlayComponentProps) {
 
   return (
     <>
+      {!enlarged && mapNav && <MapTop navState={mapNav} />}
       {enlarged &&
         topEl &&
         createPortal(

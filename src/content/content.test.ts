@@ -20,7 +20,7 @@ import { PHOTOS, captionOf } from './photos';
 import { PLACES } from './places';
 import { filtersOf } from '../ui/overlay/overlays/corkboard/board';
 import { BATTLE } from './battle';
-import { STATIONS, tune, needlePct, markerPcts, playlistId, trackUrl } from '../ui/overlay/overlays/radio/stations';
+import { STATIONS, tune, needlePct, markerPcts, playlistId, trackId, trackUrl } from '../ui/overlay/overlays/radio/stations';
 
 describe('object wiring (adding an object must keep these green)', () => {
   const ids = ALL_FURNITURE.filter((f) => f.id).map((f) => f.id as string);
@@ -670,6 +670,69 @@ describe('radio URL validators', () => {
       expect(trackUrl('https://open.spotify.com/track/short')).toBeNull();
     });
   });
+
+  describe('trackId', () => {
+    const VALID_TRACK = `https://open.spotify.com/track/${VALID_ID}`;
+    it('returns the 22-char ID for a valid track URL', () => {
+      expect(trackId(VALID_TRACK)).toBe(VALID_ID);
+    });
+    it('ignores a ?si= query string', () => {
+      expect(trackId(`${VALID_TRACK}?si=abc123`)).toBe(VALID_ID);
+    });
+    it('rejects empty string and junk', () => {
+      expect(trackId('')).toBeNull();
+      expect(trackId('placeholder')).toBeNull();
+    });
+    it('rejects http:, javascript: and other hosts', () => {
+      expect(trackId(`http://open.spotify.com/track/${VALID_ID}`)).toBeNull();
+      expect(trackId('javascript:alert(1)')).toBeNull();
+      expect(trackId(`https://evil.com/track/${VALID_ID}`)).toBeNull();
+      expect(trackId(`https://evil.open.spotify.com/track/${VALID_ID}`)).toBeNull();
+    });
+    it('rejects albums, playlists, extra segments, ../ tricks and wrong ID lengths', () => {
+      expect(trackId(`https://open.spotify.com/album/${VALID_ID}`)).toBeNull();
+      expect(trackId(`https://open.spotify.com/playlist/${VALID_ID}`)).toBeNull();
+      expect(trackId(`${VALID_TRACK}/extra`)).toBeNull();
+      expect(trackId(`https://open.spotify.com/track/../${VALID_ID}`)).toBeNull();
+      expect(trackId('https://open.spotify.com/track/short')).toBeNull();
+      expect(trackId(`${VALID_TRACK}X`)).toBeNull();
+    });
+  });
+});
+
+describe('radio stations (Ayush\'s listening)', () => {
+  const byId = (id: string) => STATIONS.find((s) => s.id === id);
+  it('On Repeat is a playlist station with a valid, query-free playlist URL', () => {
+    const s = byId('on-repeat');
+    expect(s?.kind).toBe('playlist');
+    if (s?.kind !== 'playlist') return;
+    expect(s.name).toBe('On Repeat');
+    expect(s.spotifyPlaylistUrl).not.toContain('?');
+    expect(playlistId(s.spotifyPlaylistUrl)).toBe('37i9dQZF1EpwgrMGIwAmjz');
+  });
+  it('the old Now Spinning list is gone and Ayush FM is kept', () => {
+    expect(byId('now-spinning')).toBeUndefined();
+    expect(byId('ayush-fm')?.kind).toBe('playlist');
+  });
+  it('All-time lists exactly the six tracks in order, each with a valid track ID and no invented notes', () => {
+    const s = byId('all-time');
+    expect(s?.kind).toBe('list');
+    if (s?.kind !== 'list') return;
+    expect(s.sample).toBe(false);
+    expect(s.tracks.map((t) => trackId(t.spotifyUrl))).toEqual([
+      '7Gci2t6aZIuyklsDTkAsnA',
+      '0kKOKDLP7mM8qttB5VPfHr',
+      '0rKtyWc8bvkriBthvHKY8d',
+      '19YKaevk2bce4odJkP5L22',
+      '1lh5stJGmaVucEdExCqEVm',
+      '4cNfcmyCGw53tOSOsRI3z8',
+    ]);
+    expect(s.tracks.map((t) => t.artist)).toEqual(['Joe Hisaishi', 'Frédéric Chopin', 'Joji', 'Frank Ocean', 'Daniel Caesar', 'Ludwig Göransson']);
+    for (const t of s.tracks) expect(t.note, t.title).toBeUndefined();
+  });
+  it('every list-station track has a valid track ID (the top-screen embed is built from it)', () => {
+    for (const s of STATIONS) if (s.kind === 'list') for (const t of s.tracks) expect(trackId(t.spotifyUrl), t.title).not.toBeNull();
+  });
 });
 
 describe('townmap assets', () => {
@@ -832,5 +895,52 @@ describe('pixel-font glyph guard', () => {
     }
     const bad = uncovered(texts);
     expect([...bad.entries()], 'uncovered chars').toEqual([]);
+  });
+});
+
+/**
+ * Curly quotes only. The pixel font aliases a straight `"` to the CLOSING quote
+ * (ALIASES in scripts/build-font.py), so `"Hi"` would render with a close quote on both
+ * sides. Displayed strings must use the real “ (U+201C) and ” (U+201D), both of which the
+ * font has. Radio content (radio.json / STATIONS) is deliberately NOT scanned: it is frozen
+ * awaiting Ayush's content pass (it currently has no straight double quote anyway).
+ */
+describe('displayed text uses curly double quotes', () => {
+  /** Every string value reachable from `v` (object keys are not displayed, so skipped). */
+  function strings(v: unknown, out: string[] = []): string[] {
+    if (typeof v === 'string') out.push(v);
+    else if (Array.isArray(v)) for (const x of v) strings(x, out);
+    else if (v && typeof v === 'object') for (const x of Object.values(v)) strings(x, out);
+    return out;
+  }
+
+  const texts = (): string[] => [
+    ...Object.values(OBJECT_ACTIONS).flatMap((a) => strings([a.lines, a.whenMuted])),
+    ...strings(Object.values(DECOR_REACTIONS).map((r) => [r.lines, r.again, r.drop])),
+    ...strings(followerContent),
+    ...strings(fridgeContent),
+    ...strings(BATTLE),
+    ...strings(DEX),
+    ...strings(piano),
+    ...strings(card),
+    ...strings(PHOTOS),
+    ...strings(PLACES),
+  ];
+
+  it('collects a meaningful number of strings', () => {
+    expect(texts().length).toBeGreaterThan(300);
+  });
+
+  it('no straight " inside any dialogue / displayed string', () => {
+    const bad = texts().filter((t) => t.includes('"'));
+    expect(bad, 'use “ and ” (U+201C / U+201D), not a straight "').toEqual([]);
+  });
+
+  it('every “ has a matching ” after it', () => {
+    for (const t of texts()) {
+      const open = [...t].filter((c) => c === '“').length;
+      const close = [...t].filter((c) => c === '”').length;
+      expect(open, t).toBe(close);
+    }
   });
 });

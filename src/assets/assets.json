@@ -295,16 +295,16 @@
   "decor.stairs-down": {
     "kind": "object",
     "path": "/assets/decor/stairs-down.png",
-    "w": 36,
-    "h": 40,
-    "color": "#6b5a48"
+    "w": 16,
+    "h": 16,
+    "color": "#5c301c"
   },
   "decor.stairs-up": {
     "kind": "object",
     "path": "/assets/decor/stairs-up.png",
-    "w": 32,
-    "h": 40,
-    "color": "#7d6a56"
+    "w": 16,
+    "h": 16,
+    "color": "#80482a"
   },
   "icon.fridge": {
     "kind": "icon",
@@ -1454,5 +1454,18 @@
     "w": 64,
     "h": 38,
     "color": "#d9cfb4"
+  },
+  "object.radio": {
+    "kind": "object",
+    "path": "/assets/objects/radio.png",
+    "w": 16,
+    "h": 20,
+    "color": "#9c9cb8"
+  },
+  "icon.radio": {
+    "kind": "icon",
+    "path": "/assets/icons/radio.png",
+    "w": 16,
+    "h": 16
   }
 }

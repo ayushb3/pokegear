@@ -10,10 +10,12 @@ import { DROP_ARC_MS, DROP_TOTAL_MS, dropLanding, dropPos } from './drop';
 import { Tour, bindTourCancelListeners, tourShouldRun, tourWaitMs } from './tour';
 import { buildGrassView, type GrassView } from './grassView';
 import { nightMatrix } from './nightTint';
+import { lightPatchRects } from './light';
 
 /**
  * Named child indices for the layers inside each RoomView container (back to front).
- * Exported so tests can lock in the order: light reveal/wash must be BELOW the spriteLayer.
+ * Exported so tests can lock in the order: light reveal/wash and the moonlit window copies (litLayer) must be BELOW the
+ * spriteLayer and fg (actors and tall pieces such as trees stand in front of a window) but ABOVE the night tint.
  * Container.addChild order in buildRoomView must stay in sync with these indices.
  */
 export const LAYER_ORDER = {
@@ -21,10 +23,10 @@ export const LAYER_ORDER = {
   tintLayer: 1,
   revealLayer: 2,
   washLayer: 3,
-  spriteLayer: 4,
-  fgLayer: 5,
-  cueLayer: 6,
-  litLayer: 7,
+  litLayer: 4,
+  spriteLayer: 5,
+  fgLayer: 6,
+  cueLayer: 7,
 } as const;
 
 /**
@@ -341,142 +343,26 @@ function createBurst(art: Anchor['art'], color: number, ms: number) {
 }
 
 /**
- * Draw a stepped, dithered light-reveal patch for one LightSource.
+ * Draw one LightSource as a hard-edged, pixel-stepped patch (geometry and floor clipping: light.ts).
  *
- * The technique: lights REVEAL the room through the tint, they don't paint on
- * top of it. Two Graphics are returned and stacked above the tint:
- *
- *  1. revealG  – draws the room's floor colour at LOW-to-MID alpha inside the
- *               patch, cancelling SOME of the tint so the wash colour shows
- *               through. Deliberately kept below ~0.50 so the wash hue reads.
- *  2. washG    – colour wash (warm amber / cool blue) at washAlpha from the
- *               LightSource. Together with the partial reveal the lit area
- *               reads as tinted light, not as bare floor.
- *
- * Shape 'ellipse': a flattened 2:1 ellipse offset below the source —
- *   the way screen/lamp light falls on a floor in perspective.
- *   Inner reveal alpha is capped at 0.50 so cream floors don't blow out.
- *
- * Shape 'moon': a short wide parallelogram below the window.
- *   - Dithered top AND bottom edge rows (2-row checker fringe).
- *   - 2 px total slant across the height — reads as oblique window light.
- *   - Low inner reveal (0.30) so the cool blue wash dominates over the floor.
- *
- * Integer pixel rows throughout; row height = TILE/4 (4 px at 1x).
+ * Lights REVEAL the room through the tint, they don't paint on top of it. Two Graphics are stacked above the tint:
+ *  1. revealG: the room's mean floor colour at a FLAT alpha per tone, cancelling part of the tint.
+ *  2. washG:   a flat warm / cool colour cast on the same rects.
+ * Two tones only (rim, core), no blur and no per-pixel ramp. Reveal is kept below ~0.50 so the wash hue reads and cream
+ * floors don't blow out. The light never covers wall rows, solid footprints or stairs (`lightPatchRects`).
  */
-function buildLightPatch(
-  light: LightSource,
-  floorColors: readonly [number, number],
-): { revealG: Graphics; washG: Graphics } {
+const REVEAL_ALPHA = { ellipse: [0.2, 0.4], moon: [0.16, 0.3] } as const;
+function buildLightPatch(light: LightSource, room: Room): { revealG: Graphics; washG: Graphics } {
   const revealG = new Graphics();
   const washG = new Graphics();
-
-  const cx = Math.round(light.cx * TILE);
-  const cy = Math.round(light.cy * TILE);
-  const RX = Math.round(light.rx * TILE); // half-width in px
-  const RY = Math.round(light.ry * TILE); // half-height in px
-  const rowH = Math.max(1, Math.round(TILE / 4)); // 4 px per row at 1x
-
-  // Average the two checker floor tones → one representative colour for the reveal.
-  const fc0 = floorColors[0];
-  const fc1 = floorColors[1];
-  const r0 = (fc0 >> 16) & 0xff, g0 = (fc0 >> 8) & 0xff, b0 = fc0 & 0xff;
-  const r1 = (fc1 >> 16) & 0xff, g1 = (fc1 >> 8) & 0xff, b1 = fc1 & 0xff;
-  const floorMid = (((r0 + r1) >> 1) << 16) | (((g0 + g1) >> 1) << 8) | ((b0 + b1) >> 1);
-
-  if (light.shape === 'ellipse') {
-    // 3 concentric ellipse bands, outer two dithered (every-other-row).
-    // Reveal alphas kept low enough that the wash hue reads on top.
-    const BANDS = 3;
-    const revealAlphas = [0.18, 0.32, 0.48]; // outer → inner (never blow out to white)
-    const isDithered   = [true,  true,  false];
-    for (let b = 0; b < BANDS; b++) {
-      const outerRX = Math.round((RX * (BANDS - b)) / BANDS);
-      const outerRY = Math.round((RY * (BANDS - b)) / BANDS);
-      const innerRX = Math.round((RX * (BANDS - b - 1)) / BANDS);
-      const innerRY = Math.round((RY * (BANDS - b - 1)) / BANDS);
-      const ra      = revealAlphas[b]!;
-      const dither  = isDithered[b]!;
-      for (let row = -outerRY; row < outerRY; row += rowH) {
-        if (dither && Math.floor(row / rowH) % 2 === 1) continue;
-        const midRow = row + rowH / 2;
-        const t = midRow / (outerRY || 1);
-        const outerHW = t * t < 1 ? Math.round(outerRX * Math.sqrt(1 - t * t)) : 0;
-        if (outerHW < 1) continue;
-        const ti = midRow / (innerRY || 0.001);
-        const innerHW = innerRY > 0 && ti * ti < 1 ? Math.round(innerRX * Math.sqrt(1 - ti * ti)) : 0;
-        const ry0 = cy + row;
-        if (innerHW > 0) {
-          const lw = outerHW - innerHW;
-          if (lw > 0) {
-            revealG.rect(cx - outerHW, ry0, lw, rowH).fill({ color: floorMid, alpha: ra });
-            revealG.rect(cx + innerHW, ry0, lw, rowH).fill({ color: floorMid, alpha: ra });
-            washG.rect(cx - outerHW, ry0, lw, rowH).fill({ color: light.color, alpha: light.washAlpha });
-            washG.rect(cx + innerHW, ry0, lw, rowH).fill({ color: light.color, alpha: light.washAlpha });
-          }
-        } else {
-          const fw = outerHW * 2;
-          if (fw > 0) {
-            revealG.rect(cx - outerHW, ry0, fw, rowH).fill({ color: floorMid, alpha: ra });
-            washG.rect(cx - outerHW, ry0, fw, rowH).fill({ color: light.color, alpha: light.washAlpha });
-          }
-        }
-      }
-    }
-  } else {
-    // shape === 'moon': a short wide parallelogram below the window.
-    // The reveal is kept LOW (0.30 inner) so the cool blue wash dominates and the
-    // patch reads as coloured moonlight rather than exposed warm floor.
-    // Top and bottom edges each get 2 rows of checker dither (every-other-row).
-    // The band slants 2 px rightward over its full height (oblique window light).
-    const halfW   = RX;
-    const topY    = cy - RY;
-    const botY    = cy + RY;
-    const totalH  = botY - topY;
-    // Dither zone: 2 rowH at each end
-    const ditherRows = 2;
-    const ditherH    = ditherRows * rowH;
-
-    for (let row = topY; row < botY; row += rowH) {
-      const rowIdx    = Math.floor((row - topY) / rowH);
-      const progress  = (row - topY) / Math.max(1, totalH);
-      // 2 px total slant: row 0 → offset 0, last row → offset +2
-      const slant     = Math.round(progress * 2);
-      const xLeft     = cx - halfW + slant;
-      const xRight    = cx + halfW + slant;
-      const fullW     = xRight - xLeft;
-      if (fullW < 2) continue;
-
-      // Dither fringe at top (first ditherRows rows) and bottom (last ditherRows rows).
-      const inTopFringe = (row - topY) < ditherH;
-      const inBotFringe = (botY - row) <= ditherH;
-      const isFringe    = inTopFringe || inBotFringe;
-      // Skip every-other row in the fringe (checker pattern)
-      if (isFringe && rowIdx % 2 === 1) continue;
-
-      // Inner reveal alpha: 0.20 in fringe rows, 0.30 in body
-      const revealA = isFringe ? 0.20 : 0.30;
-      // Wash alpha: body=washAlpha, fringe=half
-      const washA   = isFringe ? light.washAlpha * 0.5 : light.washAlpha;
-
-      // Left/right dithered edge columns (2 px wide)
-      const edgeW = Math.max(1, Math.min(2, Math.floor(fullW / 6)));
-      const midW  = fullW - edgeW * 2;
-
-      // Edge strips (dithered: skip in alternating rows even in the body)
-      const skipEdge = rowIdx % 2 === 1;
-      if (!skipEdge && edgeW > 0) {
-        revealG.rect(xLeft, row, edgeW, rowH).fill({ color: floorMid, alpha: revealA * 0.5 });
-        revealG.rect(xRight - edgeW, row, edgeW, rowH).fill({ color: floorMid, alpha: revealA * 0.5 });
-        washG.rect(xLeft, row, edgeW, rowH).fill({ color: light.color, alpha: washA * 0.5 });
-        washG.rect(xRight - edgeW, row, edgeW, rowH).fill({ color: light.color, alpha: washA * 0.5 });
-      }
-      // Main body fill
-      if (midW > 0) {
-        revealG.rect(xLeft + edgeW, row, midW, rowH).fill({ color: floorMid, alpha: revealA });
-        washG.rect(xLeft + edgeW, row, midW, rowH).fill({ color: light.color, alpha: washA });
-      }
-    }
+  // Average the two checker floor tones into one representative colour for the reveal.
+  const [fc0, fc1] = room.floor;
+  const mix = (sh: number) => ((((fc0 >> sh) & 0xff) + ((fc1 >> sh) & 0xff)) >> 1) << sh;
+  const floorMid = mix(16) | mix(8) | mix(0);
+  const reveal = REVEAL_ALPHA[light.shape];
+  for (const r of lightPatchRects(light, room)) {
+    revealG.rect(r.x, r.y, r.w, r.h).fill({ color: floorMid, alpha: reveal[r.tone] });
+    washG.rect(r.x, r.y, r.w, r.h).fill({ color: light.color, alpha: light.washAlpha * (r.tone ? 1 : 0.5) });
   }
   return { revealG, washG };
 }
@@ -612,28 +498,28 @@ async function buildRoomView(room: Room, grid: Grid, debugGrid: boolean, isNight
   washLayer.alpha = 0;
   const lightPairs: { revealG: Graphics; washG: Graphics; cloud: CloudPass | null }[] = [];
   for (const ls of room.lights) {
-    const { revealG, washG } = buildLightPatch(ls, room.floor);
+    const { revealG, washG } = buildLightPatch(ls, room);
     revealLayer.addChild(revealG);
     washLayer.addChild(washG);
     lightPairs.push({ revealG, washG, cloud: ls.cloud ? new CloudPass() : null });
   }
 
-  const litLayer = new Container(); // moonlit windows, drawn above sprites
+  const litLayer = new Container(); // moonlit windows: above the tint, below actors and the foreground
   for (const w of lit) litLayer.addChild(w);
 
   // Layer order inside the room container (back to front):
   //   bg (floor + furniture bg) → tintLayer → revealLayer → washLayer
+  //   → litLayer (moonlit window copies: brighter than the night tint, but behind everything that stands in front)
   //   → spriteLayer (player, follower, NPCs, poses)
-  //   → fg (foreground furniture: parts above footprint)
+  //   → fg (foreground furniture: parts above footprint, e.g. trees over the house windows)
   //   → cueLayer (sparkles, glow cues)
-  //   → litLayer (moonlit window sprites: brighter than the night tint)
   //
   // This ensures the light glow (reveal/wash) is always BELOW player sprites,
   // fixing the "glow drawn over player legs" regression present when those layers
   // lived on the stage above the room container.
   const container = new Container();
   container.position.set(ROOM_X, ROOM_Y);
-  container.addChild(bg, tintLayer, revealLayer, washLayer, spriteLayer, fg, cueLayer, litLayer);
+  container.addChild(bg, tintLayer, revealLayer, washLayer, litLayer, spriteLayer, fg, cueLayer);
 
   // Night for the layers ABOVE the tint (actors, poses, grass tips, fg): the same overlay maths as a colour matrix,
   // so nothing glows on a dark floor and a tall piece shows no seam at its footprint line. Cues and litLayer stay out.
@@ -848,7 +734,7 @@ export async function createWorld(
   //   surround → room containers → blackout
   //
   // Each room container holds its own layer stack (see buildRoomView):
-  //   bg → tintLayer → revealLayer → washLayer → spriteLayer → fg → cueLayer → litLayer
+  //   bg → tintLayer → revealLayer → washLayer → litLayer → spriteLayer → fg → cueLayer
   //
   // tintLayer, revealLayer, washLayer and litLayer are ALL inside each room container,
   // so sprites (player, follower) and foreground furniture are always drawn ABOVE the

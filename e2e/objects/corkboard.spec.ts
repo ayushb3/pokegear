@@ -21,6 +21,8 @@ test('corkboard: open, cross a page boundary, enlarge, A next, B back, B closes'
   expect(at).toMatchObject({ r: 'downstairs', f: 'up' });
   const board = page.locator('[data-testid=corkboard]');
   await expect(board.locator('[data-testid=photo-filter-label]')).toHaveText(`ALL ${PHOTOS.length}`);
+  // opened from the room (not the Town Map): the room stays on the top screen, no map layer
+  await expect(page.locator('[data-testid=tm-top]')).toHaveCount(0);
 
   // 4 thumbnails on page 1, frame 0 selected, page indicator n/m
   for (let i = 0; i < 4; i++) await expect(board.locator(`[data-testid=photo-frame-${i}]`)).toBeVisible();

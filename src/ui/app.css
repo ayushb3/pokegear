@@ -457,6 +457,54 @@
   padding: 0 calc(var(--u) * 3);
   white-space: nowrap;
 }
+/* Bag room tabs (Bedroom / Downstairs / Yard): the same 18u strip the location name used to take, so the bag keeps its two slot
+ * rows. The selected tab is the warm pocket-name strip (full location name); the others are dimmer short names. Each tab is a
+ * full-height third of the row; an invisible ::before grows its tap area up to the box edge and down to the slot rows. */
+.bag-tabs {
+  flex: none;
+  display: flex;
+  gap: calc(var(--u) * 2);
+  height: var(--lh);
+}
+.bag-tab {
+  position: relative;
+  flex: 0 0 auto;
+  min-width: max(44px, calc(var(--u) * 44)); /* a 44 px tap width even for 'Yard' */
+  padding: 0 calc(var(--u) * 3);
+  font: inherit;
+  line-height: var(--lh);
+  color: #5a4630;
+  background: #e6d6a6;
+  box-shadow: inset 0 0 0 calc(var(--u) * 1) #c6a468;
+  border: 0;
+  border-radius: calc(var(--u) * 2);
+  white-space: nowrap;
+  cursor: pointer;
+  z-index: 1;
+}
+.bag-tab.on {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: #3a1d06;
+  background: #f0b45c;
+  box-shadow: inset 0 0 0 calc(var(--u) * 1) #a8661e;
+}
+.bag-tab-text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bag-tab::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--u) * -1);
+  right: calc(var(--u) * -1);
+  top: calc(var(--u) * -5);
+  bottom: calc(var(--u) * -2);
+}
+.bag-tab:active:not(.on) {
+  background: #d8c48c;
+}
 /* bag: the idle box shows a 4x2 grid of the room's objects (HGSS bag style); never resizes the box */
 .bag {
   flex: 1;
@@ -492,7 +540,8 @@
 .slot {
   position: relative;
   --hit-in: calc(var(--u) * 1.5);
-  --hit-out: 22px; /* may overlap the header / description (plain text); the idle box clips it, and no interactive element is nearby */
+  --hit-out: 22px; /* bottom row, downwards: may overlap the description (plain text); the idle box clips it, and no interactive element is nearby */
+  --hit-up: 0px; /* top row, upwards: the room tabs own the strip above, so the slots only reach up to its edge */
   --bw: calc(var(--u) * 2);
 }
 .slot::before {
@@ -500,7 +549,7 @@
   position: absolute;
   left: calc(var(--bw) * -1);
   right: calc(var(--bw) * -1);
-  top: calc(var(--bw) * -1 - var(--hit-out));
+  top: calc(var(--bw) * -1 - var(--hit-up));
   bottom: calc(var(--bw) * -1 - var(--hit-in));
 }
 .slot:nth-child(n + 5)::before {
@@ -570,10 +619,35 @@
   align-items: flex-end;
 }
 .pad-left {
+  position: relative;
   flex: none;
   display: flex;
   align-items: flex-end;
   gap: 0;
+}
+/* Desktop key hint: "Z <A label>" / "X <B label>", two lines in the free corner above START (88 x 28u at 1x, 58 x 28u at 2x: the pad's
+ * top-left is empty; the overlay frame is full). Fine pointers only (never on touch), and only while an overlay is open. The font
+ * stays 16u; only the line height is 14u so two lines fit the 28u. */
+.key-hint {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .key-hint {
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    width: 100%;
+    height: calc(var(--u) * 28); /* two 14u line boxes; at 2x the overlay grows to 124u, so 28u is all the pad leaves above START */
+    box-sizing: border-box;
+    padding-left: calc(var(--u) * 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: calc(var(--u) * 14);
+    color: #4a4a58;
+    white-space: nowrap;
+    pointer-events: none;
+  }
 }
 .pad-mid {
   /* the Trainer Card button: centred in the gap between START / sound (left) and B / A (right) at every scale. Round, 44px+,
@@ -1030,6 +1104,7 @@
 
 /* visible keyboard focus on every real button */
 .slot:focus-visible,
+.bag-tab:focus-visible,
 .btn-sound:focus-visible,
 .btn:focus-visible,
 .btn-card:focus-visible,
