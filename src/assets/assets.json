@@ -295,16 +295,16 @@
   "decor.stairs-down": {
     "kind": "object",
     "path": "/assets/decor/stairs-down.png",
-    "w": 36,
-    "h": 40,
-    "color": "#6b5a48"
+    "w": 16,
+    "h": 16,
+    "color": "#5c301c"
   },
   "decor.stairs-up": {
     "kind": "object",
     "path": "/assets/decor/stairs-up.png",
-    "w": 32,
-    "h": 40,
-    "color": "#7d6a56"
+    "w": 16,
+    "h": 16,
+    "color": "#80482a"
   },
   "icon.fridge": {
     "kind": "icon",
