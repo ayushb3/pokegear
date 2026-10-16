@@ -76,9 +76,9 @@
     "kind": "object",
     "path": "/assets/objects/monitor.png",
     "w": 32,
-    "h": 24,
+    "h": 28,
     "frames": 8,
-    "frameMs": 1500,
+    "frameMs": 500,
     "color": "#2f9e8f"
   },
   "object.townmap": {

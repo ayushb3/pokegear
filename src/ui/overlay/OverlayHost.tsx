@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { freeze, interact, resume } from '../../world/api';
 import { Ctx, DEFAULT_LABELS, useOverlay, type Current, type HostApi, type InputHandlers } from './context';
-import { KEY_A, KEY_B, KEY_DIR } from './keys';
+import { KEY_A, KEY_B, KEY_DIR, KEY_L, KEY_R } from './keys';
 export { useOverlay };
 import { OVERLAYS } from './registry';
 
@@ -94,6 +94,11 @@ export function OverlayHost({ children, focusRef }: { children: ReactNode; focus
       } else if (KEY_B.has(e.code)) {
         e.preventDefault();
         if (!e.repeat) pressB();
+      } else if (KEY_L.has(e.code) || KEY_R.has(e.code)) {
+        const h = KEY_L.has(e.code) ? handlers.current.l : handlers.current.r;
+        if (!h) return; // overlays without pages leave Q / E / PageUp / PageDown alone
+        e.preventDefault();
+        if (!e.repeat) h();
       }
     };
     window.addEventListener('keydown', onKey);

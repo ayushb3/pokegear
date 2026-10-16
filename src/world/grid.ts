@@ -88,7 +88,8 @@ const BEDROOM_FURNITURE: readonly Furniture[] = [
   { id: 'piano', label: 'Piano', slot: 'object.piano', x: 12, y: 2, w: 2, h: 1, solid: true },
   // Commit log sits next to the bookshelf (x:0-1, y:2), clearly separate from the desk (PC+monitor at x:8-11).
   { id: 'journal', label: 'Commit log', slot: 'object.journal', x: 2, y: 2, w: 1, h: 1, solid: true },
-  { id: 'monitor', label: 'Monitor', slot: 'object.monitor', x: 10, y: 2, w: 2, h: 1, solid: true },
+  // wall-mounted trading screen above the desk, right of the PC: interact from the floor tile below, facing up (like the town map)
+  { id: 'monitor', label: 'Monitor', slot: 'object.monitor', x: 10, y: 1, w: 2, h: 1, solid: false },
   // wall object: its tiles are in the wall rows; interact from the tile below, facing up
   { id: 'townmap', label: 'Map', slot: 'object.townmap', x: 5, y: 1, w: 2, h: 1, solid: false },
   // Radio: the bottom-right corner the gym bench left (the gym is downstairs now). Nothing stands in front of it, so the

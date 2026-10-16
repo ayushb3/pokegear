@@ -16,6 +16,10 @@ export const KEY_DIR: Record<string, Dir4> = {
   ArrowRight: 'right',
   KeyD: 'right',
 };
+/** L / R shoulder keys, for overlays with pages (`l` / `r` in useOverlayInput). The same pair as the idle bag's room tabs
+ *  (`tabKeyStep` in bagTabs.ts), which only act while no overlay is open, so they never collide. */
+export const KEY_L = new Set(['KeyQ', 'PageUp']);
+export const KEY_R = new Set(['KeyE', 'PageDown']);
 
 /** The key shown on the hint for A / B (the first one a player would reach for; Enter / Space and Esc / Backspace work too). */
 export const HINT_KEY_A = 'Z';

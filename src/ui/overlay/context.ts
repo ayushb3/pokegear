@@ -8,6 +8,9 @@ export interface InputHandlers {
   down?: () => void;
   left?: () => void;
   right?: () => void;
+  /** L / R shoulder keys (Q / E, also PageUp / PageDown): switch an overlay's pages without touching its d-pad navigation */
+  l?: () => void;
+  r?: () => void;
   /** tiny labels under the on-screen A / B buttons for the current screen ("Next", "Close"...). Default: Talk / Back. */
   labels?: ButtonLabels;
 }
