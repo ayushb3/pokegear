@@ -1,6 +1,6 @@
 /** The ONLY module UI code may import from src/world/. */
 // Exports: interact, freeze, resume, goTo, onEvent, rest, isNight, dim, objectBox, playObjectAnim, showEmote, startWipe, clearWipe, isShiny,
-// objects, emphasisObject, currentRoom, roomLabel, onRoom, WorldView.
+// objects, emphasisObject, currentRoom, roomLabel, rooms, onRoom, WorldView.
 import { bus } from './bus';
 import { ALL_FURNITURE, ROOMS, ROOM_X, ROOM_Y, TILE, listObjects, listReactive, roomOf, type RoomId } from './grid';
 import type { WorldEvent } from './actors';
@@ -50,6 +50,10 @@ export function currentRoom(): RoomId {
 /** HGSS-style location name of a room (default: the current one). */
 export function roomLabel(room: RoomId = currentRoom()): string {
   return roomOf(room).label;
+}
+/** Every room of the house in house order (bedroom, downstairs, yard), for the bag's room tabs. Read-only. */
+export function rooms(): { id: RoomId; label: string }[] {
+  return (Object.keys(ROOMS) as RoomId[]).map((id) => ({ id, label: ROOMS[id].label }));
 }
 /** Fires when the player enters another room (after the fade). Works with useSyncExternalStore(onRoom, currentRoom). */
 export function onRoom(cb: () => void): () => void {
