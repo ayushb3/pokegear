@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { freeze, interact, resume } from '../../world/api';
-import { Ctx, DEFAULT_LABELS, useOverlay, type Current, type Dir4, type HostApi, type InputHandlers } from './context';
+import { Ctx, DEFAULT_LABELS, useOverlay, type Current, type HostApi, type InputHandlers } from './context';
+import { KEY_A, KEY_B, KEY_DIR } from './keys';
 export { useOverlay };
 import { OVERLAYS } from './registry';
 
@@ -17,19 +18,6 @@ import { OVERLAYS } from './registry';
  *  - Overlays are React components registered by id in ./registry.ts and receive
  *    { props, ctx }. They declare key handling with useOverlayInput().
  */
-
-const KEY_A = new Set(['Space', 'Enter', 'NumpadEnter', 'KeyZ']);
-const KEY_B = new Set(['Escape', 'KeyX', 'Backspace']);
-const KEY_DIR: Record<string, Dir4> = {
-  ArrowUp: 'up',
-  KeyW: 'up',
-  ArrowDown: 'down',
-  KeyS: 'down',
-  ArrowLeft: 'left',
-  KeyA: 'left',
-  ArrowRight: 'right',
-  KeyD: 'right',
-};
 
 export function OverlayHost({ children, focusRef }: { children: ReactNode; focusRef: RefObject<HTMLElement | null> }) {
   const [current, setCurrent] = useState<Current | null>(null);

@@ -1,6 +1,8 @@
-import { useEffect, useState, useSyncExternalStore, type MouseEvent, type PointerEvent } from 'react';
-import { currentRoom, emphasisObject, goTo, objects, onRoom, onEvent, roomLabel } from '../world/api';
+import { useEffect, useMemo, useState, useSyncExternalStore, type MouseEvent, type PointerEvent } from 'react';
+import { currentRoom, emphasisObject, goTo, objects, onRoom, onEvent, roomLabel, rooms, type RoomId } from '../world/api';
 import { DESC } from './bagCopy';
+import { stepRoom, tabKeyStep, tabText } from './bagTabs';
+import { keyHintLines } from './overlay/keys';
 import Speaker from './Speaker';
 import { isMuted, setMuted, subscribeMuted } from '../audio/audio';
 import { getIconPath } from '../assets/useAsset';
@@ -124,10 +126,33 @@ export default function BottomScreen() {
   useEffect(() => {
     if (host.current) setSel(null); // the grid is covered; it comes back with nothing selected
   }, [host.current]);
-  useEffect(() => setSel(null), [room]);
+  // the bag lists the room of the SELECTED TAB: the player's room on open and whenever the player changes room, else the tab picked
+  const [view, setView] = useState<RoomId>(room);
+  useEffect(() => {
+    setView(room);
+    setSel(null);
+  }, [room]);
+  useEffect(() => setSel(null), [view]);
+  const tabs = useMemo(() => rooms(), []);
+  // L / R (Q / E, PageUp / PageDown) switch tabs while the bag shows; the arrows keep walking the player
+  const bagShown = !host.current;
+  useEffect(() => {
+    if (!bagShown) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+      const t = e.target as HTMLElement | null;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+      const step = tabKeyStep(e.code);
+      if (!step) return;
+      e.preventDefault();
+      setView((v) => stepRoom(tabs.map((r) => r.id), v, step));
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [bagShown, tabs]);
   const cardIcon = getIconPath('card');
   // first visit: once the hint line is gone, the bag rests on the glowing object (the PC) and shows what it is, until it has been opened
-  const emph = emphasisObject(room);
+  const emph = emphasisObject(view);
   const pending = useEmphasisPending(emph);
   const rest = pending && hintGone && sel === null ? emph : null;
   const shown = sel ?? rest;
@@ -143,11 +168,36 @@ export default function BottomScreen() {
             <OverlaySlot />
           ) : (
             <div className="idle-box" data-testid="idle-box">
-              <div className="idle-loc" data-testid="idle-loc">
-                {tourLine ?? roomLabel(room)}
-              </div>
-              <div className="bag" role="group" aria-label="Walk to an object">
-                {objects(room).map((o) => (
+              {tourLine ? (
+                <div className="idle-loc" data-testid="idle-loc">
+                  {tourLine}
+                </div>
+              ) : (
+                <div className="bag-tabs" role="tablist" aria-label="Rooms" aria-keyshortcuts="Q E">
+                  {tabs.map((r) => {
+                    const on = r.id === view;
+                    return (
+                      <button
+                        key={r.id}
+                        type="button"
+                        role="tab"
+                        className={`bag-tab${on ? ' on' : ''}`}
+                        data-testid={`tab-${r.id}`}
+                        data-room={r.id}
+                        aria-selected={on}
+                        title={r.label}
+                        {...press(() => setView(r.id))}
+                      >
+                        <span className="bag-tab-text" data-testid={on ? 'idle-loc' : undefined}>
+                          {tabText(r.id, r.label, on)}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+              <div className="bag" role="group" aria-label={`Walk to an object: ${roomLabel(view)}`}>
+                {objects(view).map((o) => (
                   <Slot key={o.id} id={o.id} label={o.label} aria={`Walk to the ${o.label}`} selected={shown === o.id} onSelect={setSel} onPress={() => goTo(o.id)} />
                 ))}
               </div>
@@ -159,6 +209,13 @@ export default function BottomScreen() {
         </div>
         <div className="pad">
           <div className="pad-left">
+            {host.current && (
+              <div className="key-hint" aria-hidden="true" data-testid="key-hint">
+                {keyHintLines(host.labels).map((l) => (
+                  <span key={l}>{l}</span>
+                ))}
+              </div>
+            )}
             <button
               type="button"
               className="btn-start"
