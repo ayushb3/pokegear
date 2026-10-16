@@ -91,8 +91,8 @@ test.describe('plain twin pages are linked', () => {
   test('/about links the twins and its og:image is /card.png', async ({ page, request }) => {
     await page.goto('/about');
     for (const href of PAGES) await expect(page.locator(`a[href="${href}"]`).first()).toBeVisible();
-    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', '/card.png');
-    await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute('content', '/card.png');
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /\/card\.png$/);
+    await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute('content', /\/card\.png$/);
     expect((await request.get('/card.png')).status()).toBe(200);
   });
 });

@@ -24,11 +24,11 @@ const description = `${card.name}, ${card.role.text} at ${EMPLOYER}. ${card.pitc
     <meta property="og:title" content={`${card.name} — About`} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="profile" />
-    <meta property="og:image" content="/card.png" />
+    <meta property="og:image" content={new URL('/card.png', Astro.site).href} />
     <meta property="og:image:width" content="480" />
     <meta property="og:image:height" content="248" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="/card.png" />
+    <meta name="twitter:image" content={new URL('/card.png', Astro.site).href} />
     <style is:inline set:html={fontCss}></style>
     <style>
       :root { color-scheme: light; }
