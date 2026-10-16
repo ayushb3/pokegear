@@ -29,7 +29,7 @@ test('room tabs: tapping a tab lists that room, the player does not move', async
   await load(page);
   await tab(page, 'downstairs').dispatchEvent('pointerdown');
   await expect(tab(page, 'downstairs')).toHaveAttribute('aria-selected', 'true');
-  expect(await slotIds(page)).toEqual(['fridge', 'tv', 'corkboard', 'mom']);
+  expect(await slotIds(page)).toEqual(['fridge', 'tv', 'corkboard', 'mom', 'gym']);
   await expect(page.locator('[data-testid=idle-loc]')).toHaveText('Downstairs');
   await tab(page, 'yard').dispatchEvent('pointerdown');
   expect(await slotIds(page)).toEqual(['mailbox', 'sign']);
@@ -70,7 +70,7 @@ test('room tabs: picking an object in another room tab walks there across rooms 
   await expect(page.locator('[data-testid=dialogue]')).toBeVisible({ timeout: 25_000 });
   await dismissAll(page);
   await expect(tab(page, 'downstairs')).toHaveAttribute('aria-selected', 'true');
-  expect(await slotIds(page)).toEqual(['fridge', 'tv', 'corkboard', 'mom']);
+  expect(await slotIds(page)).toEqual(['fridge', 'tv', 'corkboard', 'mom', 'gym']);
 });
 
 test('room tabs: first visit, the PC stays the resting cursor on the bedroom tab only', async ({ page }) => {
