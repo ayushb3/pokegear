@@ -1,0 +1,212 @@
+{
+  "sample": true,
+  "month": "2026-10",
+  "rules": {
+    "loss-limit": {
+      "name": "Daily loss limit",
+      "short": "Loss limit"
+    },
+    "profit-cap": {
+      "name": "Daily profit cap",
+      "short": "Profit cap"
+    },
+    "closed-by-8": {
+      "name": "Closed by 8:00",
+      "short": "8:00 close"
+    }
+  },
+  "days": [
+    {
+      "date": "2026-10-01",
+      "r": 1.4,
+      "broken": [],
+      "trades": [
+        { "r": 0.8, "minutes": 18 },
+        { "r": 0.6, "minutes": 32 }
+      ]
+    },
+    {
+      "date": "2026-10-02",
+      "r": -0.8,
+      "broken": [],
+      "trades": [
+        { "r": 0.4, "minutes": 12 },
+        { "r": -1.2, "minutes": 25 }
+      ]
+    },
+    {
+      "date": "2026-10-05",
+      "r": 0.0,
+      "broken": [],
+      "trades": [
+        { "r": 0.5, "minutes": 8 },
+        { "r": -0.5, "minutes": 14 }
+      ]
+    },
+    {
+      "date": "2026-10-06",
+      "r": null,
+      "broken": []
+    },
+    {
+      "date": "2026-10-07",
+      "r": -2.1,
+      "broken": [
+        "loss-limit",
+        "closed-by-8"
+      ],
+      "trades": [
+        { "r": -0.6, "minutes": 45 },
+        { "r": -0.8, "minutes": 72 },
+        { "r": -0.7, "minutes": 120 }
+      ]
+    },
+    {
+      "date": "2026-10-08",
+      "r": 0.6,
+      "broken": [],
+      "trades": [
+        { "r": 0.6, "minutes": 22 }
+      ]
+    },
+    {
+      "date": "2026-10-09",
+      "r": 2.2,
+      "broken": [],
+      "trades": [
+        { "r": 1.4, "minutes": 15 },
+        { "r": 0.8, "minutes": 38 }
+      ]
+    },
+    {
+      "date": "2026-10-12",
+      "r": -1.0,
+      "broken": [],
+      "trades": [
+        { "r": 0.3, "minutes": 10 },
+        { "r": -1.3, "minutes": 55 }
+      ]
+    },
+    {
+      "date": "2026-10-13",
+      "r": 3.6,
+      "broken": [
+        "profit-cap"
+      ],
+      "trades": [
+        { "r": 1.2, "minutes": 28 },
+        { "r": 2.4, "minutes": 95 }
+      ]
+    },
+    {
+      "date": "2026-10-14",
+      "r": null,
+      "broken": []
+    },
+    {
+      "date": "2026-10-15",
+      "r": -0.4,
+      "broken": [],
+      "trades": [
+        { "r": 0.2, "minutes": 7 },
+        { "r": -0.6, "minutes": 19 }
+      ]
+    },
+    {
+      "date": "2026-10-16",
+      "r": 1.1,
+      "broken": [],
+      "trades": [
+        { "r": 0.6, "minutes": 42 },
+        { "r": 0.5, "minutes": 16 }
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "r": -1.6,
+      "broken": [
+        "closed-by-8"
+      ],
+      "trades": [
+        { "r": -1.6, "minutes": 88 }
+      ]
+    },
+    {
+      "date": "2026-10-20",
+      "r": 0.0,
+      "broken": [],
+      "trades": [
+        { "r": 0.3, "minutes": 5 },
+        { "r": -0.3, "minutes": 11 }
+      ]
+    },
+    {
+      "date": "2026-10-21",
+      "r": 0.9,
+      "broken": [],
+      "trades": [
+        { "r": 0.9, "minutes": 34 }
+      ]
+    },
+    {
+      "date": "2026-10-22",
+      "r": -1.2,
+      "broken": [],
+      "trades": [
+        { "r": 0.5, "minutes": 9 },
+        { "r": -1.0, "minutes": 47 },
+        { "r": -0.7, "minutes": 20 }
+      ]
+    },
+    {
+      "date": "2026-10-23",
+      "r": null,
+      "broken": []
+    },
+    {
+      "date": "2026-10-26",
+      "r": 1.8,
+      "broken": [],
+      "trades": [
+        { "r": 1.0, "minutes": 30 },
+        { "r": 0.8, "minutes": 60 }
+      ]
+    },
+    {
+      "date": "2026-10-27",
+      "r": -0.5,
+      "broken": [],
+      "trades": [
+        { "r": -0.5, "minutes": 17 }
+      ]
+    },
+    {
+      "date": "2026-10-28",
+      "r": -1.9,
+      "broken": [
+        "loss-limit"
+      ],
+      "trades": [
+        { "r": 0.4, "minutes": 6 },
+        { "r": -2.3, "minutes": 103 }
+      ]
+    },
+    {
+      "date": "2026-10-29",
+      "r": 0.3,
+      "broken": [],
+      "trades": [
+        { "r": 0.3, "minutes": 21 }
+      ]
+    },
+    {
+      "date": "2026-10-30",
+      "r": 1.0,
+      "broken": [],
+      "trades": [
+        { "r": 0.6, "minutes": 13 },
+        { "r": 0.4, "minutes": 27 }
+      ]
+    }
+  ]
+}

@@ -30,6 +30,9 @@ const KEY_DIR: Record<string, Dir4> = {
   ArrowRight: 'right',
   KeyD: 'right',
 };
+/** L / R shoulder keys: the same pair the idle bag's room tabs use (those only act while no overlay is open) */
+const KEY_L = new Set(['KeyQ', 'PageUp']);
+const KEY_R = new Set(['KeyE', 'PageDown']);
 
 export function OverlayHost({ children, focusRef }: { children: ReactNode; focusRef: RefObject<HTMLElement | null> }) {
   const [current, setCurrent] = useState<Current | null>(null);
@@ -106,6 +109,11 @@ export function OverlayHost({ children, focusRef }: { children: ReactNode; focus
       } else if (KEY_B.has(e.code)) {
         e.preventDefault();
         if (!e.repeat) pressB();
+      } else if (KEY_L.has(e.code) || KEY_R.has(e.code)) {
+        const h = KEY_L.has(e.code) ? handlers.current.l : handlers.current.r;
+        if (!h) return; // overlays without pages leave Q / E / PageUp / PageDown alone
+        e.preventDefault();
+        if (!e.repeat) h();
       }
     };
     window.addEventListener('keydown', onKey);
