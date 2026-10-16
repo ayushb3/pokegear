@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 // Bag / dock icons must be crisp: 16x16 with strictly binary alpha (pixel review #3).
 // A tiny PNG decoder (8-bit RGBA, non-interlaced: what scripts/make-icons.py writes) keeps this dependency-free.
-const IDS = ['bed', 'pc', 'piano', 'journal', 'monitor', 'townmap', 'gym', 'card', 'fridge', 'tv', 'corkboard', 'mom'];
+const IDS = ['bed', 'pc', 'piano', 'journal', 'monitor', 'townmap', 'gym', 'radio', 'card', 'fridge', 'tv', 'corkboard', 'mom'];
 
 function decode(file: string) {
   const buf = readFileSync(new URL(`../../public/assets/icons/${file}.png`, import.meta.url));

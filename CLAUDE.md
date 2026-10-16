@@ -26,7 +26,7 @@ Agent loop (implement → verify → fresh review → PR) and its accumulated le
 
 ## Rooms (the house)
 - `ROOMS` in `grid.ts` is the source of truth: `Room = { id, label, furniture, decor, warps, start, floor, wall }`. Rooms: `bedroom` ("Ayush's room"),
-  `downstairs` ("Downstairs": fridge, TV, corkboard, Mom) and `yard` ("Front yard": mailbox, sign, tall grass). `FURNITURE`, `DECOR` and `PLAYER_START` are aliases of the BEDROOM's tables (old imports keep working);
+  `downstairs` ("Downstairs": fridge, TV, corkboard, Mom, gym bench) and `yard` ("Front yard": mailbox, sign, tall grass). `FURNITURE`, `DECOR` and `PLAYER_START` are aliases of the BEDROOM's tables (old imports keep working);
   `ALL_FURNITURE` is every object of every room. Object ids are unique across the house; `roomOfObject(id)` finds the room.
 - **Every room is 14 x 10** (back wall = rows 0-1), so `ROOM_X`/`ROOM_Y`, the surround and the tap maths never change. A room's `floor` / `wall` are its palette (`drawRoom`).
 - **Warps** are the stairs: `{ x, y, to, arrive: { x, y, facing } }`. A warp tile is walkable, sits under NON-solid decor (`decor.stairs-*`), is never a standing spot, and its
@@ -157,10 +157,10 @@ exceed the box; never rely on `overflow` or hope it fits.
   hovers it. Reactive decor (`react`, keyed by `decorKey`) shares it; plain decoration (`id: null`, no `react`) has none. `prefers-reduced-motion` gets static cues.
 
 ## Objects (all are already laid out)
-The bedroom has 7 objects: pc, piano, bed, journal, monitor, townmap, gym. The yard has 2: mailbox (overlay: Email / LinkedIn / GitHub from `resume.json`) and sign (lines only: the one hint about the grass). Downstairs has 4: fridge (food log overlay, see "Fridge" below), tv, corkboard (a photo board, see Photo board), mom
-(generic lines only: never invent facts about Ayush). The cap is 7 PER ROOM. Footprints, standing spots and
+The bedroom has 7 objects: pc, piano, bed, journal, monitor, townmap, radio (bottom-right corner, (13,9); art `scripts/objects/radio.py`, the ThatsSoWitty cassette radio; opens the `radio` overlay). The yard has 2: mailbox (overlay: Email / LinkedIn / GitHub from `resume.json`) and sign (lines only: the one hint about the grass). Downstairs has 5: fridge (food log overlay, see "Fridge" below), tv, corkboard (a photo board, see Photo board), mom
+(generic lines only: never invent facts about Ayush), gym (the bench, living room bottom-right x:10-12 y:9; it moved down from the bedroom to make room for the radio, pose animation unchanged). The cap is 7 PER ROOM. Footprints, standing spots and
 placeholder asset slots for ALL of them are already in `grid.ts` / `assets.json`. Groups (Common Region):
-tech at the desk (PC, monitor), commit log (journal: next to bookshelf, x:2 back wall), music (piano), rest (bed), gym corner, town map on the back wall.
+tech at the desk (PC, monitor), commit log (journal: next to bookshelf, x:2 back wall), music (piano, radio), rest (bed), town map on the back wall; downstairs: the gym corner.
 A follow-up PR that builds one object must NOT touch `grid.ts`, `registry.ts`, `App.tsx`, `smoke.spec.ts`
 or anyone else's files; it only creates/edits files named after its own id (below). This is what keeps
 parallel PRs conflict-free.
@@ -397,16 +397,16 @@ Decor that reacts to A / a tap WITHOUT being an object: no `id`, no bag slot, no
 - `node scripts/og-image.mjs [baseUrl]` regenerates `public/og.png` (1200x630) from a running site.
 - E2E port: `E2E_PORT=4405 npm run test:e2e` (default 4399).
 
-## Radio (Start menu -> Radio)
-Overlay `src/ui/overlay/overlays/radio/` (no room object; opened from the Start menu).
-- `src/content/radio.json`: top-level `sample: boolean` + `stations[]`. Each station: `id`, `kind` (`'list'|'playlist'|'object'`), `name`, `desc`, and kind-specific fields:
-  - `list` → `tracks[]: { title, artist, note?, spotifyUrl }`. A opens a ScrollList; A on a track opens Spotify in a new tab.
+## Radio (bedroom radio object, or Start menu -> Radio)
+Overlay `src/ui/overlay/overlays/radio/`, opened by the bedroom `radio` object (`objects/radio.ts`) and by the Start menu entry. Stations: On Repeat (Ayush's Spotify "On Repeat" playlist), Ayush FM, All-time (a curated list; tracks only, no invented `note`s).
+- `src/content/radio.json`: `stations[]`, each with its own `sample: boolean`. Each station: `id`, `kind` (`'list'|'playlist'|'object'`), `name`, `desc`, and kind-specific fields:
+  - `list` → `tracks[]: { title, artist, note?, spotifyUrl }`. A opens a ScrollList; A on a track PLAYS IT IN PLACE: view `track`, that track's Spotify embed on the TOP screen (the same portal + `dim` layer as a playlist, `data-kind="track"`, no card step: the A was the ask) with an "Open in Spotify" link; the bottom screen shows title + artist. A there opens the track in a new tab; B returns to the list on the same row.
   - `playlist` → `spotifyPlaylistUrl`. A shows a static STATION CARD on the TOP screen via `createPortal` into `.top-screen` (same pattern as Pokédex; world dims via `dim(on)`): station name, the gold `.radio-fm-frame` border (reused, not new pixel art), lines left-aligned at a whole 16u inset (never centred: odd text widths land on half pixels), "A: load player" and a real "Open in Spotify" link (`radio-fm-open`) built from the validated ID only. The Spotify iframe is mounted only on the SECOND A (`fmLoaded`; no third-party frame loads until asked); A again opens Spotify in a new tab; B returns to the dial (and unloads). If the URL is `"placeholder"`, a "Playlist coming" frame is shown instead (no card, no iframe).
   - `object` → `objectId` (supported in code and tests but no station uses it today; the Piano redirect was removed). A closes the overlay and calls `goTo(objectId)` (cross-room safe).
 - `sample: true` → every content string (name, desc, track title/artist/note) must be prefixed `"Sample:"` (test enforced). Exception: `kind='object'` stations may use real names.
 - Layout (bottom screen, phone budget ~96 native px): h2 "RADIO" (20px) + dial row (18px) + station name (18px) + desc (18px) = 74px total.
 - Tuning dial: CSS pixel-art dark track with station marker lines and a sliding gold needle; ◀ is ▶ flipped with `scaleX(-1)` (◀ not in the HGSS font); ▶ uses U+25B6.
-- URL validation: `playlistId(url)` in `stations.ts` accepts only `https://open.spotify.com/playlist/<22-char id>` — anything else (http, other host, javascript:, extra segments, ../tricks) returns null and the FM frame shows "Playlist coming" instead of an iframe. Track URLs go through `trackUrl()` (same host rules, `/track/` or `/album/` path). The embed `src` and "Open in Spotify" href are built only from the validated ID, never from the raw input.
+- URL validation: `playlistId(url)` in `stations.ts` accepts only `https://open.spotify.com/playlist/<22-char id>` — anything else (http, other host, javascript:, extra segments, ../tricks) returns null and the FM frame shows "Playlist coming" instead of an iframe. `trackId(url)` applies the same rules to `/track/<22-char id>` (query ignored) and is what the track embed `src` and link are built from; `trackUrl()` (track or album) shares the parser. The embed `src` and "Open in Spotify" href are built only from the validated ID, never from the raw input.
 - Add a station: append an entry to `radio.json` (no code changes needed for new `list`/`playlist`/`object` stations); `content.test.ts` validates shape, URLs, and the sample guard.
 
 ## Résumé
