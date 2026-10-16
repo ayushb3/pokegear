@@ -81,26 +81,27 @@ def top_rows(im, rows=S):
 
 
 def monitor():
-    """majority reduction for bezel + stand; the candles are hand-placed (a 1 px wick loses the 2x2 vote)
-    in the art's own palette: bg (20,28,40), green (88,184,96), red (208,88,72)."""
-    art = clean(load("objects/monitor.png", 0, 32))
-    reduced = majority_half(art)  # 14 x 12
-    base = place(reduced)
-    bg, g, r = (20, 28, 40, 255), (88, 184, 96, 255), (208, 88, 72, 255)
-    rows = [  # screen interior: reduced x1..12, y1..6
-        "........g.r.",
-        "......g.g.r.",
-        "..g.r.g.g...",
-        ".g.g.r......",
-        ".g..........",
-        "............",
-    ]
-    ox, oy = (S - reduced.width) // 2, (S - reduced.height) // 2
-    px = base.load()
-    for y, row in enumerate(rows):
-        for x, ch in enumerate(row):
-            px[ox + 1 + x, oy + 1 + y] = {".": bg, "g": g, "r": r}[ch]
-    return base
+    """hand-placed (the 2:1 vote loses the light bezel, the SIM tag and the 1 px price line) in the art's own
+    palette: the wall screen with its lit bezel, a yellow tag, the green price line over its fill, the wall plate."""
+    pal = {
+        "o": (56, 76, 104), "H": (144, 176, 200), "C": (112, 144, 176), "L": (80, 108, 140),
+        "s": (20, 28, 40), "y": (240, 200, 64), "g": (88, 184, 96), "f": (46, 106, 60),
+    }
+    return hand([
+        ".oooooooooooooo.",
+        ".oHHHHHHHHHHHHo.",
+        ".oHyyysssssssLo.",
+        ".oHssssssssggLo.",
+        ".oHsssgsssgffLo.",
+        ".oHsggfgsgfffLo.",
+        ".oHgffffgffffLo.",
+        ".oHffffffffffLo.",
+        ".oLLLLLLLLLLLLo.",
+        ".oooooooooooooo.",
+        "......oooo......",
+        ".....oCCCCo.....",
+        ".....oooooo.....",
+    ], pal)
 
 
 def hand(rows, pal):
