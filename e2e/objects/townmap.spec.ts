@@ -369,12 +369,32 @@ test('town map: region-map pins count equals region member count', async ({ page
   await expect(regionPins).toHaveCount(medPlaces.length);
 });
 
-test('town map: cluster pin has pixel-art badge element visible on world map', async ({ page }) => {
+test('town map: cluster pin has a pixel-art badge, smaller than the pin, on whole native px, at its top-right corner', async ({ page }) => {
   await openMap(page);
+  await selectMediterranean(page);
 
-  // The mediterranean pin should have a badge element
+  const pinG = page.locator('[data-testid="pin-mediterranean"]').first();
   const badge = page.locator('[data-testid="badge-mediterranean"]');
   await expect(badge).toBeVisible();
+  const chip = (await badge.locator('[data-testid="badge-chip"]').boundingBox())!;
+  // the pin's dark outline square (first plain rect with the outline fill, before the badge)
+  const pin = (await pinG.locator(':scope > rect[fill="#22222c"]').first().boundingBox())!;
+  const px = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--px')));
+  expect(px).toBeGreaterThan(0);
+
+  // smaller than the pin, in both dimensions
+  expect(chip.width).toBeLessThan(pin.width);
+  expect(chip.height).toBeLessThan(pin.height);
+  // 5x7 native px: one dot is exactly one native px, so every edge is a whole multiple of --px
+  expect(chip.width / px).toBeCloseTo(5, 1);
+  expect(chip.height / px).toBeCloseTo(7, 1);
+  expect(pin.width / px).toBeCloseTo(8, 1);
+  // anchored at the pin's top-right corner, overlapping it slightly (2 native px each way)
+  expect(chip.x).toBeGreaterThan(pin.x + pin.width / 2);
+  expect(chip.x).toBeLessThan(pin.x + pin.width);
+  expect(chip.y).toBeLessThan(pin.y);
+  expect(chip.y + chip.height).toBeGreaterThan(pin.y);
+  expect(chip.y + chip.height).toBeLessThan(pin.y + pin.height / 2);
 });
 
 test('town map: sub-level entry line (tm-line) is inside overlay boundary', async ({ page }) => {
@@ -440,16 +460,23 @@ test('town map: Photos opens the board on that place; B returns to the same entr
   await expect(board.locator('[data-testid=photo-filter-label]')).toHaveText(`${PHOTO_PLACE.name.toUpperCase()} ${n}`);
   await expect(page.locator('[data-testid=live]')).toContainText(`${PHOTO_PLACE.name}, ${n} photo`);
   await expect(page.locator('[data-testid=lbl-b]')).toHaveText('Map');
+  // the MAP stays on the top screen (not the room): the world map with that place's pin selected (blinking frame)
+  await expect(page.locator('[data-testid=tm-top]')).toBeVisible();
+  await expect(page.locator('[data-testid=tm-world-map]')).toBeVisible();
+  await expect(page.locator(`[data-testid=pin-${PHOTO_PLACE.id}] .tm-blink`).first()).toBeAttached();
   // the player never walked downstairs: same tile and room the whole trip
   expect(await tile(page)).toEqual(opened);
 
   // enlarge, B back to the board (one level), then B back to the map at the same entry
   await page.keyboard.press('Space');
   await expect(page.locator('[data-testid=photo-enlarged]')).toBeVisible();
+  await expect(page.locator('[data-testid=tm-top]')).toHaveCount(0); // the enlarged photo replaces the map
   await page.keyboard.press('Escape');
   await expect(page.locator('[data-testid=photo-enlarged]')).toHaveCount(0);
+  await expect(page.locator('[data-testid=tm-top]')).toBeVisible(); // back on the grid: the map again
   await page.keyboard.press('Escape');
   await expect(page.locator('[data-testid=townmap]')).toBeVisible();
+  await expect(page.locator('[data-testid=tm-top]')).toBeVisible();
   await expect(page.locator('[data-testid=tm-counter]')).toHaveText(`${PHOTO_IDX + 1}/${WORLD_N}`);
   await expect(page.locator('[data-testid=tm-name]')).toContainText(PHOTO_PLACE.name);
   await expect(page.locator('[data-testid=lbl-a]')).toHaveText('Photos');
@@ -479,6 +506,9 @@ test('town map: Photos from inside a region returns to the region level, same co
 
   await page.keyboard.press('Space');
   await expect(page.locator('[data-testid=photo-filter-label]')).toHaveText(`${country.name.toUpperCase()} ${photoCount(country.id)}`);
+  // the top screen keeps the ZOOMED region map, that country's pin selected
+  await expect(page.locator('[data-testid=tm-region-map]')).toBeVisible();
+  await expect(page.locator(`[data-testid=region-pin-${idx}] .tm-blink`).first()).toBeAttached();
   // change the filter on the board; the map still comes back where it was
   await page.keyboard.press('ArrowDown');
   await page.keyboard.press('Escape');
